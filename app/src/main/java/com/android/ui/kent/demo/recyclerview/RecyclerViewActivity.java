@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +23,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Kent on 2016/9/27.
@@ -37,6 +38,7 @@ public class RecyclerViewActivity extends BaseActivity implements BaseActivity.M
     RecyclerView recyclerView;
 
     ItemAdapter itemAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,19 +50,35 @@ public class RecyclerViewActivity extends BaseActivity implements BaseActivity.M
         init();
     }
 
-    private void initToolbar(){
+    private void initToolbar() {
         this.setupToolbar();
         this.enableBackButton();
         this.setToolbarTitle("RecyclerView");
     }
 
 
-    private void init(){
-        itemAdapter = new ItemAdapter(this);
+    private void init() {
+
+        List<ItemVO> dataList = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            dataList.add(new ItemVO("特賣會(" + i + ")", "買5件送5件，快來買"));
+        }
+
+        itemAdapter = new ItemAdapter(this, dataList, myViewHolderClick);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(itemAdapter);
     }
 
+    private ItemAdapter.ViewHolderClickListener myViewHolderClick = new ItemAdapter.ViewHolderClickListener() {
+        @Override
+        public void onClick(View v, int position) {
+            Log.d("tester", "onClick position = " + position);
+            ItemVO vo = itemAdapter.getDataList().get(position);
+            vo.content = "買5件送" + new Random().nextInt(10) + "件，快來買";
+
+            itemAdapter.notifyDataSetChanged();
+        }
+    };
 
 
     @Override
@@ -71,7 +89,7 @@ public class RecyclerViewActivity extends BaseActivity implements BaseActivity.M
         MenuItem item = menu.findItem(R.id.spinner);
         Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
 
-        int[] image = { R.drawable.ic_view_list_white_24dp, R.drawable.ic_view_module_white_24dp, R.drawable.ic_dashboard_white_24dp};
+        int[] image = {R.drawable.ic_view_list_white_24dp, R.drawable.ic_view_module_white_24dp, R.drawable.ic_dashboard_white_24dp};
         List<Map<String, Object>> items = new ArrayList<>();
         for (int i = 0; i < image.length; i++) {
             Map<String, Object> map = new HashMap<>();
@@ -86,10 +104,10 @@ public class RecyclerViewActivity extends BaseActivity implements BaseActivity.M
         return super.onCreateOptionsMenu(menu);
     }
 
-    private Spinner.OnItemSelectedListener onItemSelectedListener = new Spinner.OnItemSelectedListener(){
+    private Spinner.OnItemSelectedListener onItemSelectedListener = new Spinner.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            switch (position){
+            switch (position) {
                 case 0:
                     recyclerView.setLayoutManager(new LinearLayoutManager(RecyclerViewActivity.this));
                     break;
@@ -113,11 +131,11 @@ public class RecyclerViewActivity extends BaseActivity implements BaseActivity.M
 
     @Override
     public void onMenuOptionItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.add){
+        if (item.getItemId() == R.id.add) {
             itemAdapter.addItem();
             itemAdapter.notifyDataSetChanged();
         } else {
-            if(itemAdapter.getItemCount() == 0){
+            if (itemAdapter.getItemCount() == 0) {
                 return;
             }
             itemAdapter.removeItem();

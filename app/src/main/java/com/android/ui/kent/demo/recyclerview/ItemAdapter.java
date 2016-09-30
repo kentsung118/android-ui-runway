@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.android.ui.kent.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -22,7 +21,7 @@ import static com.android.ui.kent.demo.recyclerview.ItemAdapter.VIEW_TYPE.ITEM_T
  * Created by Kent on 2016/9/27.
  */
 
-public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public enum VIEW_TYPE {
         ITEM_TYPE_1,
@@ -30,28 +29,37 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private Context context;
-    private List<String> list;
-    private int count = 10;
+    private List<ItemVO> dataList;
 
-    public ItemAdapter(Context context){
+    public ViewHolderClickListener mListener;
+
+    public ItemAdapter(Context context, List<ItemVO> dataList, ViewHolderClickListener mListener){
         this.context = context;
-        list = new ArrayList<>();
-
-        for(int i=0;i<count;i++){
-            list.add("項目("+i+")");
-        }
+        this.dataList = dataList;
+        this.mListener = mListener;
     }
 
     public void addItem(){
-        list.add("項目("+ list.size()+1 +")");
+        dataList.add(new ItemVO("特賣會(" + dataList.size() + ")", "買5件送5件，快來買"));
     }
 
     public void removeItem(){
-        list.remove(list.size() -1);
+        dataList.remove(dataList.size() -1);
     }
 
+    public List<ItemVO> getDataList(){
+       return dataList;
+    }
+
+
+    public interface ViewHolderClickListener {
+        void onClick(View v, int position);
+    }
+
+
+
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //依viewType決定使用item_layout
         View rootView;
@@ -74,19 +82,21 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //可以彈性Bind兩種以上viewHolder
         if(viewHolder instanceof ViewHolder1){
             ViewHolder1 holder = (ViewHolder1)viewHolder;
-            holder.mainText.setText("特賣會( " + position + " )");
-            holder.subText.setText("買5件送5件，快來買");
+            holder.mainText.setText(dataList.get(position).title);
+            holder.subText.setText(dataList.get(position).content);
         } else{
             ViewHolder2 holder = (ViewHolder2)viewHolder;
-            holder.mainText.setText("大拍賣( " + position + " )");
-            holder.subText.setText("買3件送3件，快來買，快來買，快來買");
+            holder.mainText.setText(dataList.get(position).title);
+            holder.subText.setText(dataList.get(position).content);
         }
 
     }
 
+
+
     @Override
     public int getItemCount() {
-        return list.size();
+        return dataList.size();
     }
 
     @Override
@@ -94,7 +104,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return position % 3 == 0 ? ITEM_TYPE_1.ordinal() : ITEM_TYPE_2.ordinal();
     }
 
-    class ViewHolder1 extends RecyclerView.ViewHolder {
+    class ViewHolder1 extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.text_1)
         TextView mainText;
@@ -104,11 +114,17 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public ViewHolder1(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onClick(v, getLayoutPosition());
         }
 
     }
 
-    class ViewHolder2 extends RecyclerView.ViewHolder {
+    class ViewHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.text_1)
         TextView mainText;
@@ -118,6 +134,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public ViewHolder2(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onClick(v, getLayoutPosition());
         }
 
     }
