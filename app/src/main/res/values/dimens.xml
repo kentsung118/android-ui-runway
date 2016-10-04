@@ -1,8 +1,8 @@
 <resources>
     <dimen name="empty_item_height">16dp</dimen>
-    <dimen name="inner_padding">8dp</dimen>
     <dimen name="mini_item_height">60dp</dimen>
-    <dimen name="outer_padding">16dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
 
     <dimen name="text_small">14sp</dimen>
     <dimen name="text_primary">16sp</dimen>

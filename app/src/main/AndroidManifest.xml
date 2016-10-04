@@ -20,6 +20,8 @@
         <activity android:name=".demo.listview.ListViewActivity"/>
         <activity android:name=".demo.alarm.AlarmActivity"/>
         <activity android:name=".demo.drawer.DrawerActivity"/>
+        <activity android:name=".demo.tab.TabActivity"/>
+        <activity android:name=".demo.indicator.IndicatorActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

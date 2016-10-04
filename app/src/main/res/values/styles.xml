@@ -17,4 +17,18 @@
         <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
     </style>
 
+
+    <!-- TabLayout -->
+    <style name="MyTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@color/nav_bg</item>
+        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/main_color</item>
+    </style>
+
+    <style name="MyTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_primary</item>
+        <item name="android:textColor">@color/text_light</item>
+    </style>
+
 </resources>
