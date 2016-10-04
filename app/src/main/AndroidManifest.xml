@@ -19,6 +19,7 @@
         <activity android:name=".demo.recyclerview.RecyclerViewActivity"/>
         <activity android:name=".demo.listview.ListViewActivity"/>
         <activity android:name=".demo.alarm.AlarmActivity"/>
+        <activity android:name=".demo.drawer.DrawerActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

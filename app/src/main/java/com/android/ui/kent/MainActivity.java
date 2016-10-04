@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.alarm.AlarmActivity;
+import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.listview.ListViewActivity;
 import com.android.ui.kent.demo.recyclerview.RecyclerViewActivity;
 
@@ -45,6 +46,7 @@ public class MainActivity extends BaseActivity {
         list.add("RecyclerView");
         list.add("ListView");
         list.add("Alarm Manager");
+        list.add("Navigation Drawer");
 
         ArrayAdapter<String> listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         listView.setAdapter(listAdapter);
@@ -65,6 +67,9 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 2:
                     AlarmActivity.launch(activity);
+                    break;
+                case 3:
+                    DrawerActivity.launch(activity);
                     break;
                 default:
                     break;

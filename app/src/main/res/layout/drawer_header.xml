@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/drawer_header"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/drawer_title"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/main_light_green"
+        android:gravity="bottom"
+        android:padding="16dp"
+        android:text="您位於側邊選單"
+        android:textColor="@color/main_write"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/main_write"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/drawer_left"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/abc_ic_star_black_16dp"
+            android:text="購物車"/>
+
+        <Button
+            android:id="@+id/drawer_center"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/abc_ic_star_black_16dp"
+            android:text="訂單"/>
+
+        <Button
+            android:id="@+id/ec_drawer_right"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/abc_ic_star_black_16dp"
+            android:text="全部商品"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"/>
+
+</LinearLayout>
