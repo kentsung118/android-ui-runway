@@ -2,12 +2,15 @@ package com.android.ui.kent.demo.tab;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,9 +44,9 @@ public class TabActivity extends BaseActivity {
 
     private void init(){
         TabPagerAdapter adapter = new TabPagerAdapter(getSupportFragmentManager(), this);
-        adapter.addFragment("Tab1", TabFragment.newInstance(new ItemVO("內容一", R.mipmap.ic_launcher)));
-        adapter.addFragment("Tab2", TabFragment.newInstance(new ItemVO("內容二", R.mipmap.ic_launcher)));
-        adapter.addFragment("Tab3", TabFragment.newInstance(new ItemVO("內容三", R.mipmap.ic_launcher)));
+        adapter.addFragment("Tab1", TabFragment.newInstance(new ItemVO("內容一", "https://drjaosdejw578.cloudfront.net/tw/static/1475598396979/assets/886/products/37581.png")));
+        adapter.addFragment("Tab2", TabFragment.newInstance(new ItemVO("內容二", "https://drjaosdejw578.cloudfront.net/tw/static/1475598396979/assets/886/products/37828.png")));
+        adapter.addFragment("Tab3", TabFragment.newInstance(new ItemVO("內容三", "https://drjaosdejw578.cloudfront.net/tw/static/1475598396979/assets/886/products/31363.png")));
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -54,6 +57,5 @@ public class TabActivity extends BaseActivity {
         Intent intent = new Intent(activity, TabActivity.class);
         activity.startActivity(intent);
     }
-
 
 }

@@ -7,10 +7,10 @@ package com.android.ui.kent.demo.tab;
 public class ItemVO {
 
     public String content;
-    public int imgRes;
+    public String imgUrl;
 
-    public ItemVO(String content, int imgRes) {
+    public ItemVO(String content, String imgUrl) {
         this.content = content;
-        this.imgRes = imgRes;
+        this.imgUrl = imgUrl;
     }
 }

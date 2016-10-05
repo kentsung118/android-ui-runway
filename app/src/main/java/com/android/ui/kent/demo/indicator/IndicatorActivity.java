@@ -8,9 +8,6 @@ import android.support.v4.view.ViewPager;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
-import com.android.ui.kent.demo.tab.ItemVO;
-import com.android.ui.kent.demo.tab.TabFragment;
-import com.android.ui.kent.demo.tab.TabPagerAdapter;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import butterknife.Bind;

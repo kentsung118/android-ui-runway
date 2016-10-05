@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.alarm.AlarmActivity;
+import com.android.ui.kent.demo.cardview.CardActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.listview.ListViewActivity;
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity {
         list.add("Navigation Drawer");
         list.add("TabLayout + ViewPager");
         list.add("CirclePageIndicator + ViewPager");
+        list.add("CardView");
 
         ArrayAdapter<String> listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         listView.setAdapter(listAdapter);
@@ -80,6 +82,9 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 5:
                     IndicatorActivity.launch(activity);
+                    break;
+                case 6:
+                    CardActivity.launch(activity);
                     break;
                 default:
                     break;
