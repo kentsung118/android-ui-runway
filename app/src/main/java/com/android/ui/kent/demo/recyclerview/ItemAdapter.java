@@ -40,11 +40,17 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
 
     public void addItem(){
+        //先新增一筆資料
         dataList.add(new ItemVO("特賣會(" + dataList.size() + ")", "買5件送5件，快來買"));
+        //告訴RecyclerView 插入一筆Item在最後方
+        notifyItemInserted(dataList.size()-1);
     }
 
     public void removeItem(){
+        //先移除最後一筆資料
         dataList.remove(dataList.size() -1);
+        //告訴RecyclerView 移除最後一筆Item
+        notifyItemRemoved(dataList.size());
     }
 
     public List<ItemVO> getDataList(){

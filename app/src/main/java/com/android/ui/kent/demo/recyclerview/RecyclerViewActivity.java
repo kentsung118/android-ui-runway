@@ -27,6 +27,7 @@ import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 /**
  * Created by Kent on 2016/9/27.
@@ -66,6 +67,7 @@ public class RecyclerViewActivity extends BaseActivity implements BaseActivity.M
 
         itemAdapter = new ItemAdapter(this, dataList, myViewHolderClick);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new SlideInUpAnimator());
         recyclerView.setAdapter(itemAdapter);
     }
 
@@ -133,13 +135,13 @@ public class RecyclerViewActivity extends BaseActivity implements BaseActivity.M
     public void onMenuOptionItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add) {
             itemAdapter.addItem();
-            itemAdapter.notifyDataSetChanged();
+//            itemAdapter.notifyDataSetChanged();
         } else {
             if (itemAdapter.getItemCount() == 0) {
                 return;
             }
             itemAdapter.removeItem();
-            itemAdapter.notifyDataSetChanged();
+            //itemAdapter.notifyDataSetChanged();
         }
     }
 

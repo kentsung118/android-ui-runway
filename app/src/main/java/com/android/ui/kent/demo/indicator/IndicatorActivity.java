@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
@@ -66,7 +67,7 @@ public class IndicatorActivity extends BaseActivity {
                     indicator.setStrokeWidth(0);
                     indicator.setFillColor(getResources().getColor(R.color.main_red));  //#7Fff1111
                 }
-//                Log.d(TAG, "pos:" + position + ", " + positionOffset);
+                Log.d("IndicatorActivity", "pos:" + position + ", " + positionOffset);
             }
 
             @Override

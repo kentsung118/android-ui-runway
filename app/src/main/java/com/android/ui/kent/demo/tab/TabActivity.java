@@ -48,7 +48,9 @@ public class TabActivity extends BaseActivity {
         adapter.addFragment("Tab2", TabFragment.newInstance(new ItemVO("內容二", "https://drjaosdejw578.cloudfront.net/tw/static/1475598396979/assets/886/products/37828.png")));
         adapter.addFragment("Tab3", TabFragment.newInstance(new ItemVO("內容三", "https://drjaosdejw578.cloudfront.net/tw/static/1475598396979/assets/886/products/31363.png")));
 
+        viewPager.setOffscreenPageLimit(3); //
         viewPager.setAdapter(adapter);
+
         tabLayout.setupWithViewPager(viewPager);
     }
 
