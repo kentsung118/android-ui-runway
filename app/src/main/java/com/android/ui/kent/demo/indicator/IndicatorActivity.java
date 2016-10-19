@@ -4,12 +4,26 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,7 +32,7 @@ import butterknife.ButterKnife;
  * Created by Kent on 2016/10/4.
  */
 
-public class IndicatorActivity extends BaseActivity {
+public class IndicatorActivity extends BaseActivity{
 
     @Bind(R.id.viewpager)
     ViewPager viewPager;
@@ -27,6 +41,12 @@ public class IndicatorActivity extends BaseActivity {
 
     final int LAST_PAGE_INDEX = 3;
     int width;
+    private MyAdapter myAdapter;
+
+    private Handler timerHandler = new Handler();
+    private Runnable adRunnable;
+    private static final long AD_DELAY = 3000L;
+    private boolean isADRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +65,29 @@ public class IndicatorActivity extends BaseActivity {
     }
 
     private void init(){
-        MyAdapter adapter = new MyAdapter(getSupportFragmentManager());
-        adapter.addFragment(MyFragment.newInstance(new ItemVO("內容一", R.mipmap.ic_launcher)));
-        adapter.addFragment(MyFragment.newInstance(new ItemVO("內容二", R.mipmap.ic_launcher)));
-        adapter.addFragment(MyFragment.newInstance(new ItemVO("內容三", R.mipmap.ic_launcher)));
 
-        viewPager.setAdapter(adapter);
+
+        myAdapter = new MyAdapter(getSupportFragmentManager());
+        myAdapter.addFragment(MyFragment.newInstance(new ItemVO("內容一", R.mipmap.ic_launcher)));
+        myAdapter.addFragment(MyFragment.newInstance(new ItemVO("內容二", R.mipmap.ic_launcher)));
+        myAdapter.addFragment(MyFragment.newInstance(new ItemVO("內容三", R.mipmap.ic_launcher)));
+
+        viewPager.setAdapter(myAdapter);
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        stopPlayAD();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        startPlayAD();
+                        break;
+                }
+                return false;
+            }
+        });
+
 
         indicator.setViewPager(viewPager);
         indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -80,6 +117,33 @@ public class IndicatorActivity extends BaseActivity {
 
             }
         });
+
+        adRunnable = new AdRunnable();
+        startPlayAD();
+
+    }
+
+    private class AdRunnable implements Runnable{
+        @Override
+        public void run() {
+            if (myAdapter.getCount() != 0) {
+                viewPager.setCurrentItem((viewPager.getCurrentItem() + 1)
+                        % myAdapter.getCount(), true);
+                timerHandler.postDelayed(this, AD_DELAY);
+            }
+        }
+    }
+
+    private void startPlayAD() {
+        if (!isADRunning) {
+            timerHandler.postDelayed(adRunnable, AD_DELAY);
+            isADRunning = true;
+        }
+    }
+
+    private void stopPlayAD() {
+        timerHandler.removeCallbacks(adRunnable);
+        isADRunning = false;
     }
 
 
