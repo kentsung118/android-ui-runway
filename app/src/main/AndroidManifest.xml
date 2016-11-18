@@ -27,6 +27,7 @@
         <activity android:name=".demo.tab.TabActivity"/>
         <activity android:name=".demo.indicator.IndicatorActivity"/>
         <activity android:name=".demo.cardview.CardActivity"/>
+        <activity android:name=".demo.network.retrofit.RetrofitActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
