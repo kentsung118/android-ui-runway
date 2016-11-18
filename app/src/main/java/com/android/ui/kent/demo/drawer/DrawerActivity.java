@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -27,12 +27,12 @@ import butterknife.OnClick;
 
 public class DrawerActivity extends BaseActivity {
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @Bind(R.id.left_drawer_container)
+    @BindView(R.id.left_drawer_container)
     ViewGroup leftDrawerContainer;
 
-    @Bind(R.id.side_listview)
+    @BindView(R.id.side_listview)
     ListView sideItems;
 
     @Override

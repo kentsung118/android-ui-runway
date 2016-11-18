@@ -11,7 +11,7 @@ import com.android.ui.kent.R;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.android.ui.kent.demo.recyclerview.ItemAdapter.VIEW_TYPE.ITEM_TYPE_1;
@@ -112,9 +112,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     class ViewHolder1 extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @Bind(R.id.text_1)
+        @BindView(R.id.text_1)
         TextView mainText;
-        @Bind(R.id.text_2)
+        @BindView(R.id.text_2)
         TextView subText;
 
         public ViewHolder1(View itemView) {
@@ -132,9 +132,9 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     class ViewHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @Bind(R.id.text_1)
+        @BindView(R.id.text_1)
         TextView mainText;
-        @Bind(R.id.text_2)
+        @BindView(R.id.text_2)
         TextView subText;
 
         public ViewHolder2(View itemView) {

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.android.ui.kent.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Kent on 2016/9/27.
@@ -19,7 +19,7 @@ import butterknife.Bind;
 public class BaseActivity extends AppCompatActivity {
 
     @Nullable
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
 
     private MenuOptionItemListener optionItemListener;

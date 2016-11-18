@@ -11,7 +11,6 @@ import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**

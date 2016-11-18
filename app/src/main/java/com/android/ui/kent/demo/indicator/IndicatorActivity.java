@@ -19,13 +19,8 @@ import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.viewpagerindicator.CirclePageIndicator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimerTask;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -34,9 +29,9 @@ import butterknife.ButterKnife;
 
 public class IndicatorActivity extends BaseActivity{
 
-    @Bind(R.id.viewpager)
+    @BindView(R.id.viewpager)
     ViewPager viewPager;
-    @Bind(R.id.indicator)
+    @BindView(R.id.indicator)
     CirclePageIndicator indicator;
 
     final int LAST_PAGE_INDEX = 3;
