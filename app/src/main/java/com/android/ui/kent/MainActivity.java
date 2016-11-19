@@ -14,7 +14,9 @@ import com.android.ui.kent.demo.cardview.CardActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.listview.ListViewActivity;
+import com.android.ui.kent.demo.network.okhttp.OKHttpActivity;
 import com.android.ui.kent.demo.network.retrofit.RetrofitActivity;
+import com.android.ui.kent.demo.network.rxjava.RxJavaActivity;
 import com.android.ui.kent.demo.recyclerview.RecyclerViewActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 
@@ -55,6 +57,8 @@ public class MainActivity extends BaseActivity {
         list.add("CirclePageIndicator + ViewPager");
         list.add("CardView");
         list.add("Retrofit");
+        list.add("OKHttp");
+        list.add("RxJava");
 
         ArrayAdapter<String> listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         listView.setAdapter(listAdapter);
@@ -90,6 +94,11 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 7:
                     RetrofitActivity.launch(activity);
+                    break;
+                case 8:
+                    OKHttpActivity.launch(activity);
+                case 9:
+                    RxJavaActivity.launch(activity);
                     break;
                 default:
                     break;

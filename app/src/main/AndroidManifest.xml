@@ -28,6 +28,8 @@
         <activity android:name=".demo.indicator.IndicatorActivity"/>
         <activity android:name=".demo.cardview.CardActivity"/>
         <activity android:name=".demo.network.retrofit.RetrofitActivity"/>
+        <activity android:name=".demo.network.okhttp.OKHttpActivity"/>
+        <activity android:name=".demo.network.rxjava.RxJavaActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
