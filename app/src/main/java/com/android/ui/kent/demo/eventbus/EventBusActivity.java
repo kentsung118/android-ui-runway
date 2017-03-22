@@ -75,9 +75,18 @@ public class EventBusActivity extends BaseActivity {
     //ThreadMode.ASYNC：加入后台任务队列，使用线程池调用
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
-        /* Do something */
-        Log.d("tester", "onMessageEvent event.msg = " + event.msg);
+        Log.d("tester", "thread = " + Thread.currentThread().getName() + " ,onMessageEvent event.msg = " + event.msg);
         text1.setText(event.msg);
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent2(MessageEvent event) {
+        Log.d("tester", "thread = " + Thread.currentThread().getName() + " ,onMessageEvent event.msg = " + event.msg);
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onMessageEvent3(MessageEvent event) {
+        Log.d("tester", "thread = " + Thread.currentThread().getName() + " ,onMessageEvent event.msg = " + event.msg);
     }
 
 
