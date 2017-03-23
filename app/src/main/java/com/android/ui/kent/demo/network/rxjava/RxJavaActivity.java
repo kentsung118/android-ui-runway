@@ -72,8 +72,8 @@ public class RxJavaActivity extends BaseActivity {
 
     private static Retrofit createRetrofit() {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-        builder.readTimeout(10, TimeUnit.SECONDS);
-        builder.connectTimeout(10, TimeUnit.SECONDS);
+        builder.readTimeout(3, TimeUnit.SECONDS);
+        builder.connectTimeout(3, TimeUnit.SECONDS);
 
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -124,6 +124,7 @@ public class RxJavaActivity extends BaseActivity {
     void singleRequestQueue() {
         Retrofit retrofit = createRetrofit();
         GitHubUser api = retrofit.create(GitHubUser.class);
+
         api.getUser("john")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -134,11 +135,41 @@ public class RxJavaActivity extends BaseActivity {
                         Toast.makeText(mContext, "get user.name:"+user.name, Toast.LENGTH_SHORT).show();
                     }
                 })
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "query John Fail!! throwable = " + throwable.getMessage());
+                        Toast.makeText(mContext, "john 查詢失敗 ( throwable = "+ throwable.getMessage() +" )", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .observeOn(Schedulers.io())
                 .concatMap(new Function<User, ObservableSource<User>>() {
                     @Override
                     public ObservableSource<User> apply(User user) throws Exception {
                         return api.getUser("jack");
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<User>() {
+                    @Override
+                    public void accept(User user) throws Exception {
+                        //先根據结果去做一些操作
+                        Toast.makeText(mContext, "get user.name:"+user.name, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "query Jack Fail!! throwable = " + throwable.getMessage());
+                        Toast.makeText(mContext, "jack 查詢失敗 ( throwable = "+ throwable.getMessage() +" )", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .concatMap(new Function<User, ObservableSource<User>>() {
+                    @Override
+                    public ObservableSource<User> apply(User user) throws Exception {
+                        return api.getUser("wilson");
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -150,7 +181,8 @@ public class RxJavaActivity extends BaseActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(mContext, "查詢失敗", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "query Wilson Fail!! throwable = " + throwable.getMessage());
+                        Toast.makeText(mContext, "wilson 查詢失敗 ( throwable = "+ throwable.getMessage() +" )", Toast.LENGTH_SHORT).show();
                     }
                 });
 
