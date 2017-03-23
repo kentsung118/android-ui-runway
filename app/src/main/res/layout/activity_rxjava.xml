@@ -4,16 +4,33 @@
     android:layout_height="match_parent">
 
     <include layout="@layout/view_toolbar"/>
-
     <Button
-        android:text="load Repo"
+        android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_repo" />
+        android:text="Single Request" />
 
     <Button
-        android:text="load Ueset"
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_user" />
+        android:text="Multiple Request Queue (concatMap)" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Multiple Request Same Time Launcher (zip)" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 </LinearLayout>

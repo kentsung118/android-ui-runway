@@ -30,6 +30,7 @@ import okhttp3.Response;
 
 public class OKHttpActivity extends BaseActivity {
 
+    private String TAG = OKHttpActivity.class.getSimpleName();
     private OkHttpClient client = new OkHttpClient();
 
     @Override
@@ -50,7 +51,7 @@ public class OKHttpActivity extends BaseActivity {
 
     @OnClick(R.id.btn_repo)
     void onBtnRepoClick() {
-
+        Log.d(TAG, "onBtnRepoClick");
         try {
             Call call = httpGet("https://api.github.com/users/kentsong");
             call.enqueue(new Callback() {

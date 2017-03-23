@@ -98,6 +98,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 8:
                     OKHttpActivity.launch(activity);
+                    break;
                 case 9:
                     RxJavaActivity.launch(activity);
                     break;

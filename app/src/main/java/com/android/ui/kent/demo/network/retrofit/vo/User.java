@@ -6,5 +6,6 @@ package com.android.ui.kent.demo.network.retrofit.vo;
 
 public class User {
     public String id;
-    public String login;
+    public String name;
+
 }
