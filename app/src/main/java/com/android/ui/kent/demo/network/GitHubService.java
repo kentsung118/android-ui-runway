@@ -1,4 +1,4 @@
-package com.android.ui.kent.demo.network.retrofit;
+package com.android.ui.kent.demo.network;
 
 import com.android.ui.kent.demo.network.retrofit.vo.Repo;
 import com.android.ui.kent.demo.network.retrofit.vo.User;
