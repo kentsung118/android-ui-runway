@@ -31,6 +31,7 @@
         <activity android:name=".demo.network.okhttp.OKHttpActivity"/>
         <activity android:name=".demo.network.rxjava.RxJavaActivity"/>
         <activity android:name=".demo.eventbus.EventBusActivity"/>
+        <activity android:name=".demo.widget.dialog.DialogActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
