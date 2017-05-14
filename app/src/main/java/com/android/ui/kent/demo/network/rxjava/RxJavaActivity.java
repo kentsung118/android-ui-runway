@@ -123,7 +123,7 @@ public class RxJavaActivity extends BaseActivity {
 
     void singleRequestQueue() {
         Retrofit retrofit = createRetrofit();
-        GitHubUser api = retrofit.create(GitHubUser.class);
+        final GitHubUser api = retrofit.create(GitHubUser.class);
 
         api.getUser("john")
                 .subscribeOn(Schedulers.io())

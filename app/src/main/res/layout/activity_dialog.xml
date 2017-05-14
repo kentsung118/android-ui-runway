@@ -7,46 +7,46 @@
     <include layout="@layout/view_toolbar"/>
 
     <Button
-            android:id="@+id/button1"
+            android:id="@+id/btnAlert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="Alert"
             />
     <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnAlert2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="Alert2"
             />
     <Button
-            android:id="@+id/button3"
+            android:id="@+id/btnCommonDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="Common Dialog"
             />
     <Button
-            android:id="@+id/button4"
+            android:id="@+id/btnItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="Items Dialog"
             />
     <Button
-            android:id="@+id/button5"
+            android:id="@+id/btnSingleChoice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="Single choice"
             />
     <Button
-            android:id="@+id/button6"
+            android:id="@+id/btnMultiChoice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="Multi choice"
             />
     <Button
-            android:id="@+id/button7"
+            android:id="@+id/fullScreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="Full Screen"
             />
     <Button
             android:id="@+id/button8"
