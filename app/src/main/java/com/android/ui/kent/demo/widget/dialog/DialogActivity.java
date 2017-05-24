@@ -31,7 +31,7 @@ public class DialogActivity extends BaseActivity {
     @BindView(R.id.btnSingleChoice) Button btnSigleChoice;
     @BindView(R.id.btnMultiChoice) Button btnMultiChoice;
     @BindView(R.id.fullScreen) Button fullScreen;
-    @BindView(R.id.button8) Button button8;
+    @BindView(R.id.verifyDismissButton) Button verifyDismiss;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +48,7 @@ public class DialogActivity extends BaseActivity {
 
     @OnClick({
             R.id.btnAlert, R.id.btnAlert2, R.id.btnCommonDialog, R.id.btnItems, R.id.btnSingleChoice, R.id.btnMultiChoice,
-            R.id.fullScreen, R.id.button8
+            R.id.fullScreen, R.id.verifyDismissButton
     }) public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnAlert:
@@ -72,7 +72,8 @@ public class DialogActivity extends BaseActivity {
             case R.id.fullScreen:
                 showFullScreenDialog();
                 break;
-            case R.id.button8:
+            case R.id.verifyDismissButton:
+                showVerifyDismissButtonDialog();
                 break;
         }
     }
@@ -187,6 +188,41 @@ public class DialogActivity extends BaseActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void showVerifyDismissButtonDialog(){
+        final AlertDialog dialog;
+
+        final String[] strArray = new String[]{"Taiwan","US","India"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("請選擇國家")
+                .setSingleChoiceItems(strArray, 0, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(DialogActivity.this, "選擇了["+ strArray[which] +"]", Toast.LENGTH_SHORT)
+                                .show();
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("確定", null);
+
+        dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Boolean wantToCloseDialog = false;
+                //Do stuff, possibly set wantToCloseDialog to true then...
+                if(wantToCloseDialog) {
+                    dialog.dismiss();
+                } else{
+                    Toast.makeText(DialogActivity.this, "檢核不成功，無法退出", Toast.LENGTH_SHORT).show();
+                }
+                //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
+            }
+        });
     }
 
 
