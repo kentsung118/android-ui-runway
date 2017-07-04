@@ -191,7 +191,7 @@ public class DialogActivity extends BaseActivity {
     }
 
     private void showVerifyDismissButtonDialog(){
-        final AlertDialog dialog;
+        final AlertDialog alertDialog;
 
         final String[] strArray = new String[]{"Taiwan","US","India"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -205,24 +205,30 @@ public class DialogActivity extends BaseActivity {
                 })
                 .setPositiveButton("確定", null);
 
-        dialog = builder.create();
-        dialog.show();
+        alertDialog = builder.create();
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Boolean wantToCloseDialog = false;
-                //Do stuff, possibly set wantToCloseDialog to true then...
-                if(wantToCloseDialog) {
-                    dialog.dismiss();
-                } else{
-                    Toast.makeText(DialogActivity.this, "檢核不成功，無法退出", Toast.LENGTH_SHORT).show();
-                }
-                //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override public void onShow(DialogInterface dialog) {
+                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Boolean wantToCloseDialog = false;
+                        //Do stuff, possibly set wantToCloseDialog to true then...
+                        if(wantToCloseDialog) {
+                            alertDialog.dismiss();
+                        } else{
+                            Toast.makeText(DialogActivity.this, "檢核不成功，無法退出", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
+
+        alertDialog.show();
+
+
+
     }
 
 
