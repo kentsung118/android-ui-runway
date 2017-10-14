@@ -37,6 +37,6 @@ public class DBContract {
                         TABLE_NAME, COL_ID, COL_USER_ID, COL_USER_PWD, COL_GENDER, COL_AGE,
                         COL_JSON, COL_LAST_UPDATE);
 
-        public static final String SQL_DROP_TABLE = "DELETE FROM "+TABLE_NAME;
+        public static final String SQL_DELETE_TABLE = "DELETE FROM "+TABLE_NAME;
     }
 }

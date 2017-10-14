@@ -18,6 +18,12 @@ public interface IUserDAO {
     /** 查詢會員 **/
     List<UserVO> getUserByQuery(UserQuery query);
 
+    /** 清空db **/
+    void clearAll();
+
+    /** 新增用戶**/
+    void addRandomUser(int amount);
+
 
 
     interface UserQuery{

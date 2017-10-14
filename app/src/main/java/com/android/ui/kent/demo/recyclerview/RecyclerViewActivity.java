@@ -135,13 +135,11 @@ public class RecyclerViewActivity extends BaseActivity implements BaseActivity.M
     public void onMenuOptionItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add) {
             itemAdapter.addItem();
-//            itemAdapter.notifyDataSetChanged();
         } else {
             if (itemAdapter.getItemCount() == 0) {
                 return;
             }
             itemAdapter.removeItem();
-            //itemAdapter.notifyDataSetChanged();
         }
     }
 

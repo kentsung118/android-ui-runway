@@ -19,6 +19,7 @@ import com.android.ui.kent.demo.network.okhttp.OKHttpActivity;
 import com.android.ui.kent.demo.network.retrofit.RetrofitActivity;
 import com.android.ui.kent.demo.network.rxjava.RxJavaActivity;
 import com.android.ui.kent.demo.recyclerview.RecyclerViewActivity;
+import com.android.ui.kent.demo.recyclerview.loadmore.LoadMoreActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class MainActivity extends BaseActivity {
         list.add("RxJava");
         list.add("EventBus");
         list.add("Dialog");
+        list.add("LoadMore");
 
         ArrayAdapter<String> listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         listView.setAdapter(listAdapter);
@@ -106,6 +108,9 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 11:
                     DialogActivity.launch(activity);
+                    break;
+                case 12:
+                    LoadMoreActivity.launch(activity);
                     break;
                 default:
                     break;

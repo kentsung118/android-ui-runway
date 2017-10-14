@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Random;
 
 import static com.android.ui.kent.database.DBContract.TableUser.COL_AGE;
 import static com.android.ui.kent.database.DBContract.TableUser.COL_GENDER;
@@ -158,5 +159,23 @@ public class UserDAO extends DBContentProvider<UserVO> implements IUserDAO {
         }
     }
 
+    @Override
+    public void clearAll() {
+        mDb.execSQL(DBContract.TableUser.SQL_DELETE_TABLE);
+    }
 
+    @Override
+    public void addRandomUser(int amount) {
+        Random rand = new Random();
+
+        for(int i=0;i<amount;i++){
+            UserVO userVO = new UserVO();
+            userVO.userId = "kent" + rand.nextInt(9999);
+            userVO.userPwd = "pwd" + rand.nextInt(9999);;
+            userVO.gender = rand.nextInt(1); // 0 or 1
+            userVO.age = rand.nextInt(100) + 1; // 1~100
+
+            this.insert(userVO);
+        }
+    }
 }

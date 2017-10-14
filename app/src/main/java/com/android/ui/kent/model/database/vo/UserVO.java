@@ -9,5 +9,5 @@ public class UserVO {
     public String userId;
     public String userPwd;
     public int gender; //0:male 1:female
-    public String age;
+    public int age;
 }

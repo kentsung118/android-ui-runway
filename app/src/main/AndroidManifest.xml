@@ -32,6 +32,7 @@
         <activity android:name=".demo.network.rxjava.RxJavaActivity"/>
         <activity android:name=".demo.eventbus.EventBusActivity"/>
         <activity android:name=".demo.widget.dialog.DialogActivity"/>
+        <activity android:name=".demo.recyclerview.loadmore.LoadMoreActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
