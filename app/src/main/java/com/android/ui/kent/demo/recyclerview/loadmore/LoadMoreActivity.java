@@ -32,8 +32,6 @@ public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    UserAdapter userAdapter;
-
     IUserDAO userDAO;
 
     @Override
@@ -63,7 +61,7 @@ public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout
         //先 show 10筆
         List<UserVO> userList = userDAO.getUserByQuery(new UserDAO.UserQuery());
 
-
+        //下拉刷新SwipeRefresh
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.google_blue,
                 R.color.google_green,
@@ -72,12 +70,24 @@ public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout
         );
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        userAdapter = new UserAdapter(this, userList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //初始化recyclerView
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new SlideInUpAnimator());
+        recyclerView.addOnScrollListener(new RecyclerOnScrollListener(linearLayoutManager, new RecyclerOnScrollListener.LoadMoreData() {
+            @Override
+            public void loadMore() {
+                //下滑加載時，此method 會多次呼叫，需注意此問題
+                Log.d(TAG, "onLoadMore");
+            }
+        }));
+
+        UserAdapter userAdapter = new UserAdapter(this, userList);
         recyclerView.setAdapter(userAdapter);
     }
 
+    //頂端下滑refresh
     @Override
     public void onRefresh() {
         Log.d(TAG, "onRefresh");
@@ -87,6 +97,10 @@ public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout
             }
         },1000);
     }
+
+
+
+
 
     public static void launch(Activity activity) {
         Intent intent = new Intent(activity, LoadMoreActivity.class);
