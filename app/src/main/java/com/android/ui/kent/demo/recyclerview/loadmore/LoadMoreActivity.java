@@ -33,6 +33,7 @@ public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     IUserDAO userDAO;
+    UserAdapter userAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +81,17 @@ public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout
             public void loadMore() {
                 //下滑加載時，此method 會多次呼叫，需注意此問題
                 Log.d(TAG, "onLoadMore");
+                userAdapter.setFooterState(true);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        userAdapter.setFooterState(false);
+                    }
+                }, 1000);
             }
         }));
 
-        UserAdapter userAdapter = new UserAdapter(this, userList);
+        userAdapter = new UserAdapter(this, userList);
         recyclerView.setAdapter(userAdapter);
     }
 
