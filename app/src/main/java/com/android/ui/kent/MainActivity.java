@@ -15,6 +15,7 @@ import com.android.ui.kent.demo.cardview.CardActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.eventbus.EventBusActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
+import com.android.ui.kent.demo.layout.contraint.ConstraintLayoutActivity;
 import com.android.ui.kent.demo.listview.ListViewActivity;
 import com.android.ui.kent.demo.network.okhttp.OKHttpActivity;
 import com.android.ui.kent.demo.network.retrofit.RetrofitActivity;
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_constraint_layout));
         list.add(getString(R.string.main_action_recycler_view));
         list.add(getString(R.string.main_action_listview));
         list.add(getString(R.string.main_action_alarm_manager));
@@ -60,6 +62,7 @@ public class MainActivity extends BaseActivity {
         list.add(getString(R.string.main_action_Dialog));
         list.add(getString(R.string.main_action_LoadMore));
         list.add(getString(R.string.main_action_circlepage_indicator_viewpager));
+
 
         ArrayAdapter<String> listAdapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
@@ -102,6 +105,8 @@ public class MainActivity extends BaseActivity {
                 DialogActivity.launch(activity);
             } else if (actionName.equals(activity.getString(R.string.main_action_LoadMore))) {
                 LoadMoreActivity.launch(activity);
+            } else if(actionName.equals(activity.getString(R.string.main_action_constraint_layout))){
+                ConstraintLayoutActivity.launch(activity);
             }
         }
     };

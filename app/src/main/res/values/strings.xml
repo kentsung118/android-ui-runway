@@ -17,6 +17,7 @@
     <string name="main_action_Dialog">Dialog</string>
     <string name="main_action_LoadMore">LoadMore</string>
     <string name="main_action_circlepage_indicator_viewpager">CirclePageIndicator + ViewPager</string>
+    <string name="main_action_constraint_layout">Constraint Layout</string>
 
 
 
