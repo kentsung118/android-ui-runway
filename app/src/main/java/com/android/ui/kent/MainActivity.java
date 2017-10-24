@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.android.ui.kent.demo.BaseActivity;
@@ -27,97 +28,83 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.list_view)
-    ListView listView;
+    @BindView(R.id.list_view) ListView listView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         initToolbar();
-       init();
+        init();
     }
 
-    private void initToolbar(){
+    private void initToolbar() {
         this.setupToolbar();
         this.setToolbarTitle("UIRunway");
     }
 
-    private void init(){
+    private void init() {
 
         List<String> list = new ArrayList<>();
-        list.add("RecyclerView");
-        list.add("ListView");
-        list.add("Alarm Manager");
-        list.add("Navigation Drawer");
-        list.add("TabLayout + ViewPager");
-        list.add("CirclePageIndicator + ViewPager");
-        list.add("CardView");
-        list.add("Retrofit");
-        list.add("OKHttp");
-        list.add("RxJava");
-        list.add("EventBus");
-        list.add("Dialog");
-        list.add("LoadMore");
+        list.add(getString(R.string.main_action_recycler_view));
+        list.add(getString(R.string.main_action_listview));
+        list.add(getString(R.string.main_action_alarm_manager));
+        list.add(getString(R.string.main_action_navigation_drawer));
+        list.add(getString(R.string.main_action_tablayout_view_pager));
+        list.add(getString(R.string.main_action_CardView));
+        list.add(getString(R.string.main_action_Retrofit));
+        list.add(getString(R.string.main_action_OKHttp));
+        list.add(getString(R.string.main_action_RxJava));
+        list.add(getString(R.string.main_action_EventBus));
+        list.add(getString(R.string.main_action_Dialog));
+        list.add(getString(R.string.main_action_LoadMore));
+        list.add(getString(R.string.main_action_circlepage_indicator_viewpager));
 
-        ArrayAdapter<String> listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+        ArrayAdapter<String> listAdapter =
+                new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener(onItemClickListener);
-
     }
 
-    private ListView.OnItemClickListener onItemClickListener = new ListView.OnItemClickListener(){
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    private ListView.OnItemClickListener onItemClickListener = new ListView.OnItemClickListener() {
+        @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Activity activity = MainActivity.this;
-            switch (position){
-                case 0:
-                    RecyclerViewActivity.launch(activity);
-                    break;
-                case 1:
-                    ListViewActivity.launch(activity);
-                    break;
-                case 2:
-                    AlarmActivity.launch(activity);
-                    break;
-                case 3:
-                    DrawerActivity.launch(activity);
-                    break;
-                case 4:
-                    TabActivity.launch(activity);
-                    break;
-                case 5:
-                    IndicatorActivity.launch(activity);
-                    break;
-                case 6:
-                    CardActivity.launch(activity);
-                    break;
-                case 7:
-                    RetrofitActivity.launch(activity);
-                    break;
-                case 8:
-                    OKHttpActivity.launch(activity);
-                    break;
-                case 9:
-                    RxJavaActivity.launch(activity);
-                    break;
-                case 10:
-                    EventBusActivity.launch(activity);
-                    break;
-                case 11:
-                    DialogActivity.launch(activity);
-                    break;
-                case 12:
-                    LoadMoreActivity.launch(activity);
-                    break;
-                default:
-                    break;
+
+            final String actionName = ((TextView) view).getText().toString();
+
+            if (actionName.equals(activity.getString(R.string.main_action_recycler_view))) {
+                RecyclerViewActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_action_listview))) {
+                ListViewActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_action_alarm_manager))) {
+                AlarmActivity.launch(activity);
+            } else if (actionName.equals(
+                    activity.getString(R.string.main_action_navigation_drawer))) {
+                DrawerActivity.launch(activity);
+            } else if (actionName.equals(
+                    activity.getString(R.string.main_action_tablayout_view_pager))) {
+                TabActivity.launch(activity);
+            } else if (actionName.equals(
+                    activity.getString(R.string.main_action_circlepage_indicator_viewpager))) {
+                IndicatorActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_action_CardView))) {
+                CardActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_action_Retrofit))) {
+                RetrofitActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_action_OKHttp))) {
+                OKHttpActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_action_RxJava))) {
+                RxJavaActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_action_EventBus))) {
+                EventBusActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_action_Dialog))) {
+                DialogActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_action_LoadMore))) {
+                LoadMoreActivity.launch(activity);
             }
         }
     };
 
-
-
 }
+
