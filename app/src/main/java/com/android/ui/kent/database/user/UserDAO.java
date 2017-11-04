@@ -100,11 +100,12 @@ public class UserDAO extends DBContentProvider<UserVO> implements IUserDAO {
     public List<UserVO> getUserByQuery(IUserDAO.UserQuery query) {
         String where = query.getWhere();
         String[] args = query.getArguments();
+        String limit = query.getLimit();
 
         Log.d(TAG, "getProductByQuery: where = " + where);
         Log.d(TAG, "getProductByQuery: args = " + args);
 
-        Cursor c = query(TABLE_NAME, null, where, args);
+        Cursor c = query(TABLE_NAME, null, where, args, null, limit);
         List<UserVO> pds = new ArrayList<>();
         while (c.moveToNext()) {
             pds.add(cursorToEntity(c));
@@ -115,6 +116,7 @@ public class UserDAO extends DBContentProvider<UserVO> implements IUserDAO {
     public static class UserQuery implements IUserDAO.UserQuery {
 
         LinkedHashMap<String, String> mMap = new LinkedHashMap<>();
+        String limitStr = null;
 
         @Override
         public IUserDAO.UserQuery setGender(int gender) {
@@ -157,6 +159,17 @@ public class UserDAO extends DBContentProvider<UserVO> implements IUserDAO {
 
             return args;
         }
+
+        @Override
+        public IUserDAO.UserQuery setLimit(int begin, int end) {
+            this.limitStr = begin + "," + end;
+            return this;
+        }
+
+        @Override
+        public String getLimit() {
+            return this.limitStr;
+        }
     }
 
     @Override
@@ -170,8 +183,8 @@ public class UserDAO extends DBContentProvider<UserVO> implements IUserDAO {
 
         for(int i=0;i<amount;i++){
             UserVO userVO = new UserVO();
-            userVO.userId = "kent" + rand.nextInt(9999);
-            userVO.userPwd = "pwd" + rand.nextInt(9999);;
+            userVO.userId = "kent" + i;
+            userVO.userPwd = "pwd" + rand.nextInt(9999);
             userVO.gender = rand.nextInt(1); // 0 or 1
             userVO.age = rand.nextInt(100) + 1; // 1~100
 

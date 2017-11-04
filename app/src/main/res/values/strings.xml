@@ -3,4 +3,22 @@
     <string name="all_dialog_confirm">確認</string>
     <string name="all_dialog_cancel">取消</string>
     <string name="progress_loading">讀取中</string>
+
+    <string name="main_action_recycler_view">RecyclerView</string>
+    <string name="main_action_listview">ListView</string>
+    <string name="main_action_alarm_manager">Alarm Manager</string>
+    <string name="main_action_navigation_drawer">Navigation Drawer</string>
+    <string name="main_action_tablayout_view_pager">TabLayout + ViewPager</string>
+    <string name="main_action_CardView">CardView</string>
+    <string name="main_action_Retrofit">Retrofit</string>
+    <string name="main_action_OKHttp">OKHttp</string>
+    <string name="main_action_RxJava">RxJava</string>
+    <string name="main_action_EventBus">EventBus</string>
+    <string name="main_action_Dialog">Dialog</string>
+    <string name="main_action_LoadMore">LoadMore</string>
+    <string name="main_action_circlepage_indicator_viewpager">CirclePageIndicator + ViewPager</string>
+    <string name="main_action_constraint_layout">Constraint Layout</string>
+
+
+
 </resources>

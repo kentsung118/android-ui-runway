@@ -25,6 +25,8 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     private String TAG = LoadMoreActivity.class.getSimpleName();
+    private int mIndex;
+    private long dataCount;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -60,7 +62,15 @@ public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout
         userDAO.addRandomUser(20);
 
         //先 show 10筆
-        List<UserVO> userList = userDAO.getUserByQuery(new UserDAO.UserQuery());
+        UserDAO.UserQuery query = new UserDAO.UserQuery();
+        query.setLimit(0, 10);
+
+        List<UserVO> userList = userDAO.getUserByQuery(query);
+        Log.d(TAG, "addUeser.size():"+userList.size());
+        mIndex = 10;
+
+        //會員總數
+        dataCount = userDAO.getCount();
 
         //下拉刷新SwipeRefresh
         mSwipeRefreshLayout.setColorSchemeResources(
@@ -81,11 +91,41 @@ public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout
             public void loadMore() {
                 //下滑加載時，此method 會多次呼叫，需注意此問題
                 Log.d(TAG, "onLoadMore");
+
+                Log.d(TAG, "mIndex:"+mIndex+", dataCount:"+dataCount);
+                if(mIndex >= dataCount){
+                    return;
+                }
+
                 userAdapter.setFooterState(true);
+                //加5筆
+                int begin = mIndex;
+                int rawCount = 5;
+                Log.d(TAG, "mIndex begin:"+begin+", rawCount:"+rawCount);
+                UserDAO.UserQuery query = new UserDAO.UserQuery();
+                query.setLimit(begin, rawCount);
+                List<UserVO> userList = userDAO.getUserByQuery(query);
+                mIndex = mIndex + rawCount;
+
+                Log.d(TAG, "addUeser.size():"+userList.size());
+                userAdapter.addUeser(userList);
+
+
+                recyclerView.post(new Runnable() {
+                    public void run() {
+                        userAdapter.notifyDataSetChanged();
+                    }
+                });
+
 
                 new Handler().postDelayed(new Runnable() {
                     @Override public void run() {
                         userAdapter.setFooterState(false);
+                        recyclerView.post(new Runnable() {
+                            public void run() {
+                                userAdapter.notifyDataSetChanged();
+                            }
+                        });
                     }
                 }, 1000);
             }
@@ -94,6 +134,13 @@ public class LoadMoreActivity extends BaseActivity implements SwipeRefreshLayout
         userAdapter = new UserAdapter(this, userList);
         recyclerView.setAdapter(userAdapter);
     }
+
+
+
+
+
+
+
 
     //頂端下滑refresh
     @Override

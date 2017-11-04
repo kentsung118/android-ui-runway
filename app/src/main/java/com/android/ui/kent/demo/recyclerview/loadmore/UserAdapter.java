@@ -28,6 +28,11 @@ public class UserAdapter extends HeaderFooterRecyclerViewAdapter {
         this.dataList = list;
     }
 
+    public void addUeser(List<UserVO> list){
+        this.dataList.addAll(list);
+        //notifyDataSetChanged();
+    }
+
     @Override
     protected int getHeaderItemCount() {
         return 0;
@@ -98,7 +103,7 @@ public class UserAdapter extends HeaderFooterRecyclerViewAdapter {
             footerItemCount = 0;
         }
 
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
 

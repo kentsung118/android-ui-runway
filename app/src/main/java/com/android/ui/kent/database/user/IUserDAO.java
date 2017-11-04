@@ -30,9 +30,11 @@ public interface IUserDAO {
 
         UserQuery setGender(int gender);
         UserQuery setAge(int age);
+        UserQuery setLimit(int begin, int end);
 
         String getWhere();
         String[] getArguments();
+        String getLimit();
     }
 
 }

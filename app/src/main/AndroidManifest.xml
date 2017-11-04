@@ -33,6 +33,7 @@
         <activity android:name=".demo.eventbus.EventBusActivity"/>
         <activity android:name=".demo.widget.dialog.DialogActivity"/>
         <activity android:name=".demo.recyclerview.loadmore.LoadMoreActivity"/>
+        <activity android:name=".demo.layout.contraint.ConstraintLayoutActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
