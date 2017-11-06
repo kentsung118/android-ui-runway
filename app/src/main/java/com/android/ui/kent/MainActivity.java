@@ -16,6 +16,7 @@ import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.eventbus.EventBusActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.layout.contraint.ConstraintLayoutActivity;
+import com.android.ui.kent.demo.layout.style.StyleSelectorActivity;
 import com.android.ui.kent.demo.listview.ListViewActivity;
 import com.android.ui.kent.demo.network.okhttp.OKHttpActivity;
 import com.android.ui.kent.demo.network.retrofit.RetrofitActivity;
@@ -62,6 +63,7 @@ public class MainActivity extends BaseActivity {
         list.add(getString(R.string.main_action_Dialog));
         list.add(getString(R.string.main_action_LoadMore));
         list.add(getString(R.string.main_action_circlepage_indicator_viewpager));
+        list.add(getString(R.string.main_action_style_selector));
 
 
         ArrayAdapter<String> listAdapter =
@@ -107,6 +109,8 @@ public class MainActivity extends BaseActivity {
                 LoadMoreActivity.launch(activity);
             } else if(actionName.equals(activity.getString(R.string.main_action_constraint_layout))){
                 ConstraintLayoutActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_style_selector))){
+                StyleSelectorActivity.launch(activity);
             }
         }
     };
