@@ -8,20 +8,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.android.ui.kent.BuildConfig;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.network.retrofit.vo.User;
 import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
-import java.util.concurrent.TimeUnit;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -30,6 +28,7 @@ import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -128,6 +127,7 @@ public class RxJavaActivity extends BaseActivity {
         api.getUser("john")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+
                 .doOnNext(new Consumer<User>() {
                     @Override
                     public void accept(User user) throws Exception {
@@ -142,6 +142,7 @@ public class RxJavaActivity extends BaseActivity {
                         Toast.makeText(mContext, "john 查詢失敗 ( throwable = "+ throwable.getMessage() +" )", Toast.LENGTH_SHORT).show();
                     }
                 })
+
                 .observeOn(Schedulers.io())
                 .concatMap(new Function<User, ObservableSource<User>>() {
                     @Override
@@ -151,6 +152,7 @@ public class RxJavaActivity extends BaseActivity {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+
                 .doOnNext(new Consumer<User>() {
                     @Override
                     public void accept(User user) throws Exception {
@@ -231,6 +233,62 @@ public class RxJavaActivity extends BaseActivity {
 
     }
 
+    /**
+     * RxJava ObservableOnSubscribe
+     */
+    private void testObserverEitter(){
+
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                Log.d(TAG, "emit 1");
+                emitter.onNext(1);
+                Log.d(TAG, "emit 2");
+                emitter.onNext(2);
+                Log.d(TAG, "emit 3");
+                emitter.onNext(3);
+                Log.d(TAG, "emit complete");
+                emitter.onComplete();
+                Log.d(TAG, "emit 4");
+                emitter.onNext(4);
+            }
+        }).subscribe(new Observer<Integer>() {
+            private Disposable mDisposable;
+            private int i;
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.d(TAG, "subscribe");
+                mDisposable = d;
+            }
+
+            @Override
+            public void onNext(Integer value) {
+                Log.d(TAG, "onNext: " + value);
+                i++;
+                if (i == 2) {
+                    Log.d(TAG, "dispose");
+                    mDisposable.dispose();
+                    Log.d(TAG, "isDisposed : " + mDisposable.isDisposed());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "error");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG, "complete");
+            }
+        });
+
+
+    }
+
+
+
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -244,6 +302,7 @@ public class RxJavaActivity extends BaseActivity {
                 multipleRequestByZip();
                 break;
             case R.id.button4:
+                testObserverEitter();
                 break;
             case R.id.button5:
                 break;
