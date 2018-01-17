@@ -420,6 +420,7 @@ public class RxJavaActivity extends BaseActivity {
     public static void launch(Activity activity) {
         Intent intent = new Intent(activity, RxJavaActivity.class);
         activity.startActivity(intent);
+        //
     }
 
 
