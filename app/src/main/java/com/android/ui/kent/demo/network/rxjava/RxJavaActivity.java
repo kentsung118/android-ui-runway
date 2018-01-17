@@ -15,8 +15,14 @@ import com.android.ui.kent.BuildConfig;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.network.retrofit.vo.User;
+import com.android.ui.kent.demo.network.rxjava.obserable.T1;
+import com.android.ui.kent.demo.network.rxjava.obserable.T2;
 import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -31,6 +37,8 @@ import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -287,6 +295,98 @@ public class RxJavaActivity extends BaseActivity {
 
     }
 
+    /**
+     * RxJava Flowable
+     */
+    private Subscription mSubscription;
+    private void testFlowable(){
+        Flowable.create(new FlowableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(FlowableEmitter<Integer> emitter) throws Exception {
+                Log.d(TAG, "emit 1");
+                emitter.onNext(1);
+                Log.d(TAG, "emit 2");
+                emitter.onNext(2);
+                Log.d(TAG, "emit 3");
+                emitter.onNext(3);
+                Log.d(TAG, "emit complete");
+                emitter.onComplete();
+            }
+        }, BackpressureStrategy.ERROR).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Integer>() {
+
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        Log.d(TAG, "onSubscribe");
+                        mSubscription = s;
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        Log.d(TAG, "onNext: " + integer);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        Log.w(TAG, "onError: ", t);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete");
+                    }
+                });
+
+    }
+
+
+    private void testCustomObserverable(){
+        T1 t1 = new T1();
+
+        t1.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        Log.d(TAG, "doOnNext accept s = " +s);
+                    }
+                })
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                })
+                .concatMap(new Function<String, ObservableSource<Integer>>() {
+                    @Override
+                    public ObservableSource<Integer> apply(String s) throws Exception {
+                        return new T2();
+                    }
+                })
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer value) {
+                        Log.d(TAG, "onNext value = " +value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete ");
+                    }
+                });
+    }
+
 
 
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5})
@@ -305,6 +405,10 @@ public class RxJavaActivity extends BaseActivity {
                 testObserverEitter();
                 break;
             case R.id.button5:
+                testFlowable();
+                break;
+            case R.id.button6:
+                testCustomObserverable();
                 break;
         }
     }
