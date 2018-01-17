@@ -388,6 +388,11 @@ public class RxJavaActivity extends BaseActivity {
                         Log.d(TAG, "onComplete ");
                     }
                 });
+
+
+
+
+
     }
 
 
