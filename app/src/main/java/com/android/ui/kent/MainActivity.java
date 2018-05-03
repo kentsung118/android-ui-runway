@@ -24,6 +24,7 @@ import com.android.ui.kent.demo.network.rxjava.RxJavaActivity;
 import com.android.ui.kent.demo.recyclerview.RecyclerViewActivity;
 import com.android.ui.kent.demo.recyclerview.loadmore.LoadMoreActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
+import com.android.ui.kent.demo.ui_response.UIResponseActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,7 @@ public class MainActivity extends BaseActivity {
         list.add(getString(R.string.main_action_LoadMore));
         list.add(getString(R.string.main_action_circlepage_indicator_viewpager));
         list.add(getString(R.string.main_action_style_selector));
+        list.add(getString(R.string.main_action_ui_response));
 
 
         ArrayAdapter<String> listAdapter =
@@ -111,6 +113,8 @@ public class MainActivity extends BaseActivity {
                 ConstraintLayoutActivity.launch(activity);
             } else if(actionName.equals(getString(R.string.main_action_style_selector))){
                 StyleSelectorActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_ui_response))){
+                UIResponseActivity.launch(activity);
             }
         }
     };

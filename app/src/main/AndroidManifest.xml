@@ -35,6 +35,7 @@
         <activity android:name=".demo.recyclerview.loadmore.LoadMoreActivity"/>
         <activity android:name=".demo.layout.contraint.ConstraintLayoutActivity"/>
         <activity android:name=".demo.layout.style.StyleSelectorActivity"/>
+        <activity android:name=".demo.ui_response.UIResponseActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
