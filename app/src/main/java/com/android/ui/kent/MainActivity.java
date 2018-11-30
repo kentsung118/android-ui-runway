@@ -23,6 +23,7 @@ import com.android.ui.kent.demo.network.retrofit.RetrofitActivity;
 import com.android.ui.kent.demo.network.rxjava.RxJavaActivity;
 import com.android.ui.kent.demo.recyclerview.RecyclerViewActivity;
 import com.android.ui.kent.demo.recyclerview.loadmore.LoadMoreActivity;
+import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.ui_response.UIResponseActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
@@ -52,6 +53,7 @@ public class MainActivity extends BaseActivity {
         List<String> list = new ArrayList<>();
         list.add(getString(R.string.main_action_constraint_layout));
         list.add(getString(R.string.main_action_recycler_view));
+        list.add(getString(R.string.main_action_multi_recycler_view));
         list.add(getString(R.string.main_action_listview));
         list.add(getString(R.string.main_action_alarm_manager));
         list.add(getString(R.string.main_action_navigation_drawer));
@@ -115,6 +117,8 @@ public class MainActivity extends BaseActivity {
                 StyleSelectorActivity.launch(activity);
             } else if(actionName.equals(getString(R.string.main_action_ui_response))){
                 UIResponseActivity.launch(activity);
+            } else if (actionName.equals(getString(R.string.main_action_multi_recycler_view))){
+                MultiLayerActivity.launch(activity);
             }
         }
     };

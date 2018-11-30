@@ -5,6 +5,7 @@
     <string name="progress_loading">讀取中</string>
 
     <string name="main_action_recycler_view">RecyclerView</string>
+    <string name="main_action_multi_recycler_view">Multi RecyclerView</string>
     <string name="main_action_listview">ListView</string>
     <string name="main_action_alarm_manager">Alarm Manager</string>
     <string name="main_action_navigation_drawer">Navigation Drawer</string>
