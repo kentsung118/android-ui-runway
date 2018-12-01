@@ -1,4 +1,4 @@
-package com.android.ui.kent.demo.recyclerview.multi_layer.setting;
+package com.android.ui.kent.demo.recyclerview.multi_layer.lookback;
 
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.android.ui.kent.R;
+import com.android.ui.kent.demo.recyclerview.multi_layer.model.TextVO;
 import com.android.ui.kent.demo.recyclerview.util.FocusQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -16,18 +17,18 @@ import timber.log.Timber;
 /**
  * Created by Kent Song on 2018/12/1.
  */
-public class SettingAdapter extends FocusQuickAdapter<SettingVO, BaseViewHolder> {
+public class TextAdapter extends FocusQuickAdapter<TextVO, BaseViewHolder> {
 
-    public SettingAdapter(@Nullable List<SettingVO> data) {
-        super(R.layout.layout_multi_layer_item_setting, data);
+    public TextAdapter(@Nullable List<TextVO> data) {
+        super(R.layout.layout_multi_layer_item_text, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, SettingVO item) {
+    protected void convert(BaseViewHolder helper, TextVO item) {
         super.convert(helper, item);
         ConstraintLayout rootView = helper.getView(R.id.item_cl);
-        Timber.d(">> rootView = %s", rootView);
-        TextView itemTv = rootView.findViewById(R.id.item_tv);
+        TextView itemTv = helper.getView(R.id.item_tv);
+        itemTv.setText(item.getText());
         Timber.d(">> itemTv = %s", itemTv);
         rootView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

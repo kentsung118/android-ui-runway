@@ -13,11 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.ui.kent.R;
+import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.DateAdapter;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.LookBackAdapter;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.LookBackVO;
 import com.android.ui.kent.demo.recyclerview.multi_layer.model.MainVO;
-import com.android.ui.kent.demo.recyclerview.multi_layer.setting.SettingAdapter;
-import com.android.ui.kent.demo.recyclerview.multi_layer.setting.SettingVO;
+import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.TextAdapter;
+import com.android.ui.kent.demo.recyclerview.multi_layer.model.TextVO;
 import com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return position < 2 ? ITEM_TYPE_1.ordinal() : ITEM_TYPE_2.ordinal();
+        return position == 1 ? ITEM_TYPE_1.ordinal() : ITEM_TYPE_2.ordinal();
     }
 
     @Override
@@ -97,10 +98,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         LinearLayout itemRoot;
         @BindView(R.id.title)
         TextView mTitle;
-        //        @BindView(R.id.content)
-//        LinearLayout content;
         @BindView(R.id.lookbackRv)
-        FocusableQuickRecyclerView rv;
+        FocusableQuickRecyclerView mContentRv;
+        @BindView(R.id.lookback_date_Rv)
+        FocusableQuickRecyclerView mDateRv;
 
         public ViewHolder1(View itemView) {
             super(itemView);
@@ -111,7 +112,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             int position = getAdapterPosition();
             mTitle.setText(dataList.get(position).getTitle());
 
-            rv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener() {
+            mContentRv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener() {
                 @Override
                 public void onFocusGain(View chld, View focued) {
                     if (mOnItemFocusedListener != null) {
@@ -121,7 +122,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
-            rv.setFocusLostListener(new FocusableQuickRecyclerView.FocusLostListener() {
+            mContentRv.setFocusLostListener(new FocusableQuickRecyclerView.FocusLostListener() {
                 @Override
                 public void onFocusLost(View lastFocusChild, int direction) {
                     if (mOnItemFocusedListener != null) {
@@ -131,7 +132,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
                 }
             });
-
 
             List<LookBackVO> list = new ArrayList<>();
             list.add(new LookBackVO("12:00", "", ""));
@@ -146,9 +146,25 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             list.add(new LookBackVO("12:00", "", ""));
 
 
-            rv.setLayoutManager(new CenterLayoutManger(rv.getContext(), RecyclerView.HORIZONTAL, false));
+            mContentRv.setLayoutManager(new CenterLayoutManger(mContentRv.getContext(), RecyclerView.HORIZONTAL, false));
             LookBackAdapter adapter = new LookBackAdapter(list);
-            adapter.bindToRecyclerView(rv);
+            adapter.bindToRecyclerView(mContentRv);
+
+            List<TextVO> textList = new ArrayList<>();
+            textList.add(new TextVO("8月18日"));
+            textList.add(new TextVO("8月19日"));
+            textList.add(new TextVO("8月20日"));
+            textList.add(new TextVO("8月21日"));
+            textList.add(new TextVO("8月22日"));
+            textList.add(new TextVO("8月23日"));
+            textList.add(new TextVO("今天"));
+
+            mDateRv.setLayoutManager(new CenterLayoutManger(mContentRv.getContext(), RecyclerView.HORIZONTAL, false));
+            DateAdapter textAdapter = new DateAdapter(textList);
+            textAdapter.bindToRecyclerView(mDateRv);
+
+            mContentRv.setGainFocusChangeDescendant(true);
+            mContentRv.setGainFocusChangeDescendant(true);
         }
 
 
@@ -175,31 +191,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Timber.d(">> position = %s, onBind", position);
 
             mTitle.setText(dataList.get(position).getTitle());
-
-//            itemRoot.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//                @Override
-//                public void onFocusChange(View v, boolean hasFocus) {
-//                    if (hasFocus) {
-//                        if (mOnItemFocusedListener != null) {
-//                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
-//                        }
-//                        mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
-//                        Timber.d(">> position = %s is open", position);
-//                        open(rv);
-//                        rv.requestFocus();
-////                        itemRoot.setFocusable(false);
-//
-//                    } else {
-//                        if (mOnItemFocusedListener != null) {
-//                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
-//                        }
-//                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
-//                        Timber.d(">> position = %s is close", position);
-//                        close(rv);
-//                    }
-//                }
-//            });
-
             rv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener() {
                 @Override
                 public void onFocusGain(View chld, View focued) {
@@ -220,23 +211,19 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
-
-
-            List<SettingVO> list = new ArrayList<>();
-            list.add(new SettingVO("720P"));
-            list.add(new SettingVO("720P"));
-            list.add(new SettingVO("720P"));
-            list.add(new SettingVO("720P"));
-            list.add(new SettingVO("720P"));
-            list.add(new SettingVO("720P"));
-            list.add(new SettingVO("720P"));
+            List<TextVO> list = new ArrayList<>();
+            list.add(new TextVO("480P"));
+            list.add(new TextVO("720P"));
+            list.add(new TextVO("1080P"));
+            list.add(new TextVO("2160P"));
 
             rv.setLayoutManager(new CenterLayoutManger(rv.getContext(), RecyclerView.HORIZONTAL, false));
-            SettingAdapter adapter = new SettingAdapter(list);
+            TextAdapter adapter = new TextAdapter(list);
             adapter.bindToRecyclerView(rv);
             rv.setCanFocusOutHorizontal(false);
             rv.setCanFocusOutVertical(true);
             rv.setDebugMode(true);
+            rv.setGainFocusChangeDescendant(true);
         }
 
     }
@@ -269,7 +256,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             public void onAnimationStart(Animator animation, boolean isReverse) {
 //                super.onAnimationStart(animation);
                 rv.setVisibility(View.VISIBLE);
-//                rv.getAdapter().notifyDataSetChanged();
+//                mContentRv.getAdapter().notifyDataSetChanged();
             }
         });
     }

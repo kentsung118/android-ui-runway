@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/itemRoot"
     android:focusable="false"
-    android:layout_width="match_parent"
+    android:layout_width="1920px"
     android:layout_height="300px"
     android:orientation="vertical">
 
@@ -17,14 +17,19 @@
         android:textSize="36px" />
 
     <!--<LinearLayout-->
-        <!--android:id="@+id/content"-->
-        <!--android:layout_width="1920px"-->
-        <!--android:layout_height="150px">-->
+    <!--android:id="@+id/content"-->
+    <!--android:layout_width="1920px"-->
+    <!--android:layout_height="150px">-->
 
-        <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
-            android:id="@+id/lookbackRv"
-            android:layout_width="1920px"
-            android:layout_height="150px" />
+    <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
+        android:id="@+id/lookbackRv"
+        android:layout_width="1920px"
+        android:layout_height="150px" />
+
+    <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
+        android:id="@+id/lookback_date_Rv"
+        android:layout_width="1920px"
+        android:layout_height="80px" />
 
     <!--</LinearLayout>-->
 </LinearLayout>
