@@ -19,11 +19,10 @@
 
     <LinearLayout
         android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="150px"
-        android:alpha="0">
+        android:layout_width="1920px"
+        android:layout_height="150px">
 
-        <android.support.v7.widget.RecyclerView
+        <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
             android:id="@+id/lookbackRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

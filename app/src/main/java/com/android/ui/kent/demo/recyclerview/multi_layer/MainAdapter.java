@@ -9,8 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.ui.kent.R;
+import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.LookBackAdapter;
+import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.LookBackVO;
 import com.android.ui.kent.demo.recyclerview.multi_layer.model.MainVO;
+import com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,12 +47,12 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        //ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //依viewType決定使用item_layout
         View rootView;
         if (viewType == ITEM_TYPE_1.ordinal()) {
             rootView = LayoutInflater.from(mContext).inflate(R.layout.layout_multi_rv_main_item, null, false);
-            //rootView.setLayoutParams(lp);
+//            rootView.setLayoutParams(lp);
             return new MainAdapter.ViewHolder1(rootView);
         }
         return null;
@@ -66,30 +70,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //可以彈性Bind兩種以上viewHolder
         if (viewHolder instanceof MainAdapter.ViewHolder1) {
             MainAdapter.ViewHolder1 holder = (MainAdapter.ViewHolder1) viewHolder;
-            holder.mTitle.setText(dataList.get(position).getTitle());
-
-            holder.itemRoot.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onFocused(position, position, holder.itemRoot);
-                        }
-                        holder.mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor));
-//                    carouselHolder.open();
-
-                    } else {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onUnFocused(position, position, holder.itemRoot);
-                        }
-                        holder.mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
-                    }
-
-                }
-            });
-
-
-//            holder.subText.setText(dataList.get(position).content);
+            holder.bind();
         }
 // else{
 //            MainAdapter.ViewHolder2 holder = (MainAdapter.ViewHolder2)viewHolder;
@@ -118,12 +99,53 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.content)
         LinearLayout content;
         @BindView(R.id.lookbackRv)
-        RecyclerView rv;
-
+        FocusableQuickRecyclerView rv;
 
         public ViewHolder1(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void bind() {
+            int position = getAdapterPosition();
+            mTitle.setText(dataList.get(position).getTitle());
+
+            itemRoot.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        if (mOnItemFocusedListener != null) {
+                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                        }
+                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor));
+//                    carouselHolder.open();
+
+                    } else {
+                        if (mOnItemFocusedListener != null) {
+                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
+                        }
+                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
+                    }
+
+                }
+            });
+
+            List<LookBackVO> list = new ArrayList<>();
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+
+
+            rv.setLayoutManager(new CenterLayoutManger(rv.getContext(), RecyclerView.HORIZONTAL, false));
+            LookBackAdapter adapter = new LookBackAdapter(list);
+            adapter.bindToRecyclerView(rv);
         }
 
 
@@ -151,6 +173,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface OnItemFocusedListener {
         void onFocused(int position, int realPosition, View view);
+
         void onUnFocused(int position, int realPosition, View view);
     }
 
