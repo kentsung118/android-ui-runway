@@ -12,6 +12,8 @@ import com.android.ui.kent.R;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.LookBackAdapter;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.LookBackVO;
 import com.android.ui.kent.demo.recyclerview.multi_layer.model.MainVO;
+import com.android.ui.kent.demo.recyclerview.multi_layer.setting.SettingAdapter;
+import com.android.ui.kent.demo.recyclerview.multi_layer.setting.SettingVO;
 import com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.android.ui.kent.demo.recyclerview.ItemAdapter.VIEW_TYPE.ITEM_TYPE_1;
+import static com.android.ui.kent.demo.recyclerview.ItemAdapter.VIEW_TYPE.ITEM_TYPE_2;
 
 /**
  * Created by Kent Song on 2018/11/30.
@@ -36,31 +39,30 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<MainVO> dataList;
     protected OnItemFocusedListener mOnItemFocusedListener;
 
-
-//    public ItemAdapter.ViewHolderClickListener mListener;
-
     public MainAdapter(Context mContext, List<MainVO> dataList) {
         this.mContext = mContext;
         this.dataList = dataList;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position < 2 ? ITEM_TYPE_1.ordinal() : ITEM_TYPE_2.ordinal();
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-//        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //依viewType決定使用item_layout
         View rootView;
         if (viewType == ITEM_TYPE_1.ordinal()) {
-            rootView = LayoutInflater.from(mContext).inflate(R.layout.layout_multi_rv_main_item, null, false);
-//            rootView.setLayoutParams(lp);
+            rootView = LayoutInflater.from(mContext).inflate(R.layout.layout_multi_rv_main_lookback_item, null, false);
+            rootView.setLayoutParams(lp);
             return new MainAdapter.ViewHolder1(rootView);
+        } else {
+            rootView = LayoutInflater.from(mContext).inflate(R.layout.layout_multi_rv_main_setting_item, null, false);
+            rootView.setLayoutParams(lp);
+            return new MainAdapter.ViewHolder2(rootView);
         }
-        return null;
-//        else{
-//            rootView = LayoutInflater.from(mContext).inflate(R.layout.view_item_recycler_type_2, null, false);
-//            //rootView.setLayoutParams(lp);
-//            return new MainAdapter.ViewHolder2(rootView);
-//        }
 
     }
 
@@ -71,12 +73,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (viewHolder instanceof MainAdapter.ViewHolder1) {
             MainAdapter.ViewHolder1 holder = (MainAdapter.ViewHolder1) viewHolder;
             holder.bind();
+        } else if(viewHolder instanceof MainAdapter.ViewHolder2){
+            MainAdapter.ViewHolder2 holder = (MainAdapter.ViewHolder2) viewHolder;
+            holder.bind();
         }
-// else{
-//            MainAdapter.ViewHolder2 holder = (MainAdapter.ViewHolder2)viewHolder;
-//            holder.mTitle.setText(dataList.get(position).title);
-//            holder.subText.setText(dataList.get(position).content);
-//        }
 
     }
 
@@ -86,10 +86,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return dataList.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return ITEM_TYPE_1.ordinal();
-    }
 
     class ViewHolder1 extends RecyclerView.ViewHolder {
         @BindView(R.id.itemRoot)
@@ -151,25 +147,59 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-//    class ViewHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener {
-//
-//        @BindView(R.id.text_1)
-//        TextView mTitle;
-//        @BindView(R.id.text_2)
-//        TextView subText;
-//
-//        public ViewHolder2(View itemView) {
-//            super(itemView);
-//            ButterKnife.bind(this, itemView);
-//            itemView.setOnClickListener(this);
-//        }
-//
-//        @Override
-//        public void onClick(View v) {
-//            mListener.onClick(v, getLayoutPosition());
-//        }
-//
-//    }
+    class ViewHolder2 extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.itemRoot)
+        LinearLayout itemRoot;
+        @BindView(R.id.title)
+        TextView mTitle;
+        @BindView(R.id.content)
+        LinearLayout content;
+        @BindView(R.id.text_rv)
+        FocusableQuickRecyclerView rv;
+
+        public ViewHolder2(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        public void bind() {
+            int position = getAdapterPosition();
+            mTitle.setText(dataList.get(position).getTitle());
+
+            itemRoot.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        if (mOnItemFocusedListener != null) {
+                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                        }
+                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor));
+//                    carouselHolder.open();
+
+                    } else {
+                        if (mOnItemFocusedListener != null) {
+                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
+                        }
+                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
+                    }
+
+                }
+            });
+
+            List<SettingVO> list = new ArrayList<>();
+            list.add(new SettingVO("720P"));
+            list.add(new SettingVO("720P"));
+            list.add(new SettingVO("720P"));
+            list.add(new SettingVO("720P"));
+            list.add(new SettingVO("720P"));
+
+            rv.setLayoutManager(new CenterLayoutManger(rv.getContext(), RecyclerView.HORIZONTAL, false));
+            SettingAdapter adapter = new SettingAdapter(list);
+            adapter.bindToRecyclerView(rv);
+        }
+
+    }
 
     public interface OnItemFocusedListener {
         void onFocused(int position, int realPosition, View view);
