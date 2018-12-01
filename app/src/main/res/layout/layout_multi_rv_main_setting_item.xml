@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/itemRoot"
+    android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <TextView
@@ -23,6 +22,7 @@
         <!--android:layout_height="150px">-->
 
         <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
+            android:focusable="true"
             android:id="@+id/text_rv"
             android:layout_width="1920px"
             android:layout_height="150px" />

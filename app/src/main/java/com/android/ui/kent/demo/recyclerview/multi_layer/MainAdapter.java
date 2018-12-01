@@ -118,9 +118,9 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         if (mOnItemFocusedListener != null) {
                             mOnItemFocusedListener.onFocused(position, position, itemRoot);
                         }
-                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor));
+                        mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
                         open(rv);
-
+                        rv.requestFocus();
                     } else {
                         if (mOnItemFocusedListener != null) {
                             mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
@@ -131,6 +131,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                 }
             });
+
 
             List<LookBackVO> list = new ArrayList<>();
             list.add(new LookBackVO("12:00", "", ""));
@@ -182,10 +183,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         if (mOnItemFocusedListener != null) {
                             mOnItemFocusedListener.onFocused(position, position, itemRoot);
                         }
-                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor));
+                        mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
                         Timber.d(">> position = %s is open", position);
                         open(rv);
-
+                        rv.requestFocus();
+//                        itemRoot.setFocusable(false);
 
                     } else {
                         if (mOnItemFocusedListener != null) {
@@ -195,7 +197,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         Timber.d(">> position = %s is close", position);
                         close(rv);
                     }
-
                 }
             });
 
@@ -203,10 +204,26 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             list.add(new SettingVO("720P"));
             list.add(new SettingVO("720P"));
             list.add(new SettingVO("720P"));
+            list.add(new SettingVO("720P"));
+            list.add(new SettingVO("720P"));
+            list.add(new SettingVO("720P"));
+            list.add(new SettingVO("720P"));
 
             rv.setLayoutManager(new CenterLayoutManger(rv.getContext(), RecyclerView.HORIZONTAL, false));
             SettingAdapter adapter = new SettingAdapter(list);
             adapter.bindToRecyclerView(rv);
+            rv.setCanFocusOutHorizontal(false);
+            rv.setCanFocusOutVertical(true);
+            rv.setFocusLostListener(new FocusableQuickRecyclerView.FocusLostListener() {
+                @Override
+                public void onFocusLost(View lastFocusChild, int direction) {
+                    if(direction == View.FOCUS_DOWN || direction == View.FOCUS_UP){
+                        Timber.d(">> ViewHolder2 rv onFocusLost");
+//                        itemRoot.setFocusable(true);
+                    }
+                }
+            });
+            rv.setDebugMode(true);
         }
 
     }
