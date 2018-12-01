@@ -1,5 +1,9 @@
 package com.android.ui.kent.demo.recyclerview.multi_layer;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,16 +55,16 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //依viewType決定使用item_layout
         View rootView;
         if (viewType == ITEM_TYPE_1.ordinal()) {
             rootView = LayoutInflater.from(mContext).inflate(R.layout.layout_multi_rv_main_lookback_item, null, false);
-            rootView.setLayoutParams(lp);
+//            rootView.setLayoutParams(lp);
             return new MainAdapter.ViewHolder1(rootView);
         } else {
             rootView = LayoutInflater.from(mContext).inflate(R.layout.layout_multi_rv_main_setting_item, null, false);
-            rootView.setLayoutParams(lp);
+//            rootView.setLayoutParams(lp);
             return new MainAdapter.ViewHolder2(rootView);
         }
 
@@ -73,7 +77,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (viewHolder instanceof MainAdapter.ViewHolder1) {
             MainAdapter.ViewHolder1 holder = (MainAdapter.ViewHolder1) viewHolder;
             holder.bind();
-        } else if(viewHolder instanceof MainAdapter.ViewHolder2){
+        } else if (viewHolder instanceof MainAdapter.ViewHolder2) {
             MainAdapter.ViewHolder2 holder = (MainAdapter.ViewHolder2) viewHolder;
             holder.bind();
         }
@@ -92,8 +96,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         LinearLayout itemRoot;
         @BindView(R.id.title)
         TextView mTitle;
-        @BindView(R.id.content)
-        LinearLayout content;
+        //        @BindView(R.id.content)
+//        LinearLayout content;
         @BindView(R.id.lookbackRv)
         FocusableQuickRecyclerView rv;
 
@@ -110,17 +114,18 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
-                        }
+//                        if (mOnItemFocusedListener != null) {
+//                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
+//                        }
                         mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor));
-//                    carouselHolder.open();
+                        open(rv);
 
                     } else {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
-                        }
+//                        if (mOnItemFocusedListener != null) {
+//                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
+//                        }
                         mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
+                        close(rv);
                     }
 
                 }
@@ -153,8 +158,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         LinearLayout itemRoot;
         @BindView(R.id.title)
         TextView mTitle;
-        @BindView(R.id.content)
-        LinearLayout content;
+        //        @BindView(R.id.content)
+//        LinearLayout content;
         @BindView(R.id.text_rv)
         FocusableQuickRecyclerView rv;
 
@@ -171,17 +176,19 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
-                        }
+//                        if (mOnItemFocusedListener != null) {
+//                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
+//                        }
                         mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor));
-//                    carouselHolder.open();
+                        open(rv);
+
 
                     } else {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
-                        }
+//                        if (mOnItemFocusedListener != null) {
+//                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
+//                        }
                         mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
+                        close(rv);
                     }
 
                 }
@@ -210,4 +217,49 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void setmOnItemFocusedListener(OnItemFocusedListener mOnItemFocusedListener) {
         this.mOnItemFocusedListener = mOnItemFocusedListener;
     }
+
+
+    public void open(FocusableQuickRecyclerView rv) {
+        ViewWrapper vw = new ViewWrapper(rv);
+        //ObjectAnimator oa = ObjectAnimator.ofFloat(itemRoot, "scaleY", 0.5f, 1.0f);
+        ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 0, 150);
+//        ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 0, 1);
+//        ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 0.7f, 1.0f);
+//        ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 0.7f, 1.0f);
+        AnimatorSet set = new AnimatorSet();
+//        set.playTogether(oa, oa1, oa2, oa3);
+        set.playTogether(oa);
+        set.setDuration(500);
+//        set.start();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation, boolean isReverse) {
+//                super.onAnimationStart(animation);
+                rv.setVisibility(View.VISIBLE);
+                rv.getAdapter().notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void close(FocusableQuickRecyclerView rv) {
+        ViewWrapper vw = new ViewWrapper(rv);
+        // ObjectAnimator oa = ObjectAnimator.ofFloat(itemRoot, "scaleY", 1.0f, 0.5f);
+        ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 150, 0);
+//        ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 1, 0);
+//        ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 1.0f, 0.7f);
+//        ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 1.0f, 0.7f);
+        AnimatorSet set = new AnimatorSet();
+//        set.playTogether(oa, oa1, oa2, oa3);
+        set.playTogether(oa);
+        set.setDuration(500);
+//        set.start();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+//                super.onAnimationEnd(animation);
+                rv.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
 }

@@ -17,15 +17,15 @@
         android:textColor="#99f1f1f1"
         android:textSize="36px" />
 
-    <LinearLayout
-        android:id="@+id/content"
-        android:layout_width="1920px"
-        android:layout_height="150px">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/content"-->
+        <!--android:layout_width="1920px"-->
+        <!--android:layout_height="150px">-->
 
         <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
             android:id="@+id/lookbackRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_width="1920px"
+            android:layout_height="150px" />
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 </LinearLayout>

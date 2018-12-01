@@ -21,8 +21,5 @@ public class LookBackAdapter extends FocusQuickAdapter<LookBackVO, BaseViewHolde
     protected void convert(BaseViewHolder helper, LookBackVO item) {
         super.convert(helper, item);
 
-//        helper.getView()
-
-
     }
 }
