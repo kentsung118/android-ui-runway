@@ -111,24 +111,24 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             int position = getAdapterPosition();
             mTitle.setText(dataList.get(position).getTitle());
 
-            itemRoot.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            rv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener() {
                 @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
-                        }
-                        mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
-                        open(rv);
-                        rv.requestFocus();
-                    } else {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
-                        }
-                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
-                        close(rv);
+                public void onFocusGain(View chld, View focued) {
+                    if (mOnItemFocusedListener != null) {
+                        mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                    }
+                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
+                }
+            });
+
+            rv.setFocusLostListener(new FocusableQuickRecyclerView.FocusLostListener() {
+                @Override
+                public void onFocusLost(View lastFocusChild, int direction) {
+                    if (mOnItemFocusedListener != null) {
+                        mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
                     }
 
+                    mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
                 }
             });
 
@@ -176,29 +176,51 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             mTitle.setText(dataList.get(position).getTitle());
 
-            itemRoot.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
-                        }
-                        mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
-                        Timber.d(">> position = %s is open", position);
-                        open(rv);
-                        rv.requestFocus();
-//                        itemRoot.setFocusable(false);
+//            itemRoot.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//                @Override
+//                public void onFocusChange(View v, boolean hasFocus) {
+//                    if (hasFocus) {
+//                        if (mOnItemFocusedListener != null) {
+//                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
+//                        }
+//                        mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
+//                        Timber.d(">> position = %s is open", position);
+//                        open(rv);
+//                        rv.requestFocus();
+////                        itemRoot.setFocusable(false);
+//
+//                    } else {
+//                        if (mOnItemFocusedListener != null) {
+//                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
+//                        }
+//                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
+//                        Timber.d(">> position = %s is close", position);
+//                        close(rv);
+//                    }
+//                }
+//            });
 
-                    } else {
-                        if (mOnItemFocusedListener != null) {
-                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
-                        }
-                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
-                        Timber.d(">> position = %s is close", position);
-                        close(rv);
+            rv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener() {
+                @Override
+                public void onFocusGain(View chld, View focued) {
+                    if (mOnItemFocusedListener != null) {
+                        mOnItemFocusedListener.onFocused(position, position, itemRoot);
                     }
+                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
                 }
             });
+
+            rv.setFocusLostListener(new FocusableQuickRecyclerView.FocusLostListener() {
+                @Override
+                public void onFocusLost(View lastFocusChild, int direction) {
+                    if (mOnItemFocusedListener != null) {
+                        mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
+                    }
+                    mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
+                }
+            });
+
+
 
             List<SettingVO> list = new ArrayList<>();
             list.add(new SettingVO("720P"));
@@ -214,15 +236,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             adapter.bindToRecyclerView(rv);
             rv.setCanFocusOutHorizontal(false);
             rv.setCanFocusOutVertical(true);
-            rv.setFocusLostListener(new FocusableQuickRecyclerView.FocusLostListener() {
-                @Override
-                public void onFocusLost(View lastFocusChild, int direction) {
-                    if(direction == View.FOCUS_DOWN || direction == View.FOCUS_UP){
-                        Timber.d(">> ViewHolder2 rv onFocusLost");
-//                        itemRoot.setFocusable(true);
-                    }
-                }
-            });
             rv.setDebugMode(true);
         }
 
