@@ -39,7 +39,7 @@ public class MultiLayerActivity extends BaseActivity {
 
         List<MainVO> list = new ArrayList<>();
         int num = 0;
-        while (num < 15) {
+        while (num < 3) {
             num++;
             list.add(new MainVO("回看更多"));
         }

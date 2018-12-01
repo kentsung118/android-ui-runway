@@ -25,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static com.android.ui.kent.demo.recyclerview.ItemAdapter.VIEW_TYPE.ITEM_TYPE_1;
 import static com.android.ui.kent.demo.recyclerview.ItemAdapter.VIEW_TYPE.ITEM_TYPE_2;
@@ -114,16 +115,16 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-//                        if (mOnItemFocusedListener != null) {
-//                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
-//                        }
+                        if (mOnItemFocusedListener != null) {
+                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                        }
                         mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor));
                         open(rv);
 
                     } else {
-//                        if (mOnItemFocusedListener != null) {
-//                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
-//                        }
+                        if (mOnItemFocusedListener != null) {
+                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
+                        }
                         mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
                         close(rv);
                     }
@@ -170,24 +171,28 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void bind() {
             int position = getAdapterPosition();
+            Timber.d(">> position = %s, onBind", position);
+
             mTitle.setText(dataList.get(position).getTitle());
 
             itemRoot.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-//                        if (mOnItemFocusedListener != null) {
-//                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
-//                        }
+                        if (mOnItemFocusedListener != null) {
+                            mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                        }
                         mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor));
+                        Timber.d(">> position = %s is open", position);
                         open(rv);
 
 
                     } else {
-//                        if (mOnItemFocusedListener != null) {
-//                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
-//                        }
+                        if (mOnItemFocusedListener != null) {
+                            mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
+                        }
                         mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
+                        Timber.d(">> position = %s is close", position);
                         close(rv);
                     }
 
@@ -195,8 +200,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
 
             List<SettingVO> list = new ArrayList<>();
-            list.add(new SettingVO("720P"));
-            list.add(new SettingVO("720P"));
             list.add(new SettingVO("720P"));
             list.add(new SettingVO("720P"));
             list.add(new SettingVO("720P"));
@@ -236,7 +239,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             public void onAnimationStart(Animator animation, boolean isReverse) {
 //                super.onAnimationStart(animation);
                 rv.setVisibility(View.VISIBLE);
-                rv.getAdapter().notifyDataSetChanged();
+//                rv.getAdapter().notifyDataSetChanged();
             }
         });
     }
