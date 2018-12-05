@@ -113,28 +113,44 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             int position = getAdapterPosition();
             mTitle.setText(dataList.get(position).getTitle());
 
-            mContentRv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener() {
-                @Override
-                public void onFocusGain(View chld, View focued) {
-                    if (mOnItemFocusedListener != null) {
-                        mOnItemFocusedListener.onFocused(position, position, itemRoot);
-                    }
-                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
-                }
+            mContentRv.setFocusGainListener((chld, focued) -> {
+//                    if (mOnItemFocusedListener != null) {
+//                        mOnItemFocusedListener.onFocused(position, position, itemRoot);
+//                    }
+                mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
             });
 
-            mContentRv.setFocusLostListener(new FocusableQuickRecyclerView.FocusLostListener() {
-                @Override
-                public void onFocusLost(View lastFocusChild, int direction) {
-                    if (mOnItemFocusedListener != null) {
-                        mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
-                    }
-
+            mContentRv.setFocusLostListener((lastFocusChild, direction) -> {
+//                    if (mOnItemFocusedListener != null) {
+//                        mOnItemFocusedListener.onUnFocused(position, position, itemRoot);
+//                    }
+                if(direction == View.FOCUS_UP){
                     mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
                 }
             });
 
+            mDateRv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener(){
+                @Override
+                public void onFocusGain(View chld, View focued) {
+                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
+
+                }
+            });
+
+            mDateRv.setFocusLostListener(new FocusableQuickRecyclerView.FocusLostListener(){
+                @Override
+                public void onFocusLost(View lastFocusChild, int direction) {
+                    if(direction == View.FOCUS_DOWN){
+                        mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
+                    }
+                }
+            });
+
+
             List<LookBackVO> list = new ArrayList<>();
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
+            list.add(new LookBackVO("12:00", "", ""));
             list.add(new LookBackVO("12:00", "", ""));
             list.add(new LookBackVO("12:00", "", ""));
             list.add(new LookBackVO("12:00", "", ""));
@@ -170,6 +186,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             mContentRv.setGainFocusChangeDescendant(true);
             mContentRv.setGainFocusChangeDescendant(true);
+        }
+
+        private void onItemFocused(){
+
         }
 
 

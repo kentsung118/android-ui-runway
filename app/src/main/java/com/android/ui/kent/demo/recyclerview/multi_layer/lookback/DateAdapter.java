@@ -36,7 +36,7 @@ public class DateAdapter extends FocusQuickAdapter<TextVO, BaseViewHolder> {
                     dateTv.setBackgroundColor(dateTv.getResources().getColor(R.color.main_dark_blue));
                     dateTv.setTextColor(dateTv.getResources().getColor(R.color.color_ffffff));
                 } else {
-                    dateTv.setBackgroundColor(dateTv.getResources().getColor(R.color.color_33d8d8d8));
+                    dateTv.setBackgroundColor(0);
                     dateTv.setTextColor(dateTv.getResources().getColor(R.color.color_f1f1f1));
                 }
             }
