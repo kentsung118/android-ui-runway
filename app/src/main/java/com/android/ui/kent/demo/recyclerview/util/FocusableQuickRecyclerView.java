@@ -38,6 +38,8 @@ public class FocusableQuickRecyclerView extends RecyclerView {
     private FocusLostListener mFocusLostListener;
     //焦点移入recyclerview的事件监听
     private FocusGainListener mFocusGainListener;
+    //原生焦点移入移出事件監聽
+    private FocusChangedListener mOnFocusChangedListener;
 
     //当前位置
     private int mCurrentFocusPosition;
@@ -119,6 +121,10 @@ public class FocusableQuickRecyclerView extends RecyclerView {
         if (getLayoutManager() == null) {
             super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
             return;
+        }
+
+        if(mOnFocusChangedListener != null){
+            mOnFocusChangedListener.onFocusChanged(gainFocus, direction);
         }
 
         if (gainFocus) {
@@ -300,6 +306,10 @@ public class FocusableQuickRecyclerView extends RecyclerView {
         void onFocusGain(View chld, View focued);
     }
 
+    public interface FocusChangedListener {
+        void onFocusChanged(boolean gainFocus, int direction);
+    }
+
     public void setDebugMode(boolean bln) {
         this.mIsDebugMode = bln;
     }
@@ -407,5 +417,9 @@ public class FocusableQuickRecyclerView extends RecyclerView {
 
     public void setSelectedPosition(int pos) {
         this.mSelectedPosition = pos;
+    }
+
+    public void addOnFocusChangedListener(FocusChangedListener listener){
+        this.mOnFocusChangedListener = listener;
     }
 }

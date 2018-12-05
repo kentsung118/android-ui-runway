@@ -10,14 +10,13 @@ import android.view.View;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.recyclerview.multi_layer.model.MainVO;
-import com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView;
-import com.android.ui.kent.demo.ui_response.UIResponseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by Kent Song on 2018/11/30.
@@ -51,12 +50,13 @@ public class MultiLayerActivity extends BaseActivity {
         adapter.setmOnItemFocusedListener(new MainAdapter.OnItemFocusedListener() {
             @Override
             public void onFocused(int position, int realPosition, View view) {
+                Timber.d(">> onFocused position = %s", position);
                 mainRv.smoothScrollToPosition(position);
             }
 
             @Override
-            public void onUnFocused(int position, int realPosition, View view) {
-
+            public void onLoseFocus(int position, int realPosition, View view) {
+                Timber.d(">> onLoseFocus position = %s", position);
             }
         });
 

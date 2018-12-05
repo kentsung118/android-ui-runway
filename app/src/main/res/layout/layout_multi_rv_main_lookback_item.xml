@@ -16,20 +16,21 @@
         android:textColor="#99f1f1f1"
         android:textSize="36px" />
 
-    <!--<LinearLayout-->
-    <!--android:id="@+id/content"-->
-    <!--android:layout_width="1920px"-->
-    <!--android:layout_height="150px">-->
-
-    <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
-        android:id="@+id/lookbackRv"
+    <LinearLayout
+        android:id="@+id/content"
         android:layout_width="1920px"
-        android:layout_height="150px" />
+        android:layout_height="230px"
+        android:orientation="vertical">
 
-    <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
-        android:id="@+id/lookback_date_Rv"
-        android:layout_width="1920px"
-        android:layout_height="80px" />
+        <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
+            android:id="@+id/lookbackRv"
+            android:layout_width="1920px"
+            android:layout_height="150px" />
 
-    <!--</LinearLayout>-->
+        <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
+            android:id="@+id/lookback_date_Rv"
+            android:layout_width="1920px"
+            android:layout_height="80px" />
+
+    </LinearLayout>
 </LinearLayout>
