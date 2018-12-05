@@ -37,9 +37,9 @@ public class MultiLayerActivity extends BaseActivity {
     private void init() {
 
         List<MainVO> list = new ArrayList<>();
-        list.add(new MainVO("收藏频道"));
-        list.add(new MainVO("回看列表"));
-        list.add(new MainVO("画面比例"));
+        list.add(new MainVO("收藏频道", 2));
+        list.add(new MainVO("回看列表", 1));
+        list.add(new MainVO("画面比例", 2));
 
 
         MainAdapter adapter = new MainAdapter(this, list);

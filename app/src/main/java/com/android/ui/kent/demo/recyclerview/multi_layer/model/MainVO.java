@@ -7,12 +7,14 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  */
 public class MainVO {
 
-    public MainVO(String title) {
+    public MainVO(String title, int type) {
         this.title = title;
+        this.type = type;
     }
 
     private String title;
     private Object object;
+    private int type;
 
     public String getTitle() {
         return title;
@@ -30,5 +32,7 @@ public class MainVO {
         this.object = object;
     }
 
-
+    public int getType() {
+        return type;
+    }
 }

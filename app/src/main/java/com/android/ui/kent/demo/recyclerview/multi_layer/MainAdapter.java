@@ -51,7 +51,13 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return position == 1 ? ITEM_TYPE_1.ordinal() : ITEM_TYPE_2.ordinal();
+//        int pos = position % dataList.size();
+        int type = dataList.get(position).getType();
+        if(type == 1){
+            return ITEM_TYPE_1.ordinal();
+        } else {
+            return ITEM_TYPE_2.ordinal();
+        }
     }
 
     @Override
@@ -71,6 +77,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
 
@@ -89,6 +96,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         return dataList.size();
+//        return Integer.MAX_VALUE;
     }
 
 
@@ -111,6 +119,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void bind() {
+//            int position = getAdapterPosition() % dataList.size();
             int position = getAdapterPosition();
             mTitle.setText(dataList.get(position).getTitle());
 
@@ -306,6 +315,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         public void bind() {
+//            int position = getAdapterPosition() % dataList.size();
             int position = getAdapterPosition();
             Timber.d(">> position = %s, onBind", position);
 
