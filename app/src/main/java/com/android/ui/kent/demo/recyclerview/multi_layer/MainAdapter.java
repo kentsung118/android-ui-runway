@@ -236,7 +236,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             AnimatorSet set = new AnimatorSet();
             set.playTogether(oa, oa1, oa2, oa3, oa4);
             set.setDuration(500);
-            set.start();
+//            set.start();
             set.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -273,7 +273,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             AnimatorSet set = new AnimatorSet();
             set.playTogether(oa, oa1, oa2, oa3, oa4);
             set.setDuration(500);
-            set.start();
+//            set.start();
             set.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -370,7 +370,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             AnimatorSet set = new AnimatorSet();
             set.playTogether(oa, oa1, oa2, oa3, oa4);
             set.setDuration(500);
-            set.start();
+//            set.start();
             set.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -402,7 +402,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             AnimatorSet set = new AnimatorSet();
             set.playTogether(oa, oa1, oa2, oa3, oa4);
             set.setDuration(500);
-            set.start();
+//            set.start();
             set.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {

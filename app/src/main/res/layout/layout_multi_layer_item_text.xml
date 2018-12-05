@@ -3,7 +3,7 @@
     android:id="@+id/item_tv"
     android:focusable="true"
     android:layout_width="224px"
-    android:layout_height="80px"
+    android:layout_height="wrap_content"
     android:text="西红柿首富"
     android:gravity="center"
     android:textSize="30px"

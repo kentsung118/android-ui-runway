@@ -18,14 +18,14 @@
     <LinearLayout
         android:id="@+id/content"
         android:layout_width="1920px"
-        android:layout_height="150px"
+        android:layout_height="120px"
         android:orientation="vertical">
 
         <com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView
             android:focusable="true"
             android:id="@+id/text_rv"
             android:layout_width="1920px"
-            android:layout_height="100px" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </LinearLayout>
