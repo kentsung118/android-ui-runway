@@ -1,21 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_cl"
+<?xml version="1.0" encoding="utf-8"?><!--<android.support.constraint.ConstraintLayout--><!--xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:id="@+id/item_cl"--><!--android:focusable="true"--><!--android:focusableInTouchMode="true"--><!--android:background="#33d8d8d8"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent">-->
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_tv"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:background="#33d8d8d8"
-    android:layout_width="230px"
-    android:layout_height="108px">
-
-     <TextView
-         android:id="@+id/item_tv"
-         android:focusable="false"
-         android:layout_width="230px"
-         android:layout_height="108px"
-         android:text="西红柿首富"
-         android:gravity="center"
-         android:layout_gravity="center"
-         android:textSize="30px"/>
-
-</android.support.constraint.ConstraintLayout>
+    android:layout_width="224px"
+    android:layout_height="80px"
+    android:text="西红柿首富"
+    android:gravity="center"
+    android:textSize="30px"
+    android:textColor="@color/color_f1f1f1"
+    android:background="@drawable/common_bg_focus_border_normal" />

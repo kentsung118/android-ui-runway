@@ -13,11 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.ui.kent.R;
+import com.android.ui.kent.demo.common.decoration.SpacesItemDecoration;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.DateAdapter;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.LookBackAdapter;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.LookBackVO;
-import com.android.ui.kent.demo.recyclerview.multi_layer.model.MainVO;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.TextAdapter;
+import com.android.ui.kent.demo.recyclerview.multi_layer.model.MainVO;
 import com.android.ui.kent.demo.recyclerview.multi_layer.model.TextVO;
 import com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView;
 
@@ -118,7 +119,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     if (mOnItemFocusedListener != null) {
                         mOnItemFocusedListener.onFocused(position, position, itemRoot);
                     }
-                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
+                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
                 }
             });
 
@@ -147,6 +148,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
             mContentRv.setLayoutManager(new CenterLayoutManger(mContentRv.getContext(), RecyclerView.HORIZONTAL, false));
+            mContentRv.addItemDecoration(new SpacesItemDecoration(10, 10, 10));
+
             LookBackAdapter adapter = new LookBackAdapter(list);
             adapter.bindToRecyclerView(mContentRv);
 
@@ -160,6 +163,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             textList.add(new TextVO("今天"));
 
             mDateRv.setLayoutManager(new CenterLayoutManger(mContentRv.getContext(), RecyclerView.HORIZONTAL, false));
+            mDateRv.addItemDecoration(new SpacesItemDecoration(10, 10, 40));
+
             DateAdapter textAdapter = new DateAdapter(textList);
             textAdapter.bindToRecyclerView(mDateRv);
 
@@ -197,7 +202,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     if (mOnItemFocusedListener != null) {
                         mOnItemFocusedListener.onFocused(position, position, itemRoot);
                     }
-                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_F1F1F1));
+                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
                 }
             });
 
@@ -218,6 +223,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             list.add(new TextVO("2160P"));
 
             rv.setLayoutManager(new CenterLayoutManger(rv.getContext(), RecyclerView.HORIZONTAL, false));
+            rv.addItemDecoration(new SpacesItemDecoration(10, 10, 10));
             TextAdapter adapter = new TextAdapter(list);
             adapter.bindToRecyclerView(rv);
             rv.setCanFocusOutHorizontal(false);
