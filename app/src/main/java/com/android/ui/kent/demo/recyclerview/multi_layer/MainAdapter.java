@@ -114,9 +114,9 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mTitle.setText(dataList.get(position).getTitle());
 
             mContentRv.setFocusGainListener((chld, focued) -> {
-//                    if (mOnItemFocusedListener != null) {
-//                        mOnItemFocusedListener.onFocused(position, position, itemRoot);
-//                    }
+                    if (mOnItemFocusedListener != null) {
+                        mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                    }
                 mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
             });
 
@@ -132,8 +132,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mDateRv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener(){
                 @Override
                 public void onFocusGain(View chld, View focued) {
+                    if (mOnItemFocusedListener != null) {
+                        mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                    }
                     mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
-
                 }
             });
 
