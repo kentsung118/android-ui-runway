@@ -1,5 +1,7 @@
 package com.android.ui.kent.demo.recyclerview.multi_layer;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -53,7 +55,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemViewType(int position) {
 //        int pos = position % dataList.size();
         int type = dataList.get(position).getType();
-        if(type == 1){
+        if (type == 1) {
             return ITEM_TYPE_1.ordinal();
         } else {
             return ITEM_TYPE_2.ordinal();
@@ -123,27 +125,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             int position = getAdapterPosition();
             mTitle.setText(dataList.get(position).getTitle());
 
-//            mContentRv.addOnFocusChangedListener(new FocusableQuickRecyclerView.FocusChangedListener() {
-//                @Override
-//                public void onFocusChanged(boolean gainFocus, int direction) {
-//                    if (gainFocus) {
-//                        if (direction == View.FOCUS_DOWN) {
-//                            if (mOnItemFocusedListener != null) {
-//                                mOnItemFocusedListener.onFocused(position, position, itemRoot);
-//                            }
-//                        }
-//                        mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
-//                    } else {
-//                        if (direction == View.FOCUS_UP) {
-//                            if (mOnItemFocusedListener != null) {
-//                                mOnItemFocusedListener.onLoseFocus(position, position, itemRoot);
-//                            }
-//                            mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
-//                        }
-//                    }
-//                }
-//            });
-
             mContentRv.setFocusGainListener((chld, focued) -> {
                 if (!mIsItemFocused) {
                     if (mOnItemFocusedListener != null) {
@@ -165,27 +146,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
                 }
             });
-
-//            mDateRv.addOnFocusChangedListener(new FocusableQuickRecyclerView.FocusChangedListener(){
-//                @Override
-//                public void onFocusChanged(boolean gainFocus, int direction) {
-//                    if(gainFocus){
-//                        if(direction == View.FOCUS_UP){
-//                            if (mOnItemFocusedListener != null) {
-//                                mOnItemFocusedListener.onFocused(position, position, itemRoot);
-//                            }
-//                        }
-//                        mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
-//                    } else {
-//                        if (direction == View.FOCUS_DOWN) {
-//                            if (mOnItemFocusedListener != null) {
-//                                mOnItemFocusedListener.onLoseFocus(position, position, itemRoot);
-//                            }
-//                            mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
-//                        }
-//                    }
-//                }
-//            });
 
             mDateRv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener() {
                 @Override
@@ -256,7 +216,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             textAdapter.bindToRecyclerView(mDateRv);
 
             mContentRv.setGainFocusChangeDescendant(true);
-            mContentRv.setGainFocusChangeDescendant(true);
+            mDateRv.setGainFocusChangeDescendant(true);
         }
 
         public void open(LinearLayout rootItemView) {
@@ -277,6 +237,26 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             set.playTogether(oa, oa1, oa2, oa3, oa4);
             set.setDuration(500);
             set.start();
+            set.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+//                    LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) mContentRv.getLayoutParams();
+//                    params1.height = 150;
+//                    mContentRv.setLayoutParams(params1);
+                    mContentRv.setVisibility(View.VISIBLE);
+//                    LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) mDateRv.getLayoutParams();
+//                    params2.height = 80;
+//                    mDateRv.setLayoutParams(params2);
+                    mDateRv.setVisibility(View.VISIBLE);
+
+                }
+            });
         }
 
         public void close(LinearLayout rootItemView) {
@@ -294,6 +274,22 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             set.playTogether(oa, oa1, oa2, oa3, oa4);
             set.setDuration(500);
             set.start();
+            set.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+//                    LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) mContentRv.getLayoutParams();
+//                    params1.height = 1;
+//                    mContentRv.setLayoutParams(params1);
+                    mContentRv.setVisibility(View.GONE);
+
+//                    LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) mDateRv.getLayoutParams();
+//                    params2.height = 1;
+//                    mDateRv.setLayoutParams(params2);
+                    mDateRv.setVisibility(View.GONE);
+
+                }
+            });
         }
 
     }
@@ -375,6 +371,22 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             set.playTogether(oa, oa1, oa2, oa3, oa4);
             set.setDuration(500);
             set.start();
+            set.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+//                    LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) rv.getLayoutParams();
+//                    params1.height = 150;
+//                    rv.setLayoutParams(params1);
+                    rv.setVisibility(View.VISIBLE);
+
+                }
+            });
         }
 
         public void close(LinearLayout rootItemView) {
@@ -391,6 +403,17 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             set.playTogether(oa, oa1, oa2, oa3, oa4);
             set.setDuration(500);
             set.start();
+            set.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+//                    LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) rv.getLayoutParams();
+//                    params1.height = 1;
+//                    rv.setLayoutParams(params1);
+                    rv.setVisibility(View.GONE);
+                }
+
+            });
         }
 
     }
