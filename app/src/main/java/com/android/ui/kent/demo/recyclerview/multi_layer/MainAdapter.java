@@ -103,6 +103,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         FocusableQuickRecyclerView mContentRv;
         @BindView(R.id.lookback_date_Rv)
         FocusableQuickRecyclerView mDateRv;
+        private boolean mIsItemFocused;
 
         public ViewHolder1(View itemView) {
             super(itemView);
@@ -112,7 +113,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public void bind() {
             int position = getAdapterPosition();
             mTitle.setText(dataList.get(position).getTitle());
-
 
 //            mContentRv.addOnFocusChangedListener(new FocusableQuickRecyclerView.FocusChangedListener() {
 //                @Override
@@ -136,18 +136,22 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //            });
 
             mContentRv.setFocusGainListener((chld, focued) -> {
-                if (mOnItemFocusedListener != null) {
-                    mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                if (!mIsItemFocused) {
+                    if (mOnItemFocusedListener != null) {
+                        mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                    }
+                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
+                    open(itemRoot);
+                    mIsItemFocused = true;
                 }
-                mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
-                open(mContent);
             });
 
             mContentRv.setFocusLostListener((lastFocusChild, direction) -> {
                 if (direction == View.FOCUS_UP) {
                     if (mOnItemFocusedListener != null) {
                         mOnItemFocusedListener.onLoseFocus(position, position, itemRoot);
-                        close(mContent);
+                        close(itemRoot);
+                        mIsItemFocused = false;
                     }
                     mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
                 }
@@ -177,11 +181,16 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mDateRv.setFocusGainListener(new FocusableQuickRecyclerView.FocusGainListener() {
                 @Override
                 public void onFocusGain(View chld, View focued) {
-                    if (mOnItemFocusedListener != null) {
-                        mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                    if (!mIsItemFocused) {
+                        {
+                            if (mOnItemFocusedListener != null) {
+                                mOnItemFocusedListener.onFocused(position, position, itemRoot);
+                            }
+                            mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
+                            open(itemRoot);
+                            mIsItemFocused = true;
+                        }
                     }
-                    mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
-                    open(mContent);
                 }
             });
 
@@ -191,8 +200,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     if (direction == View.FOCUS_DOWN) {
                         if (mOnItemFocusedListener != null) {
                             mOnItemFocusedListener.onLoseFocus(position, position, itemRoot);
-                            close(mContent);
-
+                            close(itemRoot);
+                            mIsItemFocused = false;
                         }
                         mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
                     }
@@ -241,6 +250,43 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mContentRv.setGainFocusChangeDescendant(true);
         }
 
+        public void open(LinearLayout rootItemView) {
+            View content = rootItemView.findViewById(R.id.content);
+
+            ViewWrapper vw = new ViewWrapper(content);
+            View title = rootItemView.findViewById(R.id.title);
+            Timber.d(">> content = %s", content);
+            Timber.d(">> title = %s", title);
+
+            //ObjectAnimator oa = ObjectAnimator.ofFloat(itemRoot, "scaleY", 0.5f, 1.0f);
+            ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 0, 230);
+            ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 0, 1);
+            ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 0.7f, 1.0f);
+            ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 0.7f, 1.0f);
+            ObjectAnimator oa4 = ObjectAnimator.ofFloat(title, "translationX", 0, 30);
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(oa, oa1, oa2, oa3, oa4);
+            set.setDuration(500);
+            set.start();
+        }
+
+        public void close(LinearLayout rootItemView) {
+            View content = rootItemView.findViewById(R.id.content);
+            ViewWrapper vw = new ViewWrapper(content);
+            View title = rootItemView.findViewById(R.id.title);
+
+            // ObjectAnimator oa = ObjectAnimator.ofFloat(itemRoot, "scaleY", 1.0f, 0.5f);
+            ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 230, 0);
+            ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 1, 0);
+            ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 1.0f, 0.7f);
+            ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 1.0f, 0.7f);
+            ObjectAnimator oa4 = ObjectAnimator.ofFloat(title, "translationX", 30, 0);
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(oa, oa1, oa2, oa3, oa4);
+            set.setDuration(500);
+            set.start();
+        }
+
     }
 
     class ViewHolder2 extends RecyclerView.ViewHolder {
@@ -271,7 +317,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         mOnItemFocusedListener.onFocused(position, position, itemRoot);
                     }
                     mTitle.setTextColor(mContext.getResources().getColor(R.color.color_f1f1f1));
-                    open(mContent);
+                    open(itemRoot);
                 }
             });
 
@@ -282,7 +328,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         mOnItemFocusedListener.onLoseFocus(position, position, itemRoot);
                     }
                     mTitle.setTextColor(mContext.getResources().getColor(R.color.liveChannelTextColor60));
-                    close(mContent);
+                    close(itemRoot);
                 }
             });
 
@@ -302,6 +348,41 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             rv.setGainFocusChangeDescendant(true);
         }
 
+        public void open(LinearLayout rootItemView) {
+            View content = rootItemView.findViewById(R.id.content);
+
+            ViewWrapper vw = new ViewWrapper(content);
+            View title = rootItemView.findViewById(R.id.title);
+            Timber.d(">> content = %s", content);
+            Timber.d(">> title = %s", title);
+            //ObjectAnimator oa = ObjectAnimator.ofFloat(itemRoot, "scaleY", 0.5f, 1.0f);
+            ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 0, 150);
+            ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 0, 1);
+            ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 0.7f, 1.0f);
+            ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 0.7f, 1.0f);
+            ObjectAnimator oa4 = ObjectAnimator.ofFloat(title, "translationX", 0, 30);
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(oa, oa1, oa2, oa3, oa4);
+            set.setDuration(500);
+            set.start();
+        }
+
+        public void close(LinearLayout rootItemView) {
+            View content = rootItemView.findViewById(R.id.content);
+            ViewWrapper vw = new ViewWrapper(content);
+            View title = rootItemView.findViewById(R.id.title);
+            // ObjectAnimator oa = ObjectAnimator.ofFloat(itemRoot, "scaleY", 1.0f, 0.5f);
+            ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 150, 0);
+            ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 1, 0);
+            ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 1.0f, 0.7f);
+            ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 1.0f, 0.7f);
+            ObjectAnimator oa4 = ObjectAnimator.ofFloat(title, "translationX", 30, 0);
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(oa, oa1, oa2, oa3, oa4);
+            set.setDuration(500);
+            set.start();
+        }
+
     }
 
     public interface OnItemFocusedListener {
@@ -315,50 +396,50 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
 
-    public void open(LinearLayout rootItemView) {
-        ViewWrapper vw = new ViewWrapper(rootItemView);
-        LinearLayout content = rootItemView.findViewById(R.id.content);
-        TextView title = rootItemView.findViewById(R.id.title);
-
-        ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 0, 230);
-        ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 0, 1);
-        ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 0.7f, 1.0f);
-        ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 0.7f, 1.0f);
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(oa, oa1, oa2, oa3);
-        set.setDuration(0);
-//        set.start();
-//        set.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationStart(Animator animation, boolean isReverse) {
-////                super.onAnimationStart(animation);
-//                rv.setVisibility(View.VISIBLE);
-////                mContentRv.getAdapter().notifyDataSetChanged();
-//            }
-//        });
-    }
-
-    public void close(LinearLayout rootItemView) {
-        ViewWrapper vw = new ViewWrapper(rootItemView);
-        LinearLayout content = rootItemView.findViewById(R.id.content);
-        TextView title = rootItemView.findViewById(R.id.title);
-
-        ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 230, 0);
-        ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 1, 0);
-        ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 1.0f, 0.7f);
-        ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 1.0f, 0.7f);
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(oa, oa1, oa2, oa3);
-        set.playTogether(oa);
-        set.setDuration(0);
-//        set.start();
-//        set.addListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-////                super.onAnimationEnd(animation);
-//                rv.setVisibility(View.INVISIBLE);
-//            }
-//        });
-    }
+//    public void open(LinearLayout rootItemView) {
+//        ViewWrapper vw = new ViewWrapper(rootItemView);
+//        LinearLayout content = rootItemView.findViewById(R.id.content);
+//        TextView title = rootItemView.findViewById(R.id.title);
+//
+//        ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 0, 230);
+//        ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 0, 1);
+//        ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 0.7f, 1.0f);
+//        ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 0.7f, 1.0f);
+//        AnimatorSet set = new AnimatorSet();
+//        set.playTogether(oa, oa1, oa2, oa3);
+//        set.setDuration(0);
+////        set.start();
+////        set.addListener(new AnimatorListenerAdapter() {
+////            @Override
+////            public void onAnimationStart(Animator animation, boolean isReverse) {
+//////                super.onAnimationStart(animation);
+////                rv.setVisibility(View.VISIBLE);
+//////                mContentRv.getAdapter().notifyDataSetChanged();
+////            }
+////        });
+//    }
+//
+//    public void close(LinearLayout rootItemView) {
+//        ViewWrapper vw = new ViewWrapper(rootItemView);
+//        LinearLayout content = rootItemView.findViewById(R.id.content);
+//        TextView title = rootItemView.findViewById(R.id.title);
+//
+//        ObjectAnimator oa = ObjectAnimator.ofInt(vw, "height", 230, 0);
+//        ObjectAnimator oa1 = ObjectAnimator.ofFloat(content, "alpha", 1, 0);
+//        ObjectAnimator oa2 = ObjectAnimator.ofFloat(title, "scaleY", 1.0f, 0.7f);
+//        ObjectAnimator oa3 = ObjectAnimator.ofFloat(title, "scaleX", 1.0f, 0.7f);
+//        AnimatorSet set = new AnimatorSet();
+//        set.playTogether(oa, oa1, oa2, oa3);
+//        set.playTogether(oa);
+//        set.setDuration(0);
+////        set.start();
+////        set.addListener(new AnimatorListenerAdapter() {
+////            @Override
+////            public void onAnimationEnd(Animator animation) {
+//////                super.onAnimationEnd(animation);
+////                rv.setVisibility(View.INVISIBLE);
+////            }
+////        });
+//    }
 
 }
