@@ -2,7 +2,6 @@ package com.android.ui.kent.demo.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -13,6 +12,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+
+import timber.log.Timber;
 
 /**
  * Created by Kent on 2016/10/5.
@@ -42,6 +43,7 @@ public class MyApplication extends Application {
         config.writeDebugLogs(); // Remove for release app
 
         ImageLoader.getInstance().init(config.build());
+        Timber.plant(new Timber.DebugTree());
     }
 
     public static DisplayImageOptions ImageLoaderOptions = new DisplayImageOptions.Builder()
