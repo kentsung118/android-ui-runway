@@ -27,6 +27,8 @@ import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.ui_response.UIResponseActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
+import com.android.ui.kent.demo.widget.view.CustomizeViewActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,7 @@ public class MainActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_customize_view));
         list.add(getString(R.string.main_action_constraint_layout));
         list.add(getString(R.string.main_action_recycler_view));
         list.add(getString(R.string.main_action_multi_recycler_view));
@@ -119,6 +122,8 @@ public class MainActivity extends BaseActivity {
                 UIResponseActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_multi_recycler_view))){
                 MultiLayerActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_customize_view))){
+                CustomizeViewActivity.launch(activity);
             }
         }
     };

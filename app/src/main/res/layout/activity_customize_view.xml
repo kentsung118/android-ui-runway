@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="跑马灯 MarqueeTextView：" />
+
+        <com.android.ui.kent.demo.widget.view.MarqueeTextView
+            android:id="@+id/marquee_tv"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textColor="@color/main_black"
+            tools:text="测试文字" />
+
+        <TextView
+            android:id="@+id/normal_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="跑马灯2 MarqueeTextView：" />
+
+
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

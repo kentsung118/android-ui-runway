@@ -37,6 +37,7 @@
         <activity android:name=".demo.layout.style.StyleSelectorActivity"/>
         <activity android:name=".demo.ui_response.UIResponseActivity"/>
         <activity android:name=".demo.recyclerview.multi_layer.MultiLayerActivity" />
+        <activity android:name=".demo.widget.view.CustomizeViewActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

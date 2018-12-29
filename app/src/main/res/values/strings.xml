@@ -21,6 +21,7 @@
     <string name="main_action_constraint_layout">Constraint Layout</string>
     <string name="main_action_style_selector">Style Selector</string>
     <string name="main_action_ui_response">UI Response</string>
+    <string name="main_action_customize_view">Customize View</string>
 
 
 </resources>
