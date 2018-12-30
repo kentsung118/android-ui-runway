@@ -7,10 +7,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.alarm.AlarmActivity;
+import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
 import com.android.ui.kent.demo.cardview.CardActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.eventbus.EventBusActivity;
@@ -32,14 +32,19 @@ import com.android.ui.kent.demo.widget.view.CustomizeViewActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.list_view) ListView listView;
+    @BindView(R.id.list_view)
+    ListView listView;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this); 
+        ButterKnife.bind(this);
 
         initToolbar();
         init();
@@ -53,6 +58,7 @@ public class MainActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_lifecycle_owner_view));
         list.add(getString(R.string.main_action_customize_view));
         list.add(getString(R.string.main_action_constraint_layout));
         list.add(getString(R.string.main_action_recycler_view));
@@ -80,7 +86,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private ListView.OnItemClickListener onItemClickListener = new ListView.OnItemClickListener() {
-        @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Activity activity = MainActivity.this;
 
             final String actionName = ((TextView) view).getText().toString();
@@ -114,16 +121,18 @@ public class MainActivity extends BaseActivity {
                 DialogActivity.launch(activity);
             } else if (actionName.equals(activity.getString(R.string.main_action_LoadMore))) {
                 LoadMoreActivity.launch(activity);
-            } else if(actionName.equals(activity.getString(R.string.main_action_constraint_layout))){
+            } else if (actionName.equals(activity.getString(R.string.main_action_constraint_layout))) {
                 ConstraintLayoutActivity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_style_selector))){
+            } else if (actionName.equals(getString(R.string.main_action_style_selector))) {
                 StyleSelectorActivity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_ui_response))){
+            } else if (actionName.equals(getString(R.string.main_action_ui_response))) {
                 UIResponseActivity.launch(activity);
-            } else if (actionName.equals(getString(R.string.main_action_multi_recycler_view))){
+            } else if (actionName.equals(getString(R.string.main_action_multi_recycler_view))) {
                 MultiLayerActivity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_customize_view))){
+            } else if (actionName.equals(getString(R.string.main_action_customize_view))) {
                 CustomizeViewActivity.launch(activity);
+            } else if (actionName.equals(getString(R.string.main_action_lifecycle_owner_view))) {
+                LifeCycleActivity.launch(activity);
             }
         }
     };
