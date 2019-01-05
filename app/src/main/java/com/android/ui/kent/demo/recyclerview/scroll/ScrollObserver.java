@@ -5,8 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
+import timber.log.Timber;
 
 /**
  * Created by Kent Song on 2019/1/5.
@@ -43,6 +42,10 @@ public class ScrollObserver{
         this.listener = listener;
     }
 
+    public void bindRv(RecyclerView rv){
+        rv.addOnScrollListener(scroListener);
+    }
+
 
     public Observable rxSmoothScroll(RecyclerView rv, int x, int y){
 //        return Observable.just(rv)
@@ -60,13 +63,16 @@ public class ScrollObserver{
             @Override
             public void subscribe(ObservableEmitter<Object> e) throws Exception {
 
-                rv.addOnScrollListener(scroListener);
+//                rv.stopScroll();
                 rv.smoothScrollBy(x,y);
+                Timber.d(">> rxSmoothScrolling x,y = %s,%s",x,y);
                 setListener(new OnStateListener() {
                     @Override
                     public void onIdle() {
-                        rv.removeOnScrollListener(scroListener);
-                        e.onComplete();
+//                        rv.removeOnScrollListener(scroListener);
+                        if(!rv.getLayoutManager().isSmoothScrolling()){
+                            e.onComplete();
+                        }
                     }
                 });
 

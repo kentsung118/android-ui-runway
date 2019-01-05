@@ -30,7 +30,7 @@ public class TextAdapter extends FocusQuickAdapter<TextVO, BaseViewHolder> {
 //        ConstraintLayout rootView = helper.getView(R.id.item_cl);
         Button itemTv = helper.getView(R.id.item_tv);
         itemTv.setText(item.getText());
-        Timber.d(">> itemTv = %s", itemTv);
+//        Timber.d(">> itemTv = %s", itemTv);
         itemTv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
