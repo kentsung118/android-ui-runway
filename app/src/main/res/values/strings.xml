@@ -23,6 +23,7 @@
     <string name="main_action_ui_response">UI Response</string>
     <string name="main_action_customize_view">Customize View</string>
     <string name="main_action_lifecycle_owner_view">LifeCycle Owner</string>
+    <string name="main_action_scroll_rv">RecyclerView Scroll</string>
 
 
 </resources>

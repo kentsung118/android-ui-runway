@@ -24,6 +24,7 @@ import com.android.ui.kent.demo.network.rxjava.RxJavaActivity;
 import com.android.ui.kent.demo.recyclerview.RecyclerViewActivity;
 import com.android.ui.kent.demo.recyclerview.loadmore.LoadMoreActivity;
 import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
+import com.android.ui.kent.demo.recyclerview.scroll.RvScrollActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.ui_response.UIResponseActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_scroll_rv));
         list.add(getString(R.string.main_action_lifecycle_owner_view));
         list.add(getString(R.string.main_action_customize_view));
         list.add(getString(R.string.main_action_constraint_layout));
@@ -133,6 +135,8 @@ public class MainActivity extends BaseActivity {
                 CustomizeViewActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_lifecycle_owner_view))) {
                 LifeCycleActivity.launch(activity);
+            }else if (actionName.equals(getString(R.string.main_action_scroll_rv))) {
+                RvScrollActivity.launch(activity);
             }
         }
     };
