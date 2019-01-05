@@ -1,10 +1,8 @@
 package com.android.ui.kent.demo.recyclerview.multi_layer.lookback;
 
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.recyclerview.multi_layer.model.TextVO;
@@ -35,6 +33,7 @@ public class TextAdapter extends FocusQuickAdapter<TextVO, BaseViewHolder> {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
+                    Timber.d(">> itemTv onFocus pos = %s", helper.getAdapterPosition());
                     itemTv.setBackgroundResource(R.drawable.common_bg_focus);
                     itemTv.setTextColor(itemTv.getResources().getColor(R.color.text_white));
                 } else {

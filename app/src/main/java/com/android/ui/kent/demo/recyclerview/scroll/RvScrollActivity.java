@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
 import timber.log.Timber;
 
 /**
@@ -41,6 +42,8 @@ public class RvScrollActivity extends BaseActivity {
     private boolean mIsScrolling;
     Integer mHeight;
     SnapHelper mSnapHelperCenter;
+
+    private boolean mActionUp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,12 +101,17 @@ public class RvScrollActivity extends BaseActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+        if(event.getAction() == KeyEvent.ACTION_UP){
+            mActionUp = true;
+        }
+        else if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            mActionUp = false;
             if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT
                     || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
 
                 Timber.d(">> dispatchKeyEvent KeyEvent.KEYCODE RIGHT or LEFT");
-//                return true;
+
+                //计算 item 高度
                 if (mHeight == null) {
                     int pos = mainRv.getCurrentFocusPosition();
                     Timber.d(">> pos = %s", pos);
@@ -119,14 +127,10 @@ public class RvScrollActivity extends BaseActivity {
                     }
                 }
 
-//                Timber.d(">> pos (t,height) = (%s,%s)", 0, mHeight);
+                //处理左右方向
                 int y = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT ? mHeight : -mHeight;
 
-                if (mDisposable != null) {
-                    mDisposable.dispose();
-                }
-
-                Timber.d(">> onComplete");
+                //头末4比焦点处理
                 int firstPos = ((LinearLayoutManager) mainRv.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
                 int lastPos = ((LinearLayoutManager) mainRv.getLayoutManager()).findLastVisibleItemPosition();
                 int count = mainRv.getAdapter().getItemCount();
@@ -151,7 +155,17 @@ public class RvScrollActivity extends BaseActivity {
                 }
 
 
+                //先滚动后获焦
+                if (mDisposable != null) {
+                    mDisposable.dispose();
+                }
                 mScrollObserver.rxSmoothScroll(mainRv, 0, y)
+//                        .filter(new Predicate() {
+//                            @Override
+//                            public boolean test(Object o) throws Exception {
+//                                return !mActionUp;
+//                            }
+//                        })
 //                        .delay(300, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer() {
@@ -172,7 +186,10 @@ public class RvScrollActivity extends BaseActivity {
 
                             @Override
                             public void onComplete() {
-                                mSnapHelperCenter.findSnapView(mainRv.getLayoutManager()).requestFocus();
+                                Timber.d(">> onComplete");
+                                if(mActionUp){
+                                    mSnapHelperCenter.findSnapView(mainRv.getLayoutManager()).requestFocus();
+                                }
                             }
                         });
 
