@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.SnapHelper;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
@@ -20,14 +21,12 @@ import com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Predicate;
 import timber.log.Timber;
 
 /**
@@ -42,6 +41,15 @@ public class RvScrollActivity extends BaseActivity {
     private boolean mIsScrolling;
     Integer mHeight;
     SnapHelper mSnapHelperCenter;
+
+    @BindView(R.id.btnTop)
+    Button mButtonTop;
+    @BindView(R.id.btnBottom)
+    Button mButtonBottom;
+    @BindView(R.id.btnLeft)
+    Button mButtonLeft;
+    @BindView(R.id.btnRight)
+    Button mButtonRight;
 
     private boolean mActionUp;
 
@@ -78,8 +86,26 @@ public class RvScrollActivity extends BaseActivity {
         mSnapHelperCenter = new LinearSnapHelper();
         mSnapHelperCenter.attachToRecyclerView(mainRv);
 
+        mButtonTop.setOnFocusChangeListener(mFocusListener);
+        mButtonBottom.setOnFocusChangeListener(mFocusListener);
+        mButtonLeft.setOnFocusChangeListener(mFocusListener);
+        mButtonRight.setOnFocusChangeListener(mFocusListener);
+
 
     }
+
+    private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener(){
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus){
+                ((Button)v).setText("获得焦点");
+            } else {
+                ((Button)v).setText("未获焦");
+
+            }
+        }
+    };
+
 
     @Override
     protected void onResume() {
@@ -101,10 +127,9 @@ public class RvScrollActivity extends BaseActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if(event.getAction() == KeyEvent.ACTION_UP){
+        if (event.getAction() == KeyEvent.ACTION_UP) {
             mActionUp = true;
-        }
-        else if (event.getAction() == KeyEvent.ACTION_DOWN) {
+        } else if (event.getAction() == KeyEvent.ACTION_DOWN) {
             mActionUp = false;
             if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT
                     || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
@@ -187,11 +212,12 @@ public class RvScrollActivity extends BaseActivity {
                             @Override
                             public void onComplete() {
                                 Timber.d(">> onComplete");
-                                if(mActionUp){
+                                if (mActionUp) {
                                     mSnapHelperCenter.findSnapView(mainRv.getLayoutManager()).requestFocus();
                                 }
                             }
                         });
+                return true;
 
 //                }
 
