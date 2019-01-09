@@ -5,14 +5,21 @@ import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.ui.kent.demo.recyclerview.scroll.ScrollObserver;
+
 import java.util.ArrayList;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 
@@ -47,6 +54,15 @@ public class FocusableQuickRecyclerView extends RecyclerView {
     private int mSelectedPosition = -1;
 
     private boolean mIsDebugMode;
+
+
+    private boolean mIsEnableRxScrollVertical;
+    private int mItemHeight;
+    private ScrollObserver mScrollObserver;
+    private boolean mActionUp;
+    private Disposable mDisposable;
+    SnapHelper mSnapHelperCenter;
+    private Integer mHeight;
 
     public FocusableQuickRecyclerView(Context context) {
         super(context);
@@ -370,40 +386,138 @@ public class FocusableQuickRecyclerView extends RecyclerView {
          * >> 防止跑焦 <<
          * 预查下一个 View 能否 Focus
          */
-        if (getLayoutManager() instanceof GridLayoutManager) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN &&
-                    event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN) {
+//        if (getLayoutManager() instanceof GridLayoutManager) {
+//            if (event.getAction() == KeyEvent.ACTION_DOWN &&
+//                    event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN) {
+//
+//                int i = mCurrentFocusPosition + ((GridLayoutManager) getLayoutManager()).getSpanCount();
+//                if (i + 1 <= mAdapter.getDataItemCount()) {
+//                    if (getLayoutManager().findViewByPosition(i) == null) {
+//                        timberLog("fqrv/KeyEvent KEYCODE_DPAD_DOWN next View is null");
+//                        return true;
+//                    }
+//                }
+//            }
+//        } else if (getLayoutManager() instanceof LinearLayoutManager &&
+//                ((LinearLayoutManager) getLayoutManager()).getOrientation() == LinearLayoutManager.HORIZONTAL) {
+//            if (event.getAction() == KeyEvent.ACTION_DOWN &&
+//                    event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
+//
+//                int i = mCurrentFocusPosition + 1;
+//                if (i <= mAdapter.getDataItemCount()) {
+//                    if (getLayoutManager().findViewByPosition(i) == null) {
+//                        timberLog("fqrv/KeyEvent KEYCODE_DPAD_RIGHT next View is null");
+//                        return true;
+//                    }
+//                }
+//            } else if (event.getAction() == KeyEvent.ACTION_DOWN &&
+//                    event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
+//
+//                int i = mCurrentFocusPosition - 1;
+//                if (i >= 0) {
+//                    if (getLayoutManager().findViewByPosition(i) == null) {
+//                        timberLog("fqrv/KeyEvent KEYCODE_DPAD_LEFT next View is null");
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
 
-                int i = mCurrentFocusPosition + ((GridLayoutManager) getLayoutManager()).getSpanCount();
-                if (i + 1 <= mAdapter.getDataItemCount()) {
-                    if (getLayoutManager().findViewByPosition(i) == null) {
-                        timberLog("fqrv/KeyEvent KEYCODE_DPAD_DOWN next View is null");
+
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            mActionUp = true;
+        } else if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            mActionUp = false;
+            if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP
+                    || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN) {
+
+                Timber.d(">> dispatchKeyEvent KeyEvent.KEYCODE RIGHT or LEFT");
+
+                //计算 item 高度
+                if (mHeight == null) {
+                    int pos = getCurrentFocusPosition();
+                    Timber.d(">> pos = %s", pos);
+                    View view = getLayoutManager().findViewByPosition(pos);
+
+                    if (view != null) {
+                        float y = view.getY();
+                        mHeight = view.getBottom() - view.getTop();
+                    }
+
+                    if (mHeight == null) {
                         return true;
                     }
                 }
-            }
-        } else if (getLayoutManager() instanceof LinearLayoutManager &&
-                ((LinearLayoutManager) getLayoutManager()).getOrientation() == LinearLayoutManager.HORIZONTAL) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN &&
-                    event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
 
-                int i = mCurrentFocusPosition + 1;
-                if (i <= mAdapter.getDataItemCount()) {
-                    if (getLayoutManager().findViewByPosition(i) == null) {
-                        timberLog("fqrv/KeyEvent KEYCODE_DPAD_RIGHT next View is null");
-                        return true;
-                    }
-                }
-            } else if (event.getAction() == KeyEvent.ACTION_DOWN &&
-                    event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
+                //处理左右方向
+                int y = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN ? mHeight : -mHeight;
 
-                int i = mCurrentFocusPosition - 1;
-                if (i >= 0) {
-                    if (getLayoutManager().findViewByPosition(i) == null) {
-                        timberLog("fqrv/KeyEvent KEYCODE_DPAD_LEFT next View is null");
-                        return true;
-                    }
+//                //头末4比焦点处理
+//                int firstPos = ((LinearLayoutManager) mainRgetLayoutManager()).findFirstCompletelyVisibleItemPosition();
+//                int lastPos = ((LinearLayoutManager) mainRv.getLayoutManager()).findLastVisibleItemPosition();
+//                int count = mainRv.getAdapter().getItemCount();
+//                if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT && lastPos == count - 1) {
+//                    int targetPos;
+//                    if (mainRv.getCurrentFocusPosition() < count - 4) {
+//                        targetPos = count - 4;
+//                    } else {
+//                        targetPos = mainRv.getCurrentFocusPosition() + 1;
+//                    }
+//                    mainRv.setFocus(targetPos);
+//                    return true;
+//                } else if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT && firstPos == 0) {
+//                    int targetPos;
+//                    if (mainRv.getCurrentFocusPosition() > 4) {
+//                        targetPos = 4;
+//                    } else {
+//                        targetPos = mainRv.getCurrentFocusPosition() - 1;
+//                    }
+//                    mainRv.setFocus(targetPos);
+//                    return true;
+//                }
+
+
+                //先滚动后获焦
+                if (mDisposable != null) {
+                    mDisposable.dispose();
                 }
+                mScrollObserver.rxSmoothScroll(this, 0, y)
+//                        .filter(new Predicate() {
+//                            @Override
+//                            public boolean test(Object o) throws Exception {
+//                                return !mActionUp;
+//                            }
+//                        })
+//                        .delay(300, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                mDisposable = d;
+                            }
+
+                            @Override
+                            public void onNext(Object value) {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Timber.d(">> onComplete");
+                                if (mActionUp) {
+                                    mSnapHelperCenter.findSnapView(getLayoutManager()).requestFocus();
+                                }
+                            }
+                        });
+                return true;
+
+//                }
+
             }
         }
 
@@ -421,5 +535,13 @@ public class FocusableQuickRecyclerView extends RecyclerView {
 
     public void addOnFocusChangedListener(FocusChangedListener listener){
         this.mOnFocusChangedListener = listener;
+    }
+
+    public void enableRxScrollVertical() {
+        this.mIsEnableRxScrollVertical = true;
+        this.mScrollObserver = new ScrollObserver();
+        mScrollObserver.bindRv(this);
+        mSnapHelperCenter = new LinearSnapHelper();
+        mSnapHelperCenter.attachToRecyclerView(this);
     }
 }

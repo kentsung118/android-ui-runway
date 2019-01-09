@@ -10,6 +10,16 @@
         android:layout_width="100dp"
         android:layout_height="864px"
         app:layout_constraintStart_toEndOf="@+id/btnLeft"
+        app:layout_constraintEnd_toStartOf="@+id/main_rv2"
+        app:layout_constraintTop_toBottomOf="@+id/btnTop"
+        app:layout_constraintBottom_toTopOf="@+id/btnBottom" />
+
+    <com.android.ui.kent.demo.recyclerview.util.FocusableRecyclerView
+        android:id="@+id/main_rv2"
+        android:layout_width="100dp"
+        android:layout_height="864px"
+        app:layout_constraintStart_toEndOf="@+id/main_rv"
+        app:layout_constraintEnd_toStartOf="@+id/btnRight"
         app:layout_constraintTop_toBottomOf="@+id/btnTop"
         app:layout_constraintBottom_toTopOf="@+id/btnBottom" />
 
@@ -41,7 +51,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:text="可获焦按钮"
-        app:layout_constraintStart_toEndOf="@+id/main_rv"
+        app:layout_constraintStart_toEndOf="@+id/main_rv2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

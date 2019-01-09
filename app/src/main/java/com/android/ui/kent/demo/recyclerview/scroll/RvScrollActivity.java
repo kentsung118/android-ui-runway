@@ -17,7 +17,10 @@ import com.android.ui.kent.demo.common.StartSnapHelper;
 import com.android.ui.kent.demo.recyclerview.multi_layer.CenterLayoutManger;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.TextAdapter;
 import com.android.ui.kent.demo.recyclerview.multi_layer.model.TextVO;
+import com.android.ui.kent.demo.recyclerview.util.FocusableAdapter;
 import com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView;
+import com.android.ui.kent.demo.recyclerview.util.FocusableRecyclerView;
+import com.android.ui.kent.demo.recyclerview.util.SimpleData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,9 @@ public class RvScrollActivity extends BaseActivity {
 
     @BindView(R.id.main_rv)
     FocusableQuickRecyclerView mainRv;
+
+    @BindView(R.id.main_rv2)
+    FocusableRecyclerView mainRv2;
 
     ScrollObserver mScrollObserver = new ScrollObserver();
     private boolean mIsScrolling;
@@ -64,11 +70,29 @@ public class RvScrollActivity extends BaseActivity {
     private void init() {
 
         TextAdapter adapter = new TextAdapter(genData(50));
+        Text2Adapter adapter2 = new Text2Adapter(genSimpleData(50));
+
+        mainRv.getChildLayoutPosition(null);
+        mainRv.getChildAdapterPosition(null);
+
         mainRv.setLayoutManager(new CenterLayoutManger(this, 1000));
         mainRv.setAdapter(adapter);
-        mainRv.setCanFocusOutHorizontal(false);
+        mainRv.setCanFocusOutHorizontal(true);
         mainRv.setCanBoundarySearchNext(false);
-        mScrollObserver.bindRv(mainRv);
+        mainRv.setDebugMode(true);
+        mainRv.enableRxScrollVertical();
+        mainRv.setGainFocusChangeDescendant(true);
+
+
+        mainRv2.setLayoutManager(new CenterLayoutManger(this, 1000));
+        mainRv2.setAdapter(adapter2);
+        mainRv2.setCanFocusOutHorizontal(true);
+//        mainRv2.setCanBoundarySearchNext(false);
+//        mainRv2.setDebugMode(true);
+//        mainRv2.enableRxScrollVertical();
+//        mainRv2.setGainFocusChangeDescendant(true);
+
+//        mScrollObserver.bindRv(mainRv);
 //        mScrollObserver.setListener(new ScrollObserver.OnStateListener() {
 //            @Override
 //            public void onIdle() {
@@ -81,10 +105,10 @@ public class RvScrollActivity extends BaseActivity {
 //        });
 
 
-        SnapHelper snapHelperStart = new StartSnapHelper();
+//        SnapHelper snapHelperStart = new StartSnapHelper();
 //        snapHelperStart.attachToRecyclerView(mainRv);
-        mSnapHelperCenter = new LinearSnapHelper();
-        mSnapHelperCenter.attachToRecyclerView(mainRv);
+//        mSnapHelperCenter = new LinearSnapHelper();
+//        mSnapHelperCenter.attachToRecyclerView(mainRv);
 
         mButtonTop.setOnFocusChangeListener(mFocusListener);
         mButtonBottom.setOnFocusChangeListener(mFocusListener);
@@ -123,106 +147,20 @@ public class RvScrollActivity extends BaseActivity {
         return list;
     }
 
+    private List<SimpleData<TextVO>> genSimpleData(int count) {
+        List<TextVO> list = genData(count);
+        List<SimpleData<TextVO>> sList = new ArrayList<>();
+        for(TextVO vo : list){
+            sList.add(new SimpleData<>(vo));
+        }
+        return sList;
+    }
+
     private Disposable mDisposable;
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_UP) {
-            mActionUp = true;
-        } else if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            mActionUp = false;
-            if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT
-                    || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT) {
 
-                Timber.d(">> dispatchKeyEvent KeyEvent.KEYCODE RIGHT or LEFT");
-
-                //计算 item 高度
-                if (mHeight == null) {
-                    int pos = mainRv.getCurrentFocusPosition();
-                    Timber.d(">> pos = %s", pos);
-                    View view = mainRv.getLayoutManager().findViewByPosition(pos);
-
-                    if (view != null) {
-                        float y = view.getY();
-                        mHeight = view.getBottom() - view.getTop();
-                    }
-
-                    if (mHeight == null) {
-                        return true;
-                    }
-                }
-
-                //处理左右方向
-                int y = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT ? mHeight : -mHeight;
-
-                //头末4比焦点处理
-                int firstPos = ((LinearLayoutManager) mainRv.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-                int lastPos = ((LinearLayoutManager) mainRv.getLayoutManager()).findLastVisibleItemPosition();
-                int count = mainRv.getAdapter().getItemCount();
-                if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT && lastPos == count - 1) {
-                    int targetPos;
-                    if (mainRv.getCurrentFocusPosition() < count - 4) {
-                        targetPos = count - 4;
-                    } else {
-                        targetPos = mainRv.getCurrentFocusPosition() + 1;
-                    }
-                    mainRv.setFocus(targetPos);
-                    return true;
-                } else if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT && firstPos == 0) {
-                    int targetPos;
-                    if (mainRv.getCurrentFocusPosition() > 4) {
-                        targetPos = 4;
-                    } else {
-                        targetPos = mainRv.getCurrentFocusPosition() - 1;
-                    }
-                    mainRv.setFocus(targetPos);
-                    return true;
-                }
-
-
-                //先滚动后获焦
-                if (mDisposable != null) {
-                    mDisposable.dispose();
-                }
-                mScrollObserver.rxSmoothScroll(mainRv, 0, y)
-//                        .filter(new Predicate() {
-//                            @Override
-//                            public boolean test(Object o) throws Exception {
-//                                return !mActionUp;
-//                            }
-//                        })
-//                        .delay(300, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-                                mDisposable = d;
-                            }
-
-                            @Override
-                            public void onNext(Object value) {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                Timber.d(">> onComplete");
-                                if (mActionUp) {
-                                    mSnapHelperCenter.findSnapView(mainRv.getLayoutManager()).requestFocus();
-                                }
-                            }
-                        });
-                return true;
-
-//                }
-
-            }
-        }
         return super.dispatchKeyEvent(event);
     }
 
