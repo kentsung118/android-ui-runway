@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.SnapHelper;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,13 +11,12 @@ import android.widget.Button;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
-import com.android.ui.kent.demo.common.StartSnapHelper;
 import com.android.ui.kent.demo.recyclerview.multi_layer.CenterLayoutManger;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.TextAdapter;
 import com.android.ui.kent.demo.recyclerview.multi_layer.model.TextVO;
-import com.android.ui.kent.demo.recyclerview.util.FocusableAdapter;
 import com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView;
 import com.android.ui.kent.demo.recyclerview.util.FocusableRecyclerView;
+import com.android.ui.kent.demo.recyclerview.util.ScrollFirstRecyclerView;
 import com.android.ui.kent.demo.recyclerview.util.SimpleData;
 
 import java.util.ArrayList;
@@ -27,10 +24,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import timber.log.Timber;
 
 /**
  * Created by Kent Song on 2019/1/5.
@@ -41,7 +35,7 @@ public class RvScrollActivity extends BaseActivity {
     FocusableQuickRecyclerView mainRv;
 
     @BindView(R.id.main_rv2)
-    FocusableRecyclerView mainRv2;
+    ScrollFirstRecyclerView mainRv2;
 
     ScrollObserver mScrollObserver = new ScrollObserver();
     private boolean mIsScrolling;
@@ -87,6 +81,7 @@ public class RvScrollActivity extends BaseActivity {
         mainRv2.setLayoutManager(new CenterLayoutManger(this, 1000));
         mainRv2.setAdapter(adapter2);
         mainRv2.setCanFocusOutHorizontal(true);
+        mainRv2.enableRxScrollVertical();
 //        mainRv2.setCanBoundarySearchNext(false);
 //        mainRv2.setDebugMode(true);
 //        mainRv2.enableRxScrollVertical();
@@ -118,13 +113,13 @@ public class RvScrollActivity extends BaseActivity {
 
     }
 
-    private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener(){
+    private View.OnFocusChangeListener mFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if(hasFocus){
-                ((Button)v).setText("获得焦点");
+            if (hasFocus) {
+                ((Button) v).setText("获得焦点");
             } else {
-                ((Button)v).setText("未获焦");
+                ((Button) v).setText("未获焦");
 
             }
         }
@@ -150,7 +145,7 @@ public class RvScrollActivity extends BaseActivity {
     private List<SimpleData<TextVO>> genSimpleData(int count) {
         List<TextVO> list = genData(count);
         List<SimpleData<TextVO>> sList = new ArrayList<>();
-        for(TextVO vo : list){
+        for (TextVO vo : list) {
             sList.add(new SimpleData<>(vo));
         }
         return sList;

@@ -14,7 +14,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnTop"
         app:layout_constraintBottom_toTopOf="@+id/btnBottom" />
 
-    <com.android.ui.kent.demo.recyclerview.util.FocusableRecyclerView
+    <com.android.ui.kent.demo.recyclerview.util.ScrollFirstRecyclerView
         android:id="@+id/main_rv2"
         android:layout_width="100dp"
         android:layout_height="864px"
