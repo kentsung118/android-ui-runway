@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.alarm.AlarmActivity;
 import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
+import com.android.ui.kent.demo.architecture.room.RoomActivity;
 import com.android.ui.kent.demo.cardview.CardActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.eventbus.EventBusActivity;
@@ -59,6 +60,7 @@ public class MainActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_arc_room));
         list.add(getString(R.string.main_action_scroll_rv));
         list.add(getString(R.string.main_action_lifecycle_owner_view));
         list.add(getString(R.string.main_action_customize_view));
@@ -135,8 +137,10 @@ public class MainActivity extends BaseActivity {
                 CustomizeViewActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_lifecycle_owner_view))) {
                 LifeCycleActivity.launch(activity);
-            }else if (actionName.equals(getString(R.string.main_action_scroll_rv))) {
+            } else if (actionName.equals(getString(R.string.main_action_scroll_rv))) {
                 RvScrollActivity.launch(activity);
+            }else if (actionName.equals(getString(R.string.main_action_arc_room))) {
+                RoomActivity.launch(activity);
             }
         }
     };

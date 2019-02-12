@@ -15,7 +15,6 @@ import com.android.ui.kent.demo.recyclerview.multi_layer.CenterLayoutManger;
 import com.android.ui.kent.demo.recyclerview.multi_layer.lookback.TextAdapter;
 import com.android.ui.kent.demo.recyclerview.multi_layer.model.TextVO;
 import com.android.ui.kent.demo.recyclerview.util.FocusableQuickRecyclerView;
-import com.android.ui.kent.demo.recyclerview.util.FocusableRecyclerView;
 import com.android.ui.kent.demo.recyclerview.util.ScrollFirstRecyclerView;
 import com.android.ui.kent.demo.recyclerview.util.SimpleData;
 

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.facebook.stetho.Stetho;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -26,6 +27,8 @@ public class MyApplication extends Application {
         super.onCreate();
 
         initImageLoader(getApplicationContext());
+
+        Stetho.initializeWithDefaults(this);
     }
 
     public static void initImageLoader(Context context) {
