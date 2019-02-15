@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.android.ui.kent.R;
 import com.android.ui.kent.database.room.Member;
 import com.android.ui.kent.database.room.MemberDao;
-import com.android.ui.kent.database.room.MemberDataBase;
+import com.android.ui.kent.database.room.MemberDb;
 import com.android.ui.kent.demo.BaseActivity;
 import com.google.gson.Gson;
 
@@ -25,7 +25,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -72,7 +71,7 @@ public class RoomActivity extends BaseActivity {
                         .doOnNext(new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
-                                MemberDataBase.getInstance(RoomActivity.this)
+                                MemberDb.getInstance(RoomActivity.this)
                                         .getMemberDao()
                                         .insert(member);
                             }
@@ -92,7 +91,7 @@ public class RoomActivity extends BaseActivity {
                     return;
                 }
 
-                MemberDao dao = MemberDataBase
+                MemberDao dao = MemberDb
                         .getInstance(this)
                         .getMemberDao();
 
@@ -101,7 +100,7 @@ public class RoomActivity extends BaseActivity {
                         .doOnNext(new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
-                                Member member = dao.getUser(Integer.parseInt(editText.getText().toString()));
+                                Member member = dao.getMember(Integer.parseInt(editText.getText().toString()));
                                 if(member != null){
                                     dao.delete(member);
                                 }
@@ -121,7 +120,7 @@ public class RoomActivity extends BaseActivity {
     }
 
     private void queryMember() {
-        List<Member> allMembers = MemberDataBase
+        List<Member> allMembers = MemberDb
                 .getInstance(this)
                 .getMemberDao()
                 .getAllMembers();

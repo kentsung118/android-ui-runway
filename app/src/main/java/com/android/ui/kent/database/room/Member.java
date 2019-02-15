@@ -23,6 +23,20 @@ public class Member {
     private int age;
     private Date birthday;
 
+    public Member() {
+    }
+
+    private Member(Builder builder) {
+        setId(builder.id);
+        setName(builder.name);
+        setAge(builder.age);
+        setBirthday(builder.birthday);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public int getId() {
         return id;
     }
@@ -57,5 +71,40 @@ public class Member {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+
+    public static final class Builder {
+        private int id;
+        private String name;
+        private int age;
+        private Date birthday;
+
+        private Builder() {
+        }
+
+        public Builder setId(int val) {
+            id = val;
+            return this;
+        }
+
+        public Builder setName(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder setAge(int val) {
+            age = val;
+            return this;
+        }
+
+        public Builder setBirthday(Date val) {
+            birthday = val;
+            return this;
+        }
+
+        public Member build() {
+            return new Member(this);
+        }
     }
 }

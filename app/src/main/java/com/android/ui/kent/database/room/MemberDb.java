@@ -4,7 +4,6 @@ import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
@@ -12,22 +11,22 @@ import android.content.Context;
  * Created by Kent Song on 2019/2/11.
  */
 @Database(entities = {Member.class}, version = 2, exportSchema = false)
-public abstract class MemberDataBase extends RoomDatabase {
+public abstract class MemberDb extends RoomDatabase {
 
     private static final String DB_NAME = "MemberDatabase.db";
-    private static volatile MemberDataBase instance;
+    private static volatile MemberDb instance;
 
-    public static synchronized MemberDataBase getInstance(Context context) {
+    public static synchronized MemberDb getInstance(Context context) {
         if (instance == null) {
             instance = create(context);
         }
         return instance;
     }
 
-    private static MemberDataBase create(final Context context) {
+    private static MemberDb create(final Context context) {
         return Room.databaseBuilder(
                 context,
-                MemberDataBase.class,
+                MemberDb.class,
                 DB_NAME)
                 .addMigrations(MIGRATION_1_2)
                 .build();

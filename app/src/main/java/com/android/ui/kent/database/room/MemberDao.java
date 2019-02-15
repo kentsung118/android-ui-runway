@@ -31,7 +31,7 @@ public interface MemberDao {
     void delete(Member... members);
 
     @Query("SELECT * FROM Member WHERE id=:id")
-    Member getUser(int id);
+    Member getMember(int id);
 
     @Query("SELECT * FROM Member")
     Cursor getUserCursor();
@@ -41,5 +41,8 @@ public interface MemberDao {
 
     @Query("SELECT * FROM Member WHERE age=:age LIMIT :max")
     List<Member> getUsersByAge(int max, int... age);
+
+    @Query("DELETE FROM Member")
+    void clearAll();
 
 }
