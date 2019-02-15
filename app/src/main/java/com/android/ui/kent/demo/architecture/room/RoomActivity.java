@@ -50,6 +50,8 @@ public class RoomActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
         ButterKnife.bind(this);
+
+
     }
 
     private void init() {

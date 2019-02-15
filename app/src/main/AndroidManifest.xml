@@ -41,6 +41,7 @@
         <activity android:name=".demo.architecture.lifecycle.LifeCycleActivity"/>
         <activity android:name=".demo.recyclerview.scroll.RvScrollActivity"/>
         <activity android:name=".demo.architecture.room.RoomActivity"/>
+        <activity android:name=".demo.mvvm.view.MvvmActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

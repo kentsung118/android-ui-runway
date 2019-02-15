@@ -19,6 +19,7 @@ import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.layout.contraint.ConstraintLayoutActivity;
 import com.android.ui.kent.demo.layout.style.StyleSelectorActivity;
 import com.android.ui.kent.demo.listview.ListViewActivity;
+import com.android.ui.kent.demo.mvvm.view.MvvmActivity;
 import com.android.ui.kent.demo.network.okhttp.OKHttpActivity;
 import com.android.ui.kent.demo.network.retrofit.RetrofitActivity;
 import com.android.ui.kent.demo.network.rxjava.RxJavaActivity;
@@ -60,6 +61,7 @@ public class MainActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_mvvm));
         list.add(getString(R.string.main_action_arc_room));
         list.add(getString(R.string.main_action_scroll_rv));
         list.add(getString(R.string.main_action_lifecycle_owner_view));
@@ -141,6 +143,8 @@ public class MainActivity extends BaseActivity {
                 RvScrollActivity.launch(activity);
             }else if (actionName.equals(getString(R.string.main_action_arc_room))) {
                 RoomActivity.launch(activity);
+            } else if(actionName.endsWith(getString(R.string.main_action_mvvm))){
+                MvvmActivity.launch(activity);
             }
         }
     };
