@@ -28,6 +28,7 @@ import com.android.ui.kent.demo.recyclerview.loadmore.LoadMoreActivity;
 import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
 import com.android.ui.kent.demo.recyclerview.scroll.RvScrollActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
+import com.android.ui.kent.demo.udp.UdpActivity;
 import com.android.ui.kent.demo.ui_response.UIResponseActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
 import com.android.ui.kent.demo.widget.view.CustomizeViewActivity;
@@ -61,6 +62,7 @@ public class MainActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_udp));
         list.add(getString(R.string.main_action_mvvm));
         list.add(getString(R.string.main_action_arc_room));
         list.add(getString(R.string.main_action_scroll_rv));
@@ -141,10 +143,12 @@ public class MainActivity extends BaseActivity {
                 LifeCycleActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_scroll_rv))) {
                 RvScrollActivity.launch(activity);
-            }else if (actionName.equals(getString(R.string.main_action_arc_room))) {
+            } else if (actionName.equals(getString(R.string.main_action_arc_room))) {
                 RoomActivity.launch(activity);
-            } else if(actionName.endsWith(getString(R.string.main_action_mvvm))){
+            } else if (actionName.endsWith(getString(R.string.main_action_mvvm))) {
                 MvvmActivity.launch(activity);
+            } else if (actionName.endsWith(getString(R.string.main_action_udp))) {
+                UdpActivity.launch(activity);
             }
         }
     };

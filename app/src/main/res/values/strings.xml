@@ -26,6 +26,7 @@
     <string name="main_action_scroll_rv">RecyclerView Scroll</string>
     <string name="main_action_arc_room">Arc Room</string>
     <string name="main_action_mvvm">MVVM Demo</string>
+    <string name="main_action_udp">UDP Demo</string>
 
 
 </resources>
