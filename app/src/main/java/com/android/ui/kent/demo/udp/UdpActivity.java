@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
-import com.android.ui.kent.demo.mvvm.view.MvvmActivity;
+import com.android.ui.kent.demo.udp.vo.PonInfo;
+import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,12 +33,22 @@ public class UdpActivity extends BaseActivity {
     @BindView(R.id.text_result)
     TextView textResult;
 
+    UdpUtils mUdpUtils;
+    PON_Contanst mPon;
+    DeviceManager mDeviceManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_udp);
         ButterKnife.bind(this);
         setupToolBar();
+
+        mDeviceManager = new DeviceManager();
+        mUdpUtils = new UdpUtils();
+        mPon = new PON_Contanst();
+
+        getLifecycle().addObserver(mUdpUtils);
 
     }
 
@@ -48,10 +59,16 @@ public class UdpActivity extends BaseActivity {
 
     @OnClick({R.id.btn_send, R.id.btn_reciver})
     public void onViewClicked(View view) {
+
         switch (view.getId()) {
             case R.id.btn_send:
-                break;
-            case R.id.btn_reciver:
+
+                mDeviceManager.requestPonInfo(new DeviceManager.PonInfoListener() {
+                    @Override
+                    public void onDataReceived(PonInfo ponInfo) {
+                        textResult.setText(new Gson().toJson(ponInfo));
+                    }
+                });
                 break;
         }
     }
@@ -60,4 +77,6 @@ public class UdpActivity extends BaseActivity {
         Intent intent = new Intent(activity, UdpActivity.class);
         activity.startActivity(intent);
     }
+
+
 }
