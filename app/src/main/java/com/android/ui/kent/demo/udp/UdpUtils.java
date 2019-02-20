@@ -18,16 +18,26 @@ import timber.log.Timber;
  */
 public class UdpUtils implements LifecycleObserver {
 
-    private static final int localport = 16888;//自己本地的端口
-    private static final int targetPort = 16888;//目标指定的接收端口
-    private static final String targetAddr = "192.168.1.1";//目标IP地址
+//    private static final int localPort = 16888;//自己本地的端口
+//    private static final int targetPort = 16888;//目标指定的接收端口
+//    private static final String targetAddr = "192.168.1.1";//目标IP地址
+//    private static final int byteSize = 128;//byte数组大小
+
+    private int localPort;//自己本地的端口
+    private int targetPort;//目标指定的接收端口
+    private String targetAddr;//目标IP地址
     private static final int byteSize = 128;//byte数组大小
 
     private DatagramSocket socket = null;
 
-    public UdpUtils() {
+    public UdpUtils(String ip, int port) {
+
+        localPort = port;
+        targetPort = port;
+        targetAddr = ip;
+
         try {
-            socket = new DatagramSocket(localport);//若需要制定本地端口发送数据，则在此填入端口号
+            socket = new DatagramSocket(localPort);//若需要制定本地端口发送数据，则在此填入端口号
             socket.setSoTimeout(1000);
         } catch (SocketException e) {
             e.printStackTrace();
@@ -63,7 +73,7 @@ public class UdpUtils implements LifecycleObserver {
      *
      * @return
      */
-    public String UdpReceive() {
+    public String UdpReceivePON() {
         String receiveStr = null;
         try {
             byte[] buf = new byte[byteSize];
@@ -81,6 +91,32 @@ public class UdpUtils implements LifecycleObserver {
             Timber.d("txHex = %s", txHex);
 
             receiveStr = txHex;
+
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return receiveStr;
+
+    }
+
+    /**
+     * 通过Udp接收数据
+     *
+     * @return
+     */
+    public String UdpReceiveLive() {
+        String receiveStr = null;
+        try {
+            byte[] buf = new byte[byteSize];
+            DatagramPacket packet = new DatagramPacket(buf, buf.length);
+            socket.receive(packet);
+
+            Timber.d("buf.length = %s", buf.length);
+            String bytesHexStr = bytesToHex(buf);
+
+            receiveStr = bytesHexStr;
 
         } catch (SocketException e) {
             e.printStackTrace();

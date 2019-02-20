@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
+import com.android.ui.kent.demo.udp.vo.LinkInfo;
 import com.android.ui.kent.demo.udp.vo.PonInfo;
 import com.google.gson.Gson;
 
@@ -26,14 +27,13 @@ public class UdpActivity extends BaseActivity {
 
     @BindView(R.id.edit_text)
     EditText editText;
-    @BindView(R.id.btn_send)
+    @BindView(R.id.btn_send_pon)
     Button btnSend;
-    @BindView(R.id.btn_reciver)
+    @BindView(R.id.btn_send_live)
     Button btnReciver;
     @BindView(R.id.text_result)
     TextView textResult;
 
-    UdpUtils mUdpUtils;
     PON_Contanst mPon;
     DeviceManager mDeviceManager;
 
@@ -45,11 +45,7 @@ public class UdpActivity extends BaseActivity {
         setupToolBar();
 
         mDeviceManager = new DeviceManager();
-        mUdpUtils = new UdpUtils();
         mPon = new PON_Contanst();
-
-        getLifecycle().addObserver(mUdpUtils);
-
     }
 
     private void setupToolBar() {
@@ -57,16 +53,23 @@ public class UdpActivity extends BaseActivity {
         this.setToolbarTitle(getString(R.string.main_action_udp));
     }
 
-    @OnClick({R.id.btn_send, R.id.btn_reciver})
+    @OnClick({R.id.btn_send_pon, R.id.btn_send_live})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
-            case R.id.btn_send:
-
+            case R.id.btn_send_pon:
                 mDeviceManager.requestPonInfo(new DeviceManager.PonInfoListener() {
                     @Override
                     public void onDataReceived(PonInfo ponInfo) {
                         textResult.setText(new Gson().toJson(ponInfo));
+                    }
+                });
+                break;
+            case R.id.btn_send_live:
+                mDeviceManager.requestLiveInfo(new DeviceManager.LinkInfoListener() {
+                    @Override
+                    public void onDataReceived(LinkInfo linkInfo) {
+                        textResult.setText(new Gson().toJson(linkInfo));
                     }
                 });
                 break;

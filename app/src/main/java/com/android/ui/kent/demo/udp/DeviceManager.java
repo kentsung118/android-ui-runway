@@ -1,5 +1,6 @@
 package com.android.ui.kent.demo.udp;
 
+import com.android.ui.kent.demo.udp.vo.LinkInfo;
 import com.android.ui.kent.demo.udp.vo.PonInfo;
 
 import java.text.DecimalFormat;
@@ -16,12 +17,14 @@ import timber.log.Timber;
 public class DeviceManager {
 
     private PonInfoListener mPonInfoListener;
-    UdpUtils mUdpUtils;
+    UdpUtils mPonUdp;
+    UdpUtils mLiveUdp;
     PON_Contanst mPon = new PON_Contanst();
 
 
     public DeviceManager() {
-        mUdpUtils = new UdpUtils();
+        mPonUdp = new UdpUtils("192.168.1.1", 16888);
+        mLiveUdp = new UdpUtils("192.168.1.211", 65530);
     }
 
     public void requestPonInfo(PonInfoListener listener) {
@@ -34,21 +37,21 @@ public class DeviceManager {
         Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .doOnNext(s -> {
-                    mUdpUtils.UdpSend(mPon.data_0x92_WiFi_MAC_get);
-                    String hex = mUdpUtils.UdpReceive();
+                    mPonUdp.UdpSend(mPon.data_0x92_WiFi_MAC_get);
+                    String hex = mPonUdp.UdpReceivePON();
                     Timber.d("hex = %s", hex);
                     ponInfo.setWifyMac(PonConverter.formatMac(hex));
                 })
                 .delay(time, TimeUnit.MILLISECONDS)
                 .doOnNext(s -> {
-                    mUdpUtils.UdpSend(mPon.data_0x91_ONU_MAC_get);
-                    String hex = mUdpUtils.UdpReceive();
+                    mPonUdp.UdpSend(mPon.data_0x91_ONU_MAC_get);
+                    String hex = mPonUdp.UdpReceivePON();
                     ponInfo.setOnuMac(hex);
                 })
                 .delay(time, TimeUnit.MILLISECONDS)
                 .doOnNext(s -> {
-                    mUdpUtils.UdpSend(mPon.data_0x89_Optical_Connect_status);
-                    String hex = mUdpUtils.UdpReceive();
+                    mPonUdp.UdpSend(mPon.data_0x89_Optical_Connect_status);
+                    String hex = mPonUdp.UdpReceivePON();
                     ponInfo.setPon(PonInfo.PON.newBuilder()
                             .setMac(PonConverter.formatMac(hex.substring(4, 16)))
                             .setTemperature(decimalFormat.format(PonConverter.parseHex4(hex.substring(18, 22)) * 0.1) + " 摄氏度")
@@ -61,8 +64,8 @@ public class DeviceManager {
                 })
                 .delay(time, TimeUnit.MILLISECONDS)
                 .doOnNext(s -> {
-                    mUdpUtils.UdpSend(mPon.data_0x31_WAN_Status_Get);
-                    String hex = mUdpUtils.UdpReceive();
+                    mPonUdp.UdpSend(mPon.data_0x31_WAN_Status_Get);
+                    String hex = mPonUdp.UdpReceivePON();
                     ponInfo.setWan(PonInfo.WAN.newBuilder()
                             .setIp(PonConverter.formatIp(hex.substring(24, 32)))
                             .setSubMask(PonConverter.formatIp(hex.substring(32, 40)))
@@ -76,10 +79,28 @@ public class DeviceManager {
 
     }
 
+    public void requestLiveInfo(LinkInfoListener listener) {
+        LinkInfo linkInfo = new LinkInfo();
+        Observable.just("")
+                .subscribeOn(Schedulers.io())
+                .doOnNext(s -> {
+                    mLiveUdp.UdpSend(Live_Constant.sData);
+                    String hex = mLiveUdp.UdpReceiveLive();
+                    Timber.d("hex = %s", hex);
+                    linkInfo.parseHex(hex);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> listener.onDataReceived(linkInfo))
+                .subscribe();
+    }
+
 
     interface PonInfoListener {
         void onDataReceived(PonInfo ponInfo);
     }
 
+    interface LinkInfoListener {
+        void onDataReceived(LinkInfo linkInfo);
+    }
 
 }
