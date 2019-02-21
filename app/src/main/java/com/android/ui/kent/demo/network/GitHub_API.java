@@ -30,8 +30,8 @@ public class GitHub_API {
     public static GitHubService getGithubService() {
 
         OkHttpClient.Builder httpBuilder = getTrustAllBuilder();
-        httpBuilder.readTimeout(10, TimeUnit.SECONDS);
-        httpBuilder.connectTimeout(10, TimeUnit.SECONDS);
+        httpBuilder.readTimeout(6, TimeUnit.SECONDS);
+        httpBuilder.connectTimeout(6, TimeUnit.SECONDS);
         httpBuilder.cache(null);
 
         //http header setting

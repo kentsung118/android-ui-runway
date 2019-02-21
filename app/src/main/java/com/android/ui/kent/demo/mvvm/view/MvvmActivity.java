@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
@@ -32,8 +33,8 @@ public class MvvmActivity extends BaseActivity {
     EditText editText;
     @BindView(R.id.btn_query)
     Button btnQuery;
-    @BindView(R.id.btn_api_error)
-    Button btnApiError;
+//    @BindView(R.id.btn_api_error)
+//    Button btnApiError;
     @BindView(R.id.text_result)
     TextView textResult;
 
@@ -56,29 +57,39 @@ public class MvvmActivity extends BaseActivity {
     }
 
     private void setupObserve() {
-        mGithubVM.getmRepoData().observe(this, new Observer<List<Repo>>() {
+        mGithubVM.getRepoData().observe(this, new Observer<List<Repo>>() {
             @Override
             public void onChanged(@Nullable List<Repo> repos) {
                 StringBuilder sb = new StringBuilder();
-                if(repos != null && repos.size() > 0){
-                    for(Repo repo : repos){
-                        sb.append(new Gson().toJson(repo)).append(System.lineSeparator());
-                    }
+                for (Repo repo : repos) {
+                    sb.append(new Gson().toJson(repo)).append(System.lineSeparator());
                 }
                 textResult.setText(sb.toString());
             }
         });
 
+        mGithubVM.getNetworkError().observe(this, new Observer<Throwable>() {
+            @Override
+            public void onChanged(@Nullable Throwable throwable) {
+                textResult.setText(throwable.getMessage());
+            }
+        });
+
+        mGithubVM.getRepoStatus().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                Toast.makeText(MvvmActivity.this, s, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
-    @OnClick({R.id.btn_query, R.id.btn_api_error})
+    @OnClick({R.id.btn_query})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_query:
                 String account = editText.getText().toString();
                 mGithubVM.queryUserRepo(account);
-                break;
-            case R.id.btn_api_error:
                 break;
         }
     }
