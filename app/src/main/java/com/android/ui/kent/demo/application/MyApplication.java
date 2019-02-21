@@ -3,6 +3,8 @@ package com.android.ui.kent.demo.application;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.facebook.stetho.Stetho;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -20,12 +22,12 @@ import timber.log.Timber;
  * Created by Kent on 2016/10/5.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+        MultiDex.install(this);
         initImageLoader(getApplicationContext());
 
         Stetho.initializeWithDefaults(this);

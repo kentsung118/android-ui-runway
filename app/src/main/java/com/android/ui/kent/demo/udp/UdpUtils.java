@@ -1,9 +1,5 @@
 package com.android.ui.kent.demo.udp;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -16,12 +12,7 @@ import timber.log.Timber;
 /**
  * Created by Kent Song on 2019/2/18.
  */
-public class UdpUtils implements LifecycleObserver {
-
-//    private static final int localPort = 16888;//自己本地的端口
-//    private static final int targetPort = 16888;//目标指定的接收端口
-//    private static final String targetAddr = "192.168.1.1";//目标IP地址
-//    private static final int byteSize = 128;//byte数组大小
+public class UdpUtils {
 
     private int localPort;//自己本地的端口
     private int targetPort;//目标指定的接收端口
@@ -139,9 +130,7 @@ public class UdpUtils implements LifecycleObserver {
         return new String(hexChars);
     }
 
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    void destory() {
+    public void release() {
         if (socket != null) {
             socket.close();
         }

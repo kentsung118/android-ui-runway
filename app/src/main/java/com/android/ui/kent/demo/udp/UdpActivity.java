@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
@@ -31,6 +32,8 @@ public class UdpActivity extends BaseActivity {
     Button btnSend;
     @BindView(R.id.btn_send_live)
     Button btnReciver;
+    @BindView(R.id.btn_send_pppoe)
+    Button btnPPPoE;
     @BindView(R.id.text_result)
     TextView textResult;
 
@@ -46,6 +49,7 @@ public class UdpActivity extends BaseActivity {
 
         mDeviceManager = new DeviceManager();
         mPon = new PON_Contanst();
+        getLifecycle().addObserver(mDeviceManager);
     }
 
     private void setupToolBar() {
@@ -53,7 +57,7 @@ public class UdpActivity extends BaseActivity {
         this.setToolbarTitle(getString(R.string.main_action_udp));
     }
 
-    @OnClick({R.id.btn_send_pon, R.id.btn_send_live})
+    @OnClick({R.id.btn_send_pon, R.id.btn_send_live, R.id.btn_send_pppoe})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -63,6 +67,11 @@ public class UdpActivity extends BaseActivity {
                     public void onDataReceived(PonInfo ponInfo) {
                         textResult.setText(new Gson().toJson(ponInfo));
                     }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Toast.makeText(UdpActivity.this, "send pon error", Toast.LENGTH_LONG).show();
+                    }
                 });
                 break;
             case R.id.btn_send_live:
@@ -71,7 +80,16 @@ public class UdpActivity extends BaseActivity {
                     public void onDataReceived(LinkInfo linkInfo) {
                         textResult.setText(new Gson().toJson(linkInfo));
                     }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Toast.makeText(UdpActivity.this, "send live error", Toast.LENGTH_LONG).show();
+
+                    }
                 });
+                break;
+            case R.id.btn_send_pppoe:
+                mDeviceManager.setPPPoe("s003", "1234");
                 break;
         }
     }

@@ -16,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -40,6 +40,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$appComp_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation 'com.android.support:multidex:1.0.3'
 
 
     implementation 'com.jakewharton:butterknife:8.3.0'
@@ -99,6 +100,8 @@ dependencies {
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 
 
     // local unit tests

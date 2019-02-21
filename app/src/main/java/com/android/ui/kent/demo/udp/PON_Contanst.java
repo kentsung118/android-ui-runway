@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class PON_Contanst {
 
     //TV应用界面命令
-    public byte[] data_0x01_PPPoE_Set = byteMergerAll(sPonPrefix, new byte[]{(byte) 0x01}, sPonSuffix);
+    public byte[] data_0x01_PPPoE_Set = byteMergerAll(sPonPrefix, new byte[]{(byte) 0x01}, new byte[]{(byte) 0x00,(byte) 0x00,(byte) 0x5D});
     public byte[] data_0x81_PPPoE_Get = byteMergerAll(sPonPrefix, new byte[]{(byte) 0x81}, sPonSuffix);
     public byte[] data_0x02_WLAN_Set = byteMergerAll(sPonPrefix, new byte[]{(byte) 0x02}, sPonSuffix);
     public byte[] data_0x82_WLAN_Get = byteMergerAll(sPonPrefix, new byte[]{(byte) 0x82}, sPonSuffix);
@@ -58,7 +58,7 @@ public class PON_Contanst {
             (byte) 0x00
     };
 
-    private static byte[] byteMergerAll(byte[]... values) {
+    public static byte[] byteMergerAll(byte[]... values) {
         int length_byte = 0;
         for (int i = 0; i < values.length; i++) {
             length_byte += values[i].length;

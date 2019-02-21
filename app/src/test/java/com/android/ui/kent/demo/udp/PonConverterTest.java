@@ -2,6 +2,7 @@ package com.android.ui.kent.demo.udp;
 
 import com.android.ui.kent.common.MathUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -65,6 +66,32 @@ public class PonConverterTest {
         System.out.println("is 万兆连接正常 = " + ((retLink & 0x01) > 0));
     }
 
+
+    @Test
+    public void formatPPPoe() {
+        String id = "a001";
+        String pwd = "1234";
+        String hexId = StringToHex.stringToHexString(id);
+        String hexPwd = StringToHex.stringToHexString(pwd);
+        System.out.println(hexId);
+        System.out.println(hexPwd);
+
+
+        byte[] buf = new byte[60];
+        System.out.println(StringToHex.bytesToHexString(buf));
+        byte[] idBytes = StringToHex.hexStringToByteArray(hexId);
+        System.out.println(StringToHex.bytesToHexString(idBytes));
+
+        String hexFullId = StringUtils.rightPad(hexId, 126, "0");
+        String hexFullPwd = StringUtils.rightPad(hexPwd, 60, "0");
+
+        System.out.println("hexFullId = " + hexFullId);
+        System.out.println("hexFullPwd = " + hexFullPwd);
+
+        PON_Contanst pon = new PON_Contanst();
+        byte[] bytes = PON_Contanst.byteMergerAll(pon.data_0x01_PPPoE_Set, StringToHex.hexStringToByteArray(hexFullId), StringToHex.hexStringToByteArray(hexFullPwd));
+        System.out.println("byteMergerHex = " + StringToHex.bytesToHexString(bytes));
+    }
 
 
 }
