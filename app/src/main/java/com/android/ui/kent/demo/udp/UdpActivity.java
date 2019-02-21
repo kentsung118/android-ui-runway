@@ -32,12 +32,10 @@ public class UdpActivity extends BaseActivity {
     Button btnSend;
     @BindView(R.id.btn_send_live)
     Button btnReciver;
-    @BindView(R.id.btn_send_pppoe)
-    Button btnPPPoE;
     @BindView(R.id.text_result)
     TextView textResult;
 
-    PON_Contanst mPon;
+    UdpCommand mPon;
     DeviceManager mDeviceManager;
 
     @Override
@@ -48,7 +46,7 @@ public class UdpActivity extends BaseActivity {
         setupToolBar();
 
         mDeviceManager = new DeviceManager();
-        mPon = new PON_Contanst();
+        mPon = new UdpCommand();
         getLifecycle().addObserver(mDeviceManager);
     }
 
@@ -57,7 +55,7 @@ public class UdpActivity extends BaseActivity {
         this.setToolbarTitle(getString(R.string.main_action_udp));
     }
 
-    @OnClick({R.id.btn_send_pon, R.id.btn_send_live, R.id.btn_send_pppoe})
+    @OnClick({R.id.btn_send_pon, R.id.btn_send_live, R.id.btn_send_pppoe_get, R.id.btn_send_pppoe_set})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -88,8 +86,21 @@ public class UdpActivity extends BaseActivity {
                     }
                 });
                 break;
-            case R.id.btn_send_pppoe:
-                mDeviceManager.setPPPoe("s003", "1234");
+            case R.id.btn_send_pppoe_set:
+                mDeviceManager.setPPPoe("s888", "12346");
+                break;
+            case R.id.btn_send_pppoe_get:
+                mDeviceManager.getPPPoE(new DeviceManager.PonInfoListener() {
+                    @Override
+                    public void onDataReceived(PonInfo ponInfo) {
+                        textResult.setText(new Gson().toJson(ponInfo));
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+
+                    }
+                });
                 break;
         }
     }

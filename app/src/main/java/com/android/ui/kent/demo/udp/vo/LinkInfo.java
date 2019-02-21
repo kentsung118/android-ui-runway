@@ -1,7 +1,8 @@
 package com.android.ui.kent.demo.udp.vo;
 
 import com.android.ui.kent.common.MathUtils;
-import com.android.ui.kent.demo.udp.PonConverter;
+import com.android.ui.kent.demo.udp.FormatUtils;
+import com.android.ui.kent.demo.udp.HexUtils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -37,7 +38,7 @@ public class LinkInfo {
     private void parseReciveDbm() {
         String hexOpticPower = mHexStr.substring(10, 14);
         Timber.d("hexOpticPower = " + hexOpticPower);
-        double ss = new BigDecimal(PonConverter.parseHex4(hexOpticPower) * 0.1).doubleValue();
+        double ss = new BigDecimal(HexUtils.parseHex4(hexOpticPower) * 0.1).doubleValue();
         double dbm = new BigDecimal(MathUtils.log(ss, 10)).multiply(new BigDecimal(10)).add(new BigDecimal(-30)).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
         Timber.d("dbm = " + dbm);
         receiveDbm = dbm + " dbm";

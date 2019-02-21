@@ -28,8 +28,8 @@ public class DeviceManager implements LifecycleObserver {
     private PonInfoListener mPonInfoListener;
     UdpUtils mPonUdp;
     UdpUtils mLiveUdp;
-    PON_Contanst mPon = new PON_Contanst();
-
+    UdpCommand.PON mPon = new UdpCommand.PON();
+    UdpCommand.Link mLink = new UdpCommand.Link();
 
     public DeviceManager() {
         init();
@@ -38,9 +38,16 @@ public class DeviceManager implements LifecycleObserver {
     private void init() {
         String ip = null;
         try {
-            Process process = Runtime.getRuntime().exec("adb shell getprop dhcp.eth0.gateway");
-            ip = IOUtils.toString(process.getInputStream(), "utf-8");
-            Timber.d("ip = %s", ip);
+            //嘗試獲取3次IP
+            int i = 0;
+            while (i++ < 3) {
+                String tempIp = getEth0Gateway();
+                Timber.d("deviceManager/tempIp = %s", tempIp);
+                if (tempIp.startsWith("192.")) {
+                    ip = tempIp;
+                    break;
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,6 +59,13 @@ public class DeviceManager implements LifecycleObserver {
         String thirdNum = ip.split("\\.")[2];
         mPonUdp = new UdpUtils("192.168." + thirdNum + ".1", 16888);
         mLiveUdp = new UdpUtils("192.168." + thirdNum + ".211", 65530);
+    }
+
+    private String getEth0Gateway() throws IOException {
+        Process process = Runtime.getRuntime().exec("adb shell getprop dhcp.eth0.gateway");
+        String result = IOUtils.toString(process.getInputStream(), "utf-8");
+        Timber.d("deviceManager/dhcp.eth0.gateway = %s", result);
+        return result;
     }
 
     public void requestPonInfo(PonInfoListener listener) {
@@ -68,7 +82,7 @@ public class DeviceManager implements LifecycleObserver {
                     String hex = mPonUdp.UdpReceivePON();
                     Timber.d("hex = %s", hex);
                     if (!TextUtils.isEmpty(hex)) {
-                        ponInfo.setWifyMac(PonConverter.formatMac(hex));
+                        ponInfo.setWifyMac(FormatUtils.formatMac(hex));
                     }
                 })
                 .delay(time, TimeUnit.MILLISECONDS)
@@ -83,12 +97,12 @@ public class DeviceManager implements LifecycleObserver {
                     String hex = mPonUdp.UdpReceivePON();
                     if (!TextUtils.isEmpty(hex)) {
                         ponInfo.setPon(PonInfo.PON.newBuilder()
-                                .setMac(PonConverter.formatMac(hex.substring(4, 16)))
-                                .setTemperature(decimalFormat.format(PonConverter.parseHex4(hex.substring(18, 22)) * 0.1) + " 摄氏度")
-                                .setVoltage(decimalFormat.format(PonConverter.parseHex4(hex.substring(22, 26)) * 0.1) + " V")
-                                .setElectricCurrent(decimalFormat.format(PonConverter.parseHex4(hex.substring(26, 30)) * 0.1) + " V")
-                                .setReciveOpticPower(decimalFormat.format(PonConverter.parseHex4(hex.substring(30, 34)) * 0.1) + " dBm")
-                                .setSendOpticPower(decimalFormat.format(PonConverter.parseHex4(hex.substring(34, 38)) * 0.1) + " dBm")
+                                .setMac(FormatUtils.formatMac(hex.substring(4, 16)))
+                                .setTemperature(decimalFormat.format(HexUtils.parseHex4(hex.substring(18, 22)) * 0.1) + " 摄氏度")
+                                .setVoltage(decimalFormat.format(HexUtils.parseHex4(hex.substring(22, 26)) * 0.1) + " V")
+                                .setElectricCurrent(decimalFormat.format(HexUtils.parseHex4(hex.substring(26, 30)) * 0.1) + " V")
+                                .setReciveOpticPower(decimalFormat.format(HexUtils.parseHex4(hex.substring(30, 34)) * 0.1) + " dBm")
+                                .setSendOpticPower(decimalFormat.format(HexUtils.parseHex4(hex.substring(34, 38)) * 0.1) + " dBm")
                                 .build());
                     }
                 })
@@ -98,10 +112,10 @@ public class DeviceManager implements LifecycleObserver {
                     String hex = mPonUdp.UdpReceivePON();
                     if (!TextUtils.isEmpty(hex)) {
                         ponInfo.setWan(PonInfo.WAN.newBuilder()
-                                .setIp(PonConverter.formatIp(hex.substring(24, 32)))
-                                .setSubMask(PonConverter.formatIp(hex.substring(32, 40)))
-                                .setDns(PonConverter.formatIp(hex.substring(40, 48)))
-                                .setGateway(PonConverter.formatIp(hex.substring(48, 56)))
+                                .setIp(FormatUtils.formatIp(hex.substring(24, 32)))
+                                .setSubMask(FormatUtils.formatIp(hex.substring(32, 40)))
+                                .setDns(FormatUtils.formatIp(hex.substring(40, 48)))
+                                .setGateway(FormatUtils.formatIp(hex.substring(48, 56)))
                                 .build());
                     }
 
@@ -113,35 +127,41 @@ public class DeviceManager implements LifecycleObserver {
 
     }
 
-    public void setPPPoe(String id, String pwd) {
+    public void getPPPoE(PonInfoListener listener) {
+        PonInfo ponInfo = new PonInfo();
         Observable.just("")
                 .subscribeOn(Schedulers.io())
-                .delay(1000, TimeUnit.MILLISECONDS)
                 .doOnNext(s -> {
                     mPonUdp.UdpSend(mPon.data_0x81_PPPoE_Get);
                     String hex = mPonUdp.UdpReceivePON();
-                    Timber.d("first PPPoE hex = " + hex);
+                    Timber.d("getPPPoE hex = %s",hex);
+                    PonInfo.PPPoe ppPoe = new PonInfo.PPPoe();
+                    ppPoe.setAccount(HexUtils.hexStringToString(hex.substring(0,126)).replace("\0", ""));
+                    ppPoe.setPwd(HexUtils.hexStringToString(hex.substring(126,186)).replace("\0", ""));
+                    ponInfo.setPppoe(ppPoe);
                 })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> listener.onDataReceived(ponInfo))
+                .subscribe();
+    }
+
+    public void setPPPoe(String id, String pwd) {
+        Observable.just("")
+                .subscribeOn(Schedulers.io())
                 .doOnNext(s -> {
 
-                    String hexId = StringToHex.stringToHexString(id);
-                    String hexPwd = StringToHex.stringToHexString(pwd);
+                    String hexId = HexUtils.stringToHexString(id);
+                    String hexPwd = HexUtils.stringToHexString(pwd);
                     String hexFullId = StringUtils.rightPad(hexId, 126, "0");
                     String hexFullPwd = StringUtils.rightPad(hexPwd, 60, "0");
 
                     Timber.d("hexFullId = " + hexFullId);
                     Timber.d("hexFullPwd = " + hexFullPwd);
 
-                    PON_Contanst pon = new PON_Contanst();
-                    byte[] bytes = PON_Contanst.byteMergerAll(pon.data_0x01_PPPoE_Set, StringToHex.hexStringToByteArray(hexFullId), StringToHex.hexStringToByteArray(hexFullPwd));
-                    Timber.d("byteMergerHex = " + StringToHex.bytesToHexString(bytes));
+                    UdpCommand pon = new UdpCommand();
+                    byte[] bytes = UdpCommand.byteMergerAll(mPon.data_0x01_PPPoE_Set, HexUtils.hexStringToByteArray(hexFullId), HexUtils.hexStringToByteArray(hexFullPwd));
+                    Timber.d("byteMergerHex = " + HexUtils.bytesToHexString(bytes));
                     mPonUdp.UdpSend(bytes);
-                })
-                .delay(1000, TimeUnit.MILLISECONDS)
-                .doOnNext(s -> {
-                    mPonUdp.UdpSend(mPon.data_0x81_PPPoE_Get);
-                    String hex = mPonUdp.UdpReceivePON();
-                    Timber.d("scoend PPPoE hex = " + hex);
                 })
                 .doOnError(throwable -> mPonInfoListener.onError(throwable))
                 .subscribe();
@@ -152,7 +172,7 @@ public class DeviceManager implements LifecycleObserver {
         Observable.just("")
                 .subscribeOn(Schedulers.io())
                 .doOnNext(s -> {
-                    mLiveUdp.UdpSend(Live_Constant.sData);
+                    mLiveUdp.UdpSend(mLink.data_live_status);
                     String hex = mLiveUdp.UdpReceiveLive();
                     Timber.d("hex = %s", hex);
                     linkInfo.parseHex(hex);

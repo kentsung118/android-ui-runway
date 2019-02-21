@@ -68,7 +68,7 @@ public class GitHub_API {
     public static OkHttpClient.Builder getTrustAllBuilder() {
         //信任所有憑證
         try {
-            // Create a trust manager that does not validate certificate chains
+            // Create a trust manager that does not validateIPv4 certificate chains
             final TrustManager[] trustAllCerts = new TrustManager[] {
                     new X509TrustManager() {
                         @Override

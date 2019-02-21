@@ -36,15 +36,15 @@ public class UdpUtils {
     }
 
     /**
-     * 使用Upd进行发送消息
+     * 使用 Upd 进行发送消息
      *
      * @param data 要发送的数据
      */
     public void UdpSend(byte[] data) {
 
         try {
-            String sendHexString = bytesToHex(data);
-            Timber.d("sendHexString = %s", sendHexString);
+            String sendHexString = HexUtils.bytesToHex(data);
+            Timber.d("udp/send/ip=%s, port=%s,  hex=%s", targetAddr, targetPort, sendHexString);
             DatagramPacket packet = new DatagramPacket(data, data.length, InetAddress.getByName(targetAddr), targetPort);
             socket.send(packet);
 
@@ -60,7 +60,7 @@ public class UdpUtils {
     }
 
     /**
-     * 通过Udp接收数据
+     * 通过 Udp 接收数据
      *
      * @return
      */
@@ -71,15 +71,11 @@ public class UdpUtils {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
 
-            Timber.d("buf.length = %s", buf.length);
-            String bytesHexStr = bytesToHex(buf);
-            Timber.d("bytesHexString = %s", bytesHexStr);
+            String bytesHexStr = HexUtils.bytesToHex(buf);
+            Timber.d("udp/receive/ip=%s, port=%s, bytesLength =%s, hex=%s", targetAddr, targetPort, buf.length, bytesHexStr);
             String txLengthHex = bytesHexStr.substring(16, 18);
-            Timber.d("txLengthHex = %s", txLengthHex);
             int txLengthInt = Integer.parseInt(txLengthHex, 16);
-            Timber.d("txLengthInt = %s", txLengthInt);
             String txHex = bytesHexStr.substring(18, 18 + txLengthInt * 2);
-            Timber.d("txHex = %s", txHex);
 
             receiveStr = txHex;
 
@@ -105,7 +101,7 @@ public class UdpUtils {
             socket.receive(packet);
 
             Timber.d("buf.length = %s", buf.length);
-            String bytesHexStr = bytesToHex(buf);
+            String bytesHexStr = HexUtils.bytesToHex(buf);
 
             receiveStr = bytesHexStr;
 
@@ -118,23 +114,11 @@ public class UdpUtils {
 
     }
 
-    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    public static String bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
-    }
 
     public void release() {
         if (socket != null) {
             socket.close();
         }
     }
-
 
 }

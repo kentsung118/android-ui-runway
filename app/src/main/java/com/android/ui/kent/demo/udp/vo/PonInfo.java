@@ -10,6 +10,7 @@ public class PonInfo {
     private String onuMac;
     private PON pon;
     private WAN wan;
+    private PPPoe pppoe;
 
 
     public String getWifyMac() {
@@ -42,6 +43,14 @@ public class PonInfo {
 
     public void setWan(WAN wan) {
         this.wan = wan;
+    }
+
+    public PPPoe getPppoe() {
+        return pppoe;
+    }
+
+    public void setPppoe(PPPoe pppoe) {
+        this.pppoe = pppoe;
     }
 
     public static class PON {
@@ -214,4 +223,24 @@ public class PonInfo {
         }
     }
 
+    public static class PPPoe{
+        String account;
+        String pwd;
+
+        public String getAccount() {
+            return account;
+        }
+
+        public void setAccount(String account) {
+            this.account = account;
+        }
+
+        public String getPwd() {
+            return pwd;
+        }
+
+        public void setPwd(String pwd) {
+            this.pwd = pwd;
+        }
+    }
 }

@@ -75,7 +75,7 @@ public abstract class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapt
      */
     @Override
     public final int getItemViewType(int position) {
-        // Delegate to proper methods based on the position, but validate first.
+        // Delegate to proper methods based on the position, but validateIPv4 first.
         if (headerItemCount > 0 && position < headerItemCount) {
             return validateViewType(getHeaderItemViewType(position)) + HEADER_VIEW_TYPE_OFFSET;
         } else {

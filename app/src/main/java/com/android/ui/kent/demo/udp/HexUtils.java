@@ -3,7 +3,7 @@ package com.android.ui.kent.demo.udp;
 /**
  * Created by Kent Song on 2019/2/20.
  */
-public class StringToHex {
+public class HexUtils {
 
     /**
      * 字符串转换为16进制字符串
@@ -82,5 +82,26 @@ public class StringToHex {
             sb.append(sTemp.toUpperCase());
         }
         return sb.toString();
+    }
+
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
+    public static short parseHex4(String num) {
+        if (num.length() != 4) {
+            throw new NumberFormatException("Wrong length: " + num.length() + ", must be 4.");
+        }
+        int ret = Integer.parseInt(num, 16);
+        ret = ((ret & 0x8000) > 0) ? (ret - 0x10000) : (ret);
+        return (short) ret;
     }
 }

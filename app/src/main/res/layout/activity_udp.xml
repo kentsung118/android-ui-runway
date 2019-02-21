@@ -45,7 +45,13 @@
         <Button
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:id="@+id/btn_send_pppoe"
+            android:id="@+id/btn_send_pppoe_get"
+            android:text="send PPPoE Get"/>
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:id="@+id/btn_send_pppoe_set"
             android:text="send PPPoE Set"/>
 
         <TextView

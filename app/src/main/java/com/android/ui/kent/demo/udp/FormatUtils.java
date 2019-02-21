@@ -6,15 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Kent Song on 2019/2/19.
  */
-public class PonConverter {
-    public static String convertHex2WiFi_MAC(String hexStr) {
-        return formatMac(hexStr);
-    }
-
-    public static String convertHex2ONU_MAC(String hexStr) {
-        return "";
-    }
-
+public class FormatUtils {
     public static String formatMac(String mac) {
         String regex = "[0-9a-fA-F]{12}";
         Pattern pattern = Pattern.compile(regex);
@@ -61,12 +53,4 @@ public class PonConverter {
         return sb.toString();
     }
 
-    public static short parseHex4(String num) {
-        if (num.length() != 4) {
-            throw new NumberFormatException("Wrong length: " + num.length() + ", must be 4.");
-        }
-        int ret = Integer.parseInt(num, 16);
-        ret = ((ret & 0x8000) > 0) ? (ret - 0x10000) : (ret);
-        return (short) ret;
-    }
 }
