@@ -32,6 +32,7 @@ public class UdpUtils {
             socket.setSoTimeout(1000);
         } catch (SocketException e) {
             e.printStackTrace();
+            Timber.e("udp/socket error/ip=%s:%s, msg = %s", ip, port, e.getMessage());
         }
     }
 
@@ -72,7 +73,7 @@ public class UdpUtils {
             socket.receive(packet);
 
             String bytesHexStr = HexUtils.bytesToHex(buf);
-            Timber.d("udp/receive/ip=%s, port=%s, bytesLength =%s, hex=%s", targetAddr, targetPort, buf.length, bytesHexStr);
+            Timber.d("udp/receive/pon/ip=%s, port=%s, bytesLength =%s, hex=%s", targetAddr, targetPort, buf.length, bytesHexStr);
             String txLengthHex = bytesHexStr.substring(16, 18);
             int txLengthInt = Integer.parseInt(txLengthHex, 16);
             String txHex = bytesHexStr.substring(18, 18 + txLengthInt * 2);
@@ -99,9 +100,8 @@ public class UdpUtils {
             byte[] buf = new byte[byteSize];
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
-
-            Timber.d("buf.length = %s", buf.length);
             String bytesHexStr = HexUtils.bytesToHex(buf);
+            Timber.d("udp/receive/link/ip=%s, port=%s, bytesLength =%s, hex=%s", targetAddr, targetPort, buf.length, bytesHexStr);
 
             receiveStr = bytesHexStr;
 
