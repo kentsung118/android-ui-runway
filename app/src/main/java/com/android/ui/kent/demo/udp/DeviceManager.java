@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -103,6 +102,7 @@ public class DeviceManager implements LifecycleObserver {
                     String hex = mPonUdp.UdpReceivePON();
                     if (!TextUtils.isEmpty(hex)) {
                         ponInfo.setPon(PonInfo.PON.newBuilder()
+                                .setStatus(PonInfoParser.parserPonStatus(hex, 0, 2))
                                 .setMac(PonInfoParser.parseWifiMac(hex, 4, 16))
                                 .setTemperature(PonInfoParser.parseTemperature(hex, 18, 22))
                                 .setVoltage(PonInfoParser.parseVoltage(hex, 22, 26))

@@ -23,6 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * Created by Kent Song on 2019/2/15.
@@ -33,8 +34,6 @@ public class MvvmActivity extends BaseActivity {
     EditText editText;
     @BindView(R.id.btn_query)
     Button btnQuery;
-//    @BindView(R.id.btn_api_error)
-//    Button btnApiError;
     @BindView(R.id.text_result)
     TextView textResult;
 
@@ -75,9 +74,11 @@ public class MvvmActivity extends BaseActivity {
             }
         });
 
+        Timber.d(">>  mGithubVM.getRepoStatus().observe");
         mGithubVM.getRepoStatus().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
+                Timber.d(">>  mGithubVM.getRepoStatus().onChanged");
                 Toast.makeText(MvvmActivity.this, s, Toast.LENGTH_LONG).show();
             }
         });

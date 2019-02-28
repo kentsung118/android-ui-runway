@@ -21,12 +21,12 @@ public class GithubVM extends AndroidViewModel {
 
     GithubRepo mGithubRepo;
 
-    MediatorLiveData<String> mRepoStatus;
+    MediatorLiveData<String> mRepoStatus = new MediatorLiveData<>();
+//    SingleLiveEvent<String> mRepoStatus = new SingleLiveEvent<>();
 
     public GithubVM(@NonNull Application application) {
         super(application);
         mGithubRepo = new GithubRepo();
-        mRepoStatus = new MediatorLiveData<>();
         setupObserveGithubRepo();
     }
 
@@ -44,6 +44,22 @@ public class GithubVM extends AndroidViewModel {
                 mRepoStatus.postValue("what's up 發生錯誤啦!");
             }
         });
+
+
+//        getRepoData().observeForever(new Observer<List<Repo>>() {
+//            @Override
+//            public void onChanged(@Nullable List<Repo> repos) {
+//                mRepoStatus.postValue("請求成功");
+//            }
+//        });
+//
+//        mGithubRepo.getmRepoError().observeForever(new Observer<Throwable>() {
+//            @Override
+//            public void onChanged(@Nullable Throwable throwable) {
+//                mRepoStatus.postValue("what's up 發生錯誤啦!");
+//            }
+//        });
+
     }
 
     public void queryUserRepo(String account) {

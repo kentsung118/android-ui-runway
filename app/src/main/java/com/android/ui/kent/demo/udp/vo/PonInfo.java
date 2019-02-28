@@ -54,6 +54,7 @@ public class PonInfo {
     }
 
     public static class PON {
+        String status = "";
         String mac;
         String temperature; //温度
         String voltage; // 供电电压
@@ -62,6 +63,7 @@ public class PonInfo {
         String reciveOpticPower; //接收光功率
 
         private PON(Builder builder) {
+            status = builder.status;
             setMac(builder.mac);
             setTemperature(builder.temperature);
             setVoltage(builder.voltage);
@@ -130,6 +132,7 @@ public class PonInfo {
             private String electricCurrent;
             private String sendOpticPower;
             private String reciveOpticPower;
+            private String status;
 
             private Builder() {
             }
@@ -166,6 +169,11 @@ public class PonInfo {
 
             public PON build() {
                 return new PON(this);
+            }
+
+            public Builder setStatus(String val) {
+                status = val;
+                return this;
             }
         }
     }

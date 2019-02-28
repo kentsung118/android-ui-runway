@@ -9,6 +9,10 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -126,5 +130,16 @@ public class DeviceManagerTest {
     public void testHexToInt() {
         System.out.println(HexUtils.parseHex4("FF6E"));
         System.out.println(HexUtils.parseHex4("001B"));
+    }
+
+    @Test
+    public void formatDate() throws ParseException {
+
+        String date = "Sat Dec 22 16:00:48 CST 2018";
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+        Date d = sdf.parse(date);
+        String formatDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(d);
+
+        System.out.println(formatDate);
     }
 }

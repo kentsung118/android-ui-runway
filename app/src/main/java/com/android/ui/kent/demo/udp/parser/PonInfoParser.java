@@ -22,6 +22,26 @@ public class PonInfoParser {
         }
     }
 
+    public static String parserPonStatus(String hex, int begin, int end) {
+        try {
+            String statusHex = hex.substring(begin, end);
+            int num = Integer.parseInt(statusHex, 16);
+            switch (num) {
+                case 0:
+                    return "未连接";
+                case 1:
+                    return "已连接";
+                case 2:
+                    return "已注册";
+                default:
+                    return "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return errorStr;
+        }
+    }
+
     public static String parseWifiMac(String hex, int begin, int end) {
         try {
             return FormatUtils.formatMac(hex.substring(begin, end));

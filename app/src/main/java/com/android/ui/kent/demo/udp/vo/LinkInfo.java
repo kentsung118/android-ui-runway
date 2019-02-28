@@ -8,6 +8,10 @@ public class LinkInfo {
 
     private String receiveDbm = ""; //接收功率
     private String linkStatus = ""; //连接状态
+    private String linkType = ""; //局域网连接 (千兆网路、百兆连接)
+    private String temperature = ""; //温度
+    private String terminalNum = ""; //终端数
+    private String filterNum = ""; //过滤器数
 
     private LinkInfo(Builder builder) {
         receiveDbm = builder.receiveDbm;
