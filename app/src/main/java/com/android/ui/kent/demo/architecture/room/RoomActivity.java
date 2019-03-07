@@ -16,10 +16,13 @@ import com.android.ui.kent.database.room.Member;
 import com.android.ui.kent.database.room.MemberDao;
 import com.android.ui.kent.database.room.MemberDb;
 import com.android.ui.kent.demo.BaseActivity;
+import com.android.ui.kent.demo.application.MyApplication;
 import com.google.gson.Gson;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,19 +48,19 @@ public class RoomActivity extends BaseActivity {
     @BindView(R.id.text_result)
     TextView textResult;
 
+    @Inject
+    MemberDb mMemberDb;
+    @Inject
+    MemberDao mMemberDao;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
         ButterKnife.bind(this);
 
-
+        MyApplication.getAppComponent().inject(this);
     }
-
-    private void init() {
-
-    }
-
 
     @OnClick({R.id.btn_add, R.id.btn_del})
     public void onViewClicked(View view) {
@@ -73,8 +76,7 @@ public class RoomActivity extends BaseActivity {
                         .doOnNext(new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
-                                MemberDb.getInstance(RoomActivity.this)
-                                        .getMemberDao()
+                                mMemberDb.getMemberDao()
                                         .insert(member);
                             }
                         })
@@ -89,22 +91,18 @@ public class RoomActivity extends BaseActivity {
                 break;
             case R.id.btn_del:
 
-                if(TextUtils.isEmpty(editText.getText().toString())){
+                if (TextUtils.isEmpty(editText.getText().toString())) {
                     return;
                 }
-
-                MemberDao dao = MemberDb
-                        .getInstance(this)
-                        .getMemberDao();
 
                 Observable.just("")
                         .subscribeOn(Schedulers.io())
                         .doOnNext(new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
-                                Member member = dao.getMember(Integer.parseInt(editText.getText().toString()));
-                                if(member != null){
-                                    dao.delete(member);
+                                Member member = mMemberDao.getMember(Integer.parseInt(editText.getText().toString()));
+                                if (member != null) {
+                                    mMemberDao.delete(member);
                                 }
                             }
                         })
@@ -131,7 +129,7 @@ public class RoomActivity extends BaseActivity {
             @Override
             public void run() {
                 StringBuilder sb = new StringBuilder();
-                for(Member m : allMembers){
+                for (Member m : allMembers) {
                     sb.append(new Gson().toJson(m));
                     sb.append(System.lineSeparator());
                 }

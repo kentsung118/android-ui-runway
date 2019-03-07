@@ -2,32 +2,34 @@ package com.android.ui.kent.demo.mvvm.repo;
 
 import android.arch.lifecycle.MutableLiveData;
 
+import com.android.ui.kent.demo.application.MyApplication;
 import com.android.ui.kent.demo.network.GitHubService;
-import com.android.ui.kent.demo.network.GitHub_API;
 import com.android.ui.kent.demo.network.retrofit.vo.Repo;
-import com.google.gson.Gson;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import timber.log.Timber;
 
 /**
  * Created by Kent Song on 2019/2/15.
  */
 public class GithubRepo {
 
-    private GitHubService mGitHubService;
+    @Inject
+    GitHubService mGitHubService;
     private MutableLiveData<List<Repo>> mRepoData;
     private MutableLiveData<Throwable> mRepoError;
 
 
     public GithubRepo() {
-        mGitHubService = GitHub_API.getGithubService();
         mRepoData = new MutableLiveData<>();
         mRepoError = new MutableLiveData<>();
+
+        MyApplication.getAppComponent().inject(this);
     }
 
 
@@ -37,7 +39,7 @@ public class GithubRepo {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 List<Repo> repos = response.body();
-                if(repos != null && repos.size() > 0){
+                if (repos != null && repos.size() > 0) {
                     mRepoData.postValue(response.body());
                 }
             }

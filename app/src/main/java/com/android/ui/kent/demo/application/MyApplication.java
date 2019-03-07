@@ -1,11 +1,13 @@
 package com.android.ui.kent.demo.application;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.android.ui.kent.demo.mvvm.di.AppComponent;
+import com.android.ui.kent.demo.mvvm.di.AppModule;
+import com.android.ui.kent.demo.mvvm.di.DaggerAppComponent;
 import com.facebook.stetho.Stetho;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -24,6 +26,8 @@ import timber.log.Timber;
 
 public class MyApplication extends MultiDexApplication {
 
+    private static AppComponent mAppComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -31,6 +35,11 @@ public class MyApplication extends MultiDexApplication {
         initImageLoader(getApplicationContext());
 
         Stetho.initializeWithDefaults(this);
+        mAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+    }
+
+    public static AppComponent getAppComponent() {
+        return mAppComponent;
     }
 
     public static void initImageLoader(Context context) {
