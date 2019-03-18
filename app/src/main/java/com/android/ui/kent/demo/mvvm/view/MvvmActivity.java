@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.mvvm.viewmodel.GithubVM;
+import com.android.ui.kent.demo.mvvm.viewmodel.Lcee;
 import com.android.ui.kent.demo.network.GitHubService;
 import com.android.ui.kent.demo.network.GitHub_API;
 import com.android.ui.kent.demo.network.retrofit.vo.Repo;
@@ -28,7 +29,6 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import timber.log.Timber;
 
 /**
  * Created by Kent Song on 2019/2/15.
@@ -61,30 +61,39 @@ public class MvvmActivity extends BaseActivity {
     }
 
     private void setupObserve() {
-        mGithubVM.getRepoData().observe(this, new Observer<List<Repo>>() {
+        mGithubVM.getRepoData().observe(this, new Observer<Lcee<List<Repo>>>() {
             @Override
-            public void onChanged(@Nullable List<Repo> repos) {
-                StringBuilder sb = new StringBuilder();
-                for (Repo repo : repos) {
-                    sb.append(new Gson().toJson(repo)).append(System.lineSeparator());
+            public void onChanged(@Nullable Lcee<List<Repo>> lcee) {
+                if (lcee == null) {
+                    return;
                 }
-                textResult.setText(sb.toString());
-            }
-        });
-
-        mGithubVM.getNetworkError().observe(this, new Observer<Throwable>() {
-            @Override
-            public void onChanged(@Nullable Throwable throwable) {
-                textResult.setText(throwable.getMessage());
-            }
-        });
-
-        Timber.d(">>  mGithubVM.getRepoStatus().observe");
-        mGithubVM.getRepoStatus().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                Timber.d(">>  mGithubVM.getRepoStatus().onChanged");
-                Toast.makeText(MvvmActivity.this, s, Toast.LENGTH_LONG).show();
+                switch (lcee.getStatus()) {
+                    case Loading:
+                        // display loading
+                        Toast.makeText(MvvmActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Content:
+                        // display content
+                        StringBuilder sb = new StringBuilder();
+                        for (Repo repo : lcee.getData()) {
+                            sb.append(new Gson().toJson(repo)).append(System.lineSeparator());
+                        }
+                        textResult.setText(sb.toString());
+                        Toast.makeText(MvvmActivity.this, "Content...", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Empty:
+                        // display empty
+                        Toast.makeText(MvvmActivity.this, "Empty...", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Error:
+                        // display error
+                        textResult.setText(lcee.getError().getMessage());
+                        Toast.makeText(MvvmActivity.this, "Error...", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        // other
+                        break;
+                }
             }
         });
 
@@ -108,14 +117,14 @@ public class MvvmActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
-    private void requestUserRepo(String account){
+    private void requestUserRepo(String account) {
         GitHubService mGitHubService = GitHub_API.getGithubService();
         Call<List<Repo>> call = mGitHubService.listRepos(account);
         call.enqueue(new Callback<List<Repo>>() {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 List<Repo> repos = response.body();
-                if(repos != null && repos.size() > 0){
+                if (repos != null && repos.size() > 0) {
                     StringBuilder sb = new StringBuilder();
                     for (Repo repo : repos) {
                         sb.append(new Gson().toJson(repo)).append(System.lineSeparator());

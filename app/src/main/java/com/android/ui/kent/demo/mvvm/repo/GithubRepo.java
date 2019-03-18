@@ -1,8 +1,10 @@
 package com.android.ui.kent.demo.mvvm.repo;
 
-import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 
 import com.android.ui.kent.demo.application.MyApplication;
+import com.android.ui.kent.demo.mvvm.viewmodel.Lcee;
 import com.android.ui.kent.demo.network.GitHubService;
 import com.android.ui.kent.demo.network.retrofit.vo.Repo;
 
@@ -21,41 +23,36 @@ public class GithubRepo {
 
     @Inject
     GitHubService mGitHubService;
-    private MutableLiveData<List<Repo>> mRepoData;
-    private MutableLiveData<Throwable> mRepoError;
-
+    final MediatorLiveData<Lcee<List<Repo>>> mRepoData = new MediatorLiveData<>();
 
     public GithubRepo() {
-        mRepoData = new MutableLiveData<>();
-        mRepoError = new MutableLiveData<>();
-
         MyApplication.getAppComponent().inject(this);
     }
 
-
     public void queryRepo(String account) {
+        mRepoData.setValue(Lcee.loading());
+
         Call<List<Repo>> call = mGitHubService.listRepos(account);
         call.enqueue(new Callback<List<Repo>>() {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 List<Repo> repos = response.body();
-                if (repos != null && repos.size() > 0) {
-                    mRepoData.postValue(response.body());
+                if (repos == null || repos.size() == 0) {
+                    mRepoData.postValue(Lcee.empty());
+                } else {
+                    mRepoData.postValue(Lcee.content(repos));
                 }
             }
 
             @Override
             public void onFailure(Call<List<Repo>> call, Throwable t) {
-                mRepoError.postValue(t);
+                mRepoData.postValue(Lcee.error(t));
             }
         });
     }
 
-    public MutableLiveData<List<Repo>> getRepoData() {
+    public LiveData<Lcee<List<Repo>>> getRepoData() {
         return mRepoData;
     }
 
-    public MutableLiveData<Throwable> getmRepoError() {
-        return mRepoError;
-    }
 }
