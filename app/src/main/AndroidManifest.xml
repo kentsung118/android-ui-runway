@@ -43,6 +43,9 @@
         <activity android:name=".demo.architecture.room.RoomActivity"/>
         <activity android:name=".demo.mvvm.view.MvvmActivity"/>
         <activity android:name=".demo.udp.UdpActivity"/>
+        <activity android:name=".activity.AndroidArcActivity" />
+        <activity android:name=".activity.AndroidUIActivity" />
+        <activity android:name=".activity.NetworkActivity" />
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

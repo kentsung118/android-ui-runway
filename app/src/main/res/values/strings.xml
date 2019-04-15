@@ -13,7 +13,6 @@
     <string name="main_action_CardView">CardView</string>
     <string name="main_action_Retrofit">Retrofit</string>
     <string name="main_action_OKHttp">OKHttp</string>
-    <string name="main_action_RxJava">RxJava</string>
     <string name="main_action_EventBus">EventBus</string>
     <string name="main_action_Dialog">Dialog</string>
     <string name="main_action_LoadMore">LoadMore</string>
@@ -27,6 +26,11 @@
     <string name="main_action_arc_room">Arc Room</string>
     <string name="main_action_mvvm">MVVM Demo</string>
     <string name="main_action_udp">UDP Demo</string>
+
+    <string name="main_type_android_arc">Andorid Arc</string>
+    <string name="main_type_android_ui">Andorid UI</string>
+    <string name="main_type_network">Network</string>
+    <string name="main_type_RxJava">RxJava</string>
 
 
 </resources>

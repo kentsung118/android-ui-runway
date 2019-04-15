@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.ui.kent.activity.AndroidArcActivity;
+import com.android.ui.kent.activity.AndroidUIActivity;
+import com.android.ui.kent.activity.NetworkActivity;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.alarm.AlarmActivity;
 import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
@@ -62,30 +65,10 @@ public class MainActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
-        list.add(getString(R.string.main_action_udp));
-        list.add(getString(R.string.main_action_mvvm));
-        list.add(getString(R.string.main_action_arc_room));
-        list.add(getString(R.string.main_action_scroll_rv));
-        list.add(getString(R.string.main_action_lifecycle_owner_view));
-        list.add(getString(R.string.main_action_customize_view));
-        list.add(getString(R.string.main_action_constraint_layout));
-        list.add(getString(R.string.main_action_recycler_view));
-        list.add(getString(R.string.main_action_multi_recycler_view));
-        list.add(getString(R.string.main_action_listview));
-        list.add(getString(R.string.main_action_alarm_manager));
-        list.add(getString(R.string.main_action_navigation_drawer));
-        list.add(getString(R.string.main_action_tablayout_view_pager));
-        list.add(getString(R.string.main_action_CardView));
-        list.add(getString(R.string.main_action_Retrofit));
-        list.add(getString(R.string.main_action_OKHttp));
-        list.add(getString(R.string.main_action_RxJava));
-        list.add(getString(R.string.main_action_EventBus));
-        list.add(getString(R.string.main_action_Dialog));
-        list.add(getString(R.string.main_action_LoadMore));
-        list.add(getString(R.string.main_action_circlepage_indicator_viewpager));
-        list.add(getString(R.string.main_action_style_selector));
-        list.add(getString(R.string.main_action_ui_response));
-
+        list.add(getString(R.string.main_type_android_ui));
+        list.add(getString(R.string.main_type_android_arc));
+        list.add(getString(R.string.main_type_network));
+        list.add(getString(R.string.main_type_RxJava));
 
         ArrayAdapter<String> listAdapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
@@ -100,55 +83,14 @@ public class MainActivity extends BaseActivity {
 
             final String actionName = ((TextView) view).getText().toString();
 
-            if (actionName.equals(activity.getString(R.string.main_action_recycler_view))) {
-                RecyclerViewActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_listview))) {
-                ListViewActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_alarm_manager))) {
-                AlarmActivity.launch(activity);
-            } else if (actionName.equals(
-                    activity.getString(R.string.main_action_navigation_drawer))) {
-                DrawerActivity.launch(activity);
-            } else if (actionName.equals(
-                    activity.getString(R.string.main_action_tablayout_view_pager))) {
-                TabActivity.launch(activity);
-            } else if (actionName.equals(
-                    activity.getString(R.string.main_action_circlepage_indicator_viewpager))) {
-                IndicatorActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_CardView))) {
-                CardActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_Retrofit))) {
-                RetrofitActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_OKHttp))) {
-                OKHttpActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_RxJava))) {
+            if (actionName.equals(activity.getString(R.string.main_type_android_ui))) {
+                AndroidUIActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_type_android_arc))) {
+                AndroidArcActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_type_network))) {
+                NetworkActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_type_RxJava))) {
                 RxJavaActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_EventBus))) {
-                EventBusActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_Dialog))) {
-                DialogActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_LoadMore))) {
-                LoadMoreActivity.launch(activity);
-            } else if (actionName.equals(activity.getString(R.string.main_action_constraint_layout))) {
-                ConstraintLayoutActivity.launch(activity);
-            } else if (actionName.equals(getString(R.string.main_action_style_selector))) {
-                StyleSelectorActivity.launch(activity);
-            } else if (actionName.equals(getString(R.string.main_action_ui_response))) {
-                UIResponseActivity.launch(activity);
-            } else if (actionName.equals(getString(R.string.main_action_multi_recycler_view))) {
-                MultiLayerActivity.launch(activity);
-            } else if (actionName.equals(getString(R.string.main_action_customize_view))) {
-                CustomizeViewActivity.launch(activity);
-            } else if (actionName.equals(getString(R.string.main_action_lifecycle_owner_view))) {
-                LifeCycleActivity.launch(activity);
-            } else if (actionName.equals(getString(R.string.main_action_scroll_rv))) {
-                RvScrollActivity.launch(activity);
-            } else if (actionName.equals(getString(R.string.main_action_arc_room))) {
-                RoomActivity.launch(activity);
-            } else if (actionName.endsWith(getString(R.string.main_action_mvvm))) {
-                MvvmActivity.launch(activity);
-            } else if (actionName.endsWith(getString(R.string.main_action_udp))) {
-                UdpActivity.launch(activity);
             }
         }
     };
