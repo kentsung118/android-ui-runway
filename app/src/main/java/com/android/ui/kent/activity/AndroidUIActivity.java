@@ -26,12 +26,14 @@ import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.ui_response.UIResponseActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
 import com.android.ui.kent.demo.widget.view.CustomizeViewActivity;
+import com.android.ui.kent.rxjava.sample.anim.RxAnimActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by Kent Song on 2019/4/14.
@@ -58,6 +60,7 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_rxjava_anim));
         list.add(getString(R.string.main_action_scroll_rv));
         list.add(getString(R.string.main_action_lifecycle_owner_view));
         list.add(getString(R.string.main_action_customize_view));
@@ -86,7 +89,6 @@ public class AndroidUIActivity extends BaseActivity {
             Activity activity = AndroidUIActivity.this;
 
             final String actionName = ((TextView) view).getText().toString();
-
             if (actionName.equals(activity.getString(R.string.main_action_recycler_view))) {
                 RecyclerViewActivity.launch(activity);
             } else if (actionName.equals(activity.getString(R.string.main_action_listview))) {
@@ -120,6 +122,8 @@ public class AndroidUIActivity extends BaseActivity {
                 LifeCycleActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_scroll_rv))) {
                 RvScrollActivity.launch(activity);
+            } else if (actionName.equals(getString(R.string.main_action_rxjava_anim))) {
+                RxAnimActivity.launch(activity);
             }
         }
     };

@@ -26,6 +26,8 @@
     <string name="main_action_arc_room">Arc Room</string>
     <string name="main_action_mvvm">MVVM Demo</string>
     <string name="main_action_udp">UDP Demo</string>
+    <string name="main_action_rxjava_anim">RxJava Anim Demo</string>
+
 
     <string name="main_type_android_arc">Andorid Arc</string>
     <string name="main_type_android_ui">Andorid UI</string>

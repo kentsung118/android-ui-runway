@@ -46,6 +46,7 @@
         <activity android:name=".activity.AndroidArcActivity" />
         <activity android:name=".activity.AndroidUIActivity" />
         <activity android:name=".activity.NetworkActivity" />
+        <activity android:name=".rxjava.sample.anim.RxAnimActivity" />
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
