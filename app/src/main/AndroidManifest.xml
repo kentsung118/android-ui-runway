@@ -26,7 +26,7 @@
         <activity android:name=".demo.drawer.DrawerActivity"/>
         <activity android:name=".demo.tab.TabActivity"/>
         <activity android:name=".demo.indicator.IndicatorActivity"/>
-        <activity android:name=".demo.cardview.CardActivity"/>
+        <activity android:name=".demo.view.CardActivity"/>
         <activity android:name=".demo.network.retrofit.RetrofitActivity"/>
         <activity android:name=".demo.network.okhttp.OKHttpActivity"/>
         <activity android:name=".demo.network.rxjava.RxJavaActivity"/>
@@ -47,6 +47,7 @@
         <activity android:name=".activity.AndroidUIActivity" />
         <activity android:name=".activity.NetworkActivity" />
         <activity android:name=".rxjava.sample.anim.RxAnimActivity" />
+        <activity android:name=".demo.view.CustomizeViewActivity" />
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

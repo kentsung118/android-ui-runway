@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
-import com.android.ui.kent.demo.cardview.CardActivity;
+import com.android.ui.kent.demo.view.CardActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.layout.contraint.ConstraintLayoutActivity;
@@ -33,7 +33,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 /**
  * Created by Kent Song on 2019/4/14.
@@ -60,10 +59,11 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_customize_view));
         list.add(getString(R.string.main_action_rxjava_anim));
         list.add(getString(R.string.main_action_scroll_rv));
         list.add(getString(R.string.main_action_lifecycle_owner_view));
-        list.add(getString(R.string.main_action_customize_view));
+        list.add(getString(R.string.main_action_marquee_view));
         list.add(getString(R.string.main_action_constraint_layout));
         list.add(getString(R.string.main_action_recycler_view));
         list.add(getString(R.string.main_action_multi_recycler_view));
@@ -75,6 +75,7 @@ public class AndroidUIActivity extends BaseActivity {
         list.add(getString(R.string.main_action_LoadMore));
         list.add(getString(R.string.main_action_circlepage_indicator_viewpager));
         list.add(getString(R.string.main_action_style_selector));
+        list.add(getString(R.string.main_action_ui_response));
         list.add(getString(R.string.main_action_ui_response));
 
         ArrayAdapter<String> listAdapter =
@@ -116,7 +117,7 @@ public class AndroidUIActivity extends BaseActivity {
                 UIResponseActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_multi_recycler_view))) {
                 MultiLayerActivity.launch(activity);
-            } else if (actionName.equals(getString(R.string.main_action_customize_view))) {
+            } else if (actionName.equals(getString(R.string.main_action_marquee_view))) {
                 CustomizeViewActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_lifecycle_owner_view))) {
                 LifeCycleActivity.launch(activity);
@@ -124,6 +125,8 @@ public class AndroidUIActivity extends BaseActivity {
                 RvScrollActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_rxjava_anim))) {
                 RxAnimActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_customize_view))){
+
             }
         }
     };

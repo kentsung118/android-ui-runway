@@ -1,24 +1,18 @@
-package com.android.ui.kent.demo.cardview;
+package com.android.ui.kent.demo.view;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.widget.TextView;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
-import com.android.ui.kent.demo.drawer.DrawerActivity;
-
 
 import butterknife.ButterKnife;
 
 /**
- * Created by Kent on 2016/10/5.
+ * Created by Kent Song on 2019/5/7.
  */
-
-public class CardActivity extends BaseActivity {
-
+public class CustomizeViewActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +27,15 @@ public class CardActivity extends BaseActivity {
 
     private void initToolbar(){
         this.setupToolbar();
-        this.setToolbarTitle("CardView");
+        this.setToolbarTitle(getString(R.string.main_action_customize_view));
         this.enableBackButton();
     }
 
     private void init(){
-//        textView.setText("內容");
     }
 
     public static void launch(Activity activity) {
-        Intent intent = new Intent(activity, CardActivity.class);
+        Intent intent = new Intent(activity, CustomizeViewActivity.class);
         activity.startActivity(intent);
     }
-
 }

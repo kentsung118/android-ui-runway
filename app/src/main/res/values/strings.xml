@@ -20,13 +20,14 @@
     <string name="main_action_constraint_layout">Constraint Layout</string>
     <string name="main_action_style_selector">Style Selector</string>
     <string name="main_action_ui_response">UI Response</string>
-    <string name="main_action_customize_view">Customize View</string>
+    <string name="main_action_marquee_view">Marquee View</string>
     <string name="main_action_lifecycle_owner_view">LifeCycle Owner</string>
     <string name="main_action_scroll_rv">RecyclerView Scroll</string>
     <string name="main_action_arc_room">Arc Room</string>
     <string name="main_action_mvvm">MVVM Demo</string>
     <string name="main_action_udp">UDP Demo</string>
     <string name="main_action_rxjava_anim">RxJava Anim Demo</string>
+    <string name="main_action_customize_view">Customize View</string>
 
 
     <string name="main_type_android_arc">Andorid Arc</string>
