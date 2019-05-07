@@ -24,8 +24,9 @@ import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
 import com.android.ui.kent.demo.recyclerview.scroll.RvScrollActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.ui_response.UIResponseActivity;
+import com.android.ui.kent.demo.view.CustomizeViewActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
-import com.android.ui.kent.demo.widget.view.CustomizeViewActivity;
+import com.android.ui.kent.demo.widget.view.MarqueeViewActivity;
 import com.android.ui.kent.rxjava.sample.anim.RxAnimActivity;
 
 import java.util.ArrayList;
@@ -118,7 +119,7 @@ public class AndroidUIActivity extends BaseActivity {
             } else if (actionName.equals(getString(R.string.main_action_multi_recycler_view))) {
                 MultiLayerActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_marquee_view))) {
-                CustomizeViewActivity.launch(activity);
+                MarqueeViewActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_lifecycle_owner_view))) {
                 LifeCycleActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_scroll_rv))) {
@@ -126,7 +127,7 @@ public class AndroidUIActivity extends BaseActivity {
             } else if (actionName.equals(getString(R.string.main_action_rxjava_anim))) {
                 RxAnimActivity.launch(activity);
             } else if(actionName.equals(getString(R.string.main_action_customize_view))){
-
+                CustomizeViewActivity.launch(activity);
             }
         }
     };

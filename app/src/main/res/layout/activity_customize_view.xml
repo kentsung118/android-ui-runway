@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.android.ui.kent.demo.view.TabItemView
+        android:id="@+id/tab_item_view1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tab_img="@mipmap/ic_launcher"
+        app:tab_content="Tab Name1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.android.ui.kent.demo.view.TabItemView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tab_img="@mipmap/ic_launcher"
+        app:tab_content="Tab Name2"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/tab_item_view1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

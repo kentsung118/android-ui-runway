@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Kent Song on 2018/12/22.
  */
-public class CustomizeViewActivity extends BaseActivity {
+public class MarqueeViewActivity extends BaseActivity {
 
     @BindView(R.id.marquee_tv)
     MarqueeTextView marqueeTv;
@@ -51,7 +51,7 @@ public class CustomizeViewActivity extends BaseActivity {
     }
 
     public static void launch(Activity activity) {
-        Intent intent = new Intent(activity, CustomizeViewActivity.class);
+        Intent intent = new Intent(activity, MarqueeViewActivity.class);
         activity.startActivity(intent);
     }
 

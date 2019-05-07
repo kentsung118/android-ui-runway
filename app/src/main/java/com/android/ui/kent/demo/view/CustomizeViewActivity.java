@@ -17,12 +17,11 @@ public class CustomizeViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cardview);
+        setContentView(R.layout.activity_customize_view);
         ButterKnife.bind(this);
 
         initToolbar();
         init();
-
     }
 
     private void initToolbar(){

@@ -37,7 +37,7 @@
         <activity android:name=".demo.layout.style.StyleSelectorActivity"/>
         <activity android:name=".demo.ui_response.UIResponseActivity"/>
         <activity android:name=".demo.recyclerview.multi_layer.MultiLayerActivity" />
-        <activity android:name=".demo.widget.view.CustomizeViewActivity"/>
+        <activity android:name=".demo.widget.view.MarqueeViewActivity"/>
         <activity android:name=".demo.architecture.lifecycle.LifeCycleActivity"/>
         <activity android:name=".demo.recyclerview.scroll.RvScrollActivity"/>
         <activity android:name=".demo.architecture.room.RoomActivity"/>
