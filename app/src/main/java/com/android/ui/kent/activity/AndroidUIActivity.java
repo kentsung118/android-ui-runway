@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
+import com.android.ui.kent.demo.ui_response.touch_move.UITouchMoveActivity;
 import com.android.ui.kent.demo.view.CardActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
@@ -23,7 +24,7 @@ import com.android.ui.kent.demo.recyclerview.loadmore.LoadMoreActivity;
 import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
 import com.android.ui.kent.demo.recyclerview.scroll.RvScrollActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
-import com.android.ui.kent.demo.ui_response.UIResponseActivity;
+import com.android.ui.kent.demo.ui_response.touch_event.UIResponseActivity;
 import com.android.ui.kent.demo.view.CustomizeViewActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
 import com.android.ui.kent.demo.widget.view.MarqueeViewActivity;
@@ -60,6 +61,7 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_ui_touch_move));
         list.add(getString(R.string.main_action_customize_view));
         list.add(getString(R.string.main_action_rxjava_anim));
         list.add(getString(R.string.main_action_scroll_rv));
@@ -76,7 +78,6 @@ public class AndroidUIActivity extends BaseActivity {
         list.add(getString(R.string.main_action_LoadMore));
         list.add(getString(R.string.main_action_circlepage_indicator_viewpager));
         list.add(getString(R.string.main_action_style_selector));
-        list.add(getString(R.string.main_action_ui_response));
         list.add(getString(R.string.main_action_ui_response));
 
         ArrayAdapter<String> listAdapter =
@@ -128,6 +129,8 @@ public class AndroidUIActivity extends BaseActivity {
                 RxAnimActivity.launch(activity);
             } else if(actionName.equals(getString(R.string.main_action_customize_view))){
                 CustomizeViewActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_ui_touch_move))){
+                UITouchMoveActivity.launch(activity);
             }
         }
     };

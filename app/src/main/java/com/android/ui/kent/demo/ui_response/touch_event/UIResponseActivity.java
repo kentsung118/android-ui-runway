@@ -1,4 +1,4 @@
-package com.android.ui.kent.demo.ui_response;
+package com.android.ui.kent.demo.ui_response.touch_event;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
-import com.android.ui.kent.demo.ui_response.custom.MyButton;
 
 /**
  * Created by Kent on 2018/5/3.

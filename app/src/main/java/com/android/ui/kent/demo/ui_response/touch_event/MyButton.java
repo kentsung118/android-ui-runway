@@ -1,4 +1,4 @@
-package com.android.ui.kent.demo.ui_response.custom;
+package com.android.ui.kent.demo.ui_response.touch_event;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
