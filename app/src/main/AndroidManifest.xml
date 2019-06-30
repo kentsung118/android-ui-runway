@@ -49,6 +49,7 @@
         <activity android:name=".rxjava.sample.anim.RxAnimActivity" />
         <activity android:name=".demo.view.CustomizeViewActivity" />
         <activity android:name=".demo.ui_response.touch_move.UITouchMoveActivity"/>
+        <activity android:name=".demo.ui_response.touch_move.UITouchMove2Activity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

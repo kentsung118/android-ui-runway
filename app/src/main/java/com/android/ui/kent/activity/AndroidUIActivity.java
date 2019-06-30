@@ -8,12 +8,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
-import com.android.ui.kent.demo.ui_response.touch_move.UITouchMoveActivity;
-import com.android.ui.kent.demo.view.CardActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.layout.contraint.ConstraintLayoutActivity;
@@ -25,16 +24,15 @@ import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
 import com.android.ui.kent.demo.recyclerview.scroll.RvScrollActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.ui_response.touch_event.UIResponseActivity;
+import com.android.ui.kent.demo.ui_response.touch_move.UITouchMove2Activity;
+import com.android.ui.kent.demo.ui_response.touch_move.UITouchMoveActivity;
+import com.android.ui.kent.demo.view.CardActivity;
 import com.android.ui.kent.demo.view.CustomizeViewActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
 import com.android.ui.kent.demo.widget.view.MarqueeViewActivity;
 import com.android.ui.kent.rxjava.sample.anim.RxAnimActivity;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Kent Song on 2019/4/14.
@@ -61,6 +59,7 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_ui_touch_move_2));
         list.add(getString(R.string.main_action_ui_touch_move));
         list.add(getString(R.string.main_action_customize_view));
         list.add(getString(R.string.main_action_rxjava_anim));
@@ -131,6 +130,8 @@ public class AndroidUIActivity extends BaseActivity {
                 CustomizeViewActivity.launch(activity);
             } else if(actionName.equals(getString(R.string.main_action_ui_touch_move))){
                 UITouchMoveActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_ui_touch_move_2))){
+                UITouchMove2Activity.launch(activity);
             }
         }
     };
