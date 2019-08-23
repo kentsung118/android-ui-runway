@@ -1,4 +1,4 @@
-package com.android.ui.kent.database.user;
+package com.android.ui.kent.database.room.user;
 
 import android.content.ContentValues;
 import android.content.Context;

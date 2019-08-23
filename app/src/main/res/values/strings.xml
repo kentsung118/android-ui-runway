@@ -28,6 +28,8 @@
     <string name="main_action_udp">UDP Demo</string>
     <string name="main_action_rxjava_anim">RxJava Anim Demo</string>
     <string name="main_action_customize_view">Customize View</string>
+    <string name="main_action_greendao">GreenDAO Demo</string>
+
 
 
     <string name="main_type_android_arc">Andorid Arc</string>

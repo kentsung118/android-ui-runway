@@ -13,6 +13,7 @@ import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.alarm.AlarmActivity;
 import com.android.ui.kent.demo.architecture.room.RoomActivity;
+import com.android.ui.kent.demo.db.GreenDaoActivity;
 import com.android.ui.kent.demo.eventbus.EventBusActivity;
 import com.android.ui.kent.demo.mvvm.view.MvvmActivity;
 
@@ -52,6 +53,7 @@ public class AndroidArcActivity extends BaseActivity {
         list.add(getString(R.string.main_action_arc_room));
         list.add(getString(R.string.main_action_alarm_manager));
         list.add(getString(R.string.main_action_EventBus));
+        list.add(getString(R.string.main_action_greendao));
 
 
         ArrayAdapter<String> listAdapter =
@@ -75,6 +77,8 @@ public class AndroidArcActivity extends BaseActivity {
                 RoomActivity.launch(activity);
             } else if (actionName.endsWith(getString(R.string.main_action_mvvm))) {
                 MvvmActivity.launch(activity);
+            } else if (actionName.endsWith(getString(R.string.main_action_greendao))) {
+                GreenDaoActivity.launch(activity);
             }
         }
     };

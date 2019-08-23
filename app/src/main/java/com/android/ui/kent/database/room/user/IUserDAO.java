@@ -1,4 +1,4 @@
-package com.android.ui.kent.database.user;
+package com.android.ui.kent.database.room.user;
 
 import com.android.ui.kent.model.database.vo.UserVO;
 import java.util.List;

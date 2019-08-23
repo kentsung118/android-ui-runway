@@ -1,10 +1,13 @@
 package com.android.ui.kent.demo.application;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.android.ui.kent.database.greendao.DaoMaster;
+import com.android.ui.kent.database.greendao.DaoSession;
 import com.android.ui.kent.demo.mvvm.di.AppComponent;
 import com.android.ui.kent.demo.mvvm.di.AppModule;
 import com.android.ui.kent.demo.mvvm.di.DaggerAppComponent;
@@ -27,6 +30,7 @@ import timber.log.Timber;
 public class MyApplication extends MultiDexApplication {
 
     private static AppComponent mAppComponent;
+    private static DaoSession mDaoSession;
 
     @Override
     public void onCreate() {
@@ -36,6 +40,7 @@ public class MyApplication extends MultiDexApplication {
 
         Stetho.initializeWithDefaults(this);
         mAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+        initGreenDao();
     }
 
     public static AppComponent getAppComponent() {
@@ -66,5 +71,17 @@ public class MyApplication extends MultiDexApplication {
             .imageScaleType(ImageScaleType.EXACTLY)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .build();
+
+    private void initGreenDao() {
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "greendao_test.db");
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        mDaoSession = daoMaster.newSession();
+    }
+
+    public static DaoSession getDaoSession() {
+        return mDaoSession;
+    }
+
 
 }
