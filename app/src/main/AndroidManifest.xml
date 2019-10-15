@@ -49,6 +49,7 @@
         <activity android:name=".rxjava.sample.anim.RxAnimActivity" />
         <activity android:name=".demo.view.CustomizeViewActivity" />
         <activity android:name=".demo.db.GreenDaoActivity"/>
+        <activity android:name=".demo.view.TransitionDrawableActivity" />
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

@@ -1,18 +1,8 @@
 package com.android.ui.kent.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
-import com.android.ui.kent.demo.view.CardActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.layout.contraint.ConstraintLayoutActivity;
@@ -24,10 +14,21 @@ import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
 import com.android.ui.kent.demo.recyclerview.scroll.RvScrollActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.ui_response.UIResponseActivity;
+import com.android.ui.kent.demo.view.CardActivity;
 import com.android.ui.kent.demo.view.CustomizeViewActivity;
+import com.android.ui.kent.demo.view.TransitionDrawableActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
 import com.android.ui.kent.demo.widget.view.MarqueeViewActivity;
 import com.android.ui.kent.rxjava.sample.anim.RxAnimActivity;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_transitiondrawable));
         list.add(getString(R.string.main_action_customize_view));
         list.add(getString(R.string.main_action_rxjava_anim));
         list.add(getString(R.string.main_action_scroll_rv));
@@ -128,6 +130,8 @@ public class AndroidUIActivity extends BaseActivity {
                 RxAnimActivity.launch(activity);
             } else if(actionName.equals(getString(R.string.main_action_customize_view))){
                 CustomizeViewActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_transitiondrawable))){
+                TransitionDrawableActivity.launch(activity);
             }
         }
     };
