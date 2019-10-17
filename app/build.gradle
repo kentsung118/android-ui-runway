@@ -112,6 +112,7 @@ dependencies {
 
     implementation 'org.greenrobot:greendao:3.2.2' // add library
 
+    implementation 'com.facebook.fresco:fresco:0.12.0'
 
     // local unit tests
 //    testImplementation "junit:junit:$junit_version"

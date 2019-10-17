@@ -1,16 +1,11 @@
 package com.android.ui.kent.demo.application;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
-
 import com.android.ui.kent.database.greendao.DaoMaster;
 import com.android.ui.kent.database.greendao.DaoSession;
 import com.android.ui.kent.demo.mvvm.di.AppComponent;
 import com.android.ui.kent.demo.mvvm.di.AppModule;
 import com.android.ui.kent.demo.mvvm.di.DaggerAppComponent;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -20,6 +15,12 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import timber.log.Timber;
 
@@ -31,12 +32,15 @@ public class MyApplication extends MultiDexApplication {
 
     private static AppComponent mAppComponent;
     private static DaoSession mDaoSession;
+    private static MyApplication mInstance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mInstance = this;
         MultiDex.install(this);
         initImageLoader(getApplicationContext());
+        Fresco.initialize(this);
 
         Stetho.initializeWithDefaults(this);
         mAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
@@ -83,5 +87,7 @@ public class MyApplication extends MultiDexApplication {
         return mDaoSession;
     }
 
-
+    public static MyApplication getInstance() {
+        return mInstance;
+    }
 }
