@@ -22,6 +22,7 @@ import com.android.ui.kent.demo.recyclerview.RecyclerViewActivity;
 import com.android.ui.kent.demo.recyclerview.loadmore.LoadMoreActivity;
 import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
 import com.android.ui.kent.demo.recyclerview.scroll.RvScrollActivity;
+import com.android.ui.kent.demo.reflect_ioc.ReflectIocActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.ui_response.touch_event.UIResponseActivity;
 import com.android.ui.kent.demo.ui_response.touch_move.UITouchMove2Activity;
@@ -60,6 +61,7 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_reflect_ioc));
         list.add(getString(R.string.main_action_ui_touch_move_2));
         list.add(getString(R.string.main_action_ui_touch_move));
         list.add(getString(R.string.main_action_transitiondrawable));
@@ -136,6 +138,8 @@ public class AndroidUIActivity extends BaseActivity {
                 UITouchMoveActivity.launch(activity);
             } else if(actionName.equals(getString(R.string.main_action_ui_touch_move_2))){
                 UITouchMove2Activity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_reflect_ioc))){
+                ReflectIocActivity.launch(activity);
             }
         }
     };
