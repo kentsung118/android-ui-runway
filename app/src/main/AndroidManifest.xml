@@ -26,13 +26,33 @@
         <activity android:name=".demo.drawer.DrawerActivity"/>
         <activity android:name=".demo.tab.TabActivity"/>
         <activity android:name=".demo.indicator.IndicatorActivity"/>
-        <activity android:name=".demo.cardview.CardActivity"/>
+        <activity android:name=".demo.view.CardActivity"/>
         <activity android:name=".demo.network.retrofit.RetrofitActivity"/>
         <activity android:name=".demo.network.okhttp.OKHttpActivity"/>
         <activity android:name=".demo.network.rxjava.RxJavaActivity"/>
         <activity android:name=".demo.eventbus.EventBusActivity"/>
         <activity android:name=".demo.widget.dialog.DialogActivity"/>
         <activity android:name=".demo.recyclerview.loadmore.LoadMoreActivity"/>
+        <activity android:name=".demo.layout.contraint.ConstraintLayoutActivity"/>
+        <activity android:name=".demo.layout.style.StyleSelectorActivity"/>
+        <activity android:name=".demo.ui_response.touch_event.UIResponseActivity"/>
+        <activity android:name=".demo.recyclerview.multi_layer.MultiLayerActivity" />
+        <activity android:name=".demo.widget.view.MarqueeViewActivity"/>
+        <activity android:name=".demo.architecture.lifecycle.LifeCycleActivity"/>
+        <activity android:name=".demo.recyclerview.scroll.RvScrollActivity"/>
+        <activity android:name=".demo.architecture.room.RoomActivity"/>
+        <activity android:name=".demo.mvvm.view.MvvmActivity"/>
+        <activity android:name=".demo.udp.UdpActivity"/>
+        <activity android:name=".activity.AndroidArcActivity" />
+        <activity android:name=".activity.AndroidUIActivity" />
+        <activity android:name=".activity.NetworkActivity" />
+        <activity android:name=".rxjava.sample.anim.RxAnimActivity" />
+        <activity android:name=".demo.view.CustomizeViewActivity" />
+        <activity android:name=".demo.db.GreenDaoActivity"/>
+        <activity android:name=".demo.view.TransitionDrawableActivity" />
+        <activity android:name=".demo.ui_response.touch_move.UITouchMoveActivity"/>
+        <activity android:name=".demo.ui_response.touch_move.UITouchMove2Activity"/>
+        <activity android:name=".demo.reflect_ioc.ReflectIocActivity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

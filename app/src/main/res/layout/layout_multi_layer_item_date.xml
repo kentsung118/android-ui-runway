@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/date_tv"
+    android:focusable="true"
+    android:layout_width="142px"
+    android:layout_height="54px"
+    android:text="西红柿首富"
+    android:gravity="center"
+    android:textColor="@color/color_f1f1f1"
+    android:textSize="30px" />

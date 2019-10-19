@@ -3,7 +3,7 @@ package com.android.ui.kent.database;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import com.android.ui.kent.database.user.UserDAO;
+import com.android.ui.kent.database.room.user.UserDAO;
 import com.android.ui.kent.model.database.vo.UserVO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.android.ui.kent.demo.ui_response.touch_event.MyConstrainLayout
+        android:id="@+id/root_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#a1cc78"
+        >
+
+    <include layout="@layout/view_toolbar"
+            android:id="@+id/layout_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.android.ui.kent.demo.ui_response.touch_event.MyLinerLayout
+            android:id="@+id/container_layout"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="50dp"
+            android:background="#f2e195"
+            app:layout_constraintTop_toBottomOf="@+id/layout_toolbar"
+            >
+
+        <com.android.ui.kent.demo.ui_response.touch_event.MyButton
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click It"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textAllCaps="false"
+                />
+
+
+    </com.android.ui.kent.demo.ui_response.touch_event.MyLinerLayout>
+
+
+
+</com.android.ui.kent.demo.ui_response.touch_event.MyConstrainLayout>

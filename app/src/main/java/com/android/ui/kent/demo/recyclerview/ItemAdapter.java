@@ -66,17 +66,17 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //依viewType決定使用item_layout
         View rootView;
         if(viewType == ITEM_TYPE_1.ordinal()){
             rootView =  LayoutInflater.from(context).inflate(R.layout.view_item_recycler_type_1, null, false);
-            rootView.setLayoutParams(lp);
+            //rootView.setLayoutParams(lp);
             return new ViewHolder1(rootView);
         }
         else{
             rootView = LayoutInflater.from(context).inflate(R.layout.view_item_recycler_type_2, null, false);
-            rootView.setLayoutParams(lp);
+            //rootView.setLayoutParams(lp);
             return new ViewHolder2(rootView);
         }
 
