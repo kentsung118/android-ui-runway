@@ -35,7 +35,7 @@
         <activity android:name=".demo.recyclerview.loadmore.LoadMoreActivity"/>
         <activity android:name=".demo.layout.contraint.ConstraintLayoutActivity"/>
         <activity android:name=".demo.layout.style.StyleSelectorActivity"/>
-        <activity android:name=".demo.ui_response.UIResponseActivity"/>
+        <activity android:name=".demo.ui_response.touch_event.UIResponseActivity"/>
         <activity android:name=".demo.recyclerview.multi_layer.MultiLayerActivity" />
         <activity android:name=".demo.widget.view.MarqueeViewActivity"/>
         <activity android:name=".demo.architecture.lifecycle.LifeCycleActivity"/>
@@ -50,6 +50,8 @@
         <activity android:name=".demo.view.CustomizeViewActivity" />
         <activity android:name=".demo.db.GreenDaoActivity"/>
         <activity android:name=".demo.view.TransitionDrawableActivity" />
+        <activity android:name=".demo.ui_response.touch_move.UITouchMoveActivity"/>
+        <activity android:name=".demo.ui_response.touch_move.UITouchMove2Activity"/>
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

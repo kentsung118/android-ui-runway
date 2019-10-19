@@ -31,6 +31,8 @@
     <string name="main_action_transitiondrawable">TransitionDrawable</string>
     <string name="main_action_greendao">GreenDAO Demo</string>
 
+    <string name="main_action_ui_touch_move">UI TouchMove</string>
+    <string name="main_action_ui_touch_move_2">UI TouchMove_2</string>
 
 
     <string name="main_type_android_arc">Andorid Arc</string>
