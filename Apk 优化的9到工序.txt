@@ -1,0 +1,30 @@
+Apk 优化的9到工序
+1. SVG ----> 转换成 Vector Assert
+2. Tint 著色器
+
+3. 资源打包配置
+//只保留指定和默认资源
+resConfigs('zh-rCN','ko')
+
+4. 动态库打包配置 (so库)
+// 配置 so 库(CPU 架构: x86、mips、armeabi)，如果不进行配置会打包全 CPU架构的动态库进入 apk
+ndk {
+    abiFilters('armeabi', 'armeabi-v7a')
+}
+
+5. 移除无用的资源
+AndroidStudio Refactor->Remove Unused Resource (不建议)
+使用 Lint
+Aninalitis ->  Run Inspection By Name -> 输入 Unused Resources
+
+6. 开启代码压缩
+minifyEnabled false
+
+7. 启用资源缩减
+shrinkResources true
+
+8、启用 webp转换插件
+百度搜"安卓 布局使用webp"
+
+9.资源混淆和7zip压缩
+
