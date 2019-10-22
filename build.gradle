@@ -43,6 +43,11 @@ allprojects {
             url 'https://maven.google.com/'
             name 'Google'
         }
+
+        //宣告本地*.aar的lib位置，加载成功的话在 External Libraries 看得到
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
