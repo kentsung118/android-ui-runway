@@ -53,6 +53,8 @@
         <activity android:name=".demo.ui_response.touch_move.UITouchMoveActivity"/>
         <activity android:name=".demo.ui_response.touch_move.UITouchMove2Activity"/>
         <activity android:name=".demo.reflect_ioc.ReflectIocActivity"/>
+        <activity android:name=".demo.framwork.eventbus.EventBusOneActivity" />
+        <activity android:name=".demo.framwork.eventbus.EventBusTwoActivity" />
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
