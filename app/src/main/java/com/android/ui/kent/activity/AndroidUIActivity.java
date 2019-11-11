@@ -1,19 +1,10 @@
 package com.android.ui.kent.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
+import com.android.ui.kent.demo.framwork.eventbus.EventBusOneActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.layout.contraint.ConstraintLayoutActivity;
 import com.android.ui.kent.demo.layout.style.StyleSelectorActivity;
@@ -33,8 +24,21 @@ import com.android.ui.kent.demo.view.TransitionDrawableActivity;
 import com.android.ui.kent.demo.widget.dialog.DialogActivity;
 import com.android.ui.kent.demo.widget.view.MarqueeViewActivity;
 import com.android.ui.kent.rxjava.sample.anim.RxAnimActivity;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Kent Song on 2019/4/14.
@@ -61,6 +65,7 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_eventbus_manual));
         list.add(getString(R.string.main_action_reflect_ioc));
         list.add(getString(R.string.main_action_ui_touch_move_2));
         list.add(getString(R.string.main_action_ui_touch_move));
@@ -140,6 +145,8 @@ public class AndroidUIActivity extends BaseActivity {
                 UITouchMove2Activity.launch(activity);
             } else if(actionName.equals(getString(R.string.main_action_reflect_ioc))){
                 ReflectIocActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_eventbus_manual))){
+                EventBusOneActivity.launch(activity);
             }
         }
     };
