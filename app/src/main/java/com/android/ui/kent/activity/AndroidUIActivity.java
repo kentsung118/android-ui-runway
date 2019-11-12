@@ -5,6 +5,7 @@ import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.framwork.eventbus.EventBusOneActivity;
+import com.android.ui.kent.demo.framwork.okhttp.OkHttpActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.layout.contraint.ConstraintLayoutActivity;
 import com.android.ui.kent.demo.layout.style.StyleSelectorActivity;
@@ -65,6 +66,7 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_okhttp_manual));
         list.add(getString(R.string.main_action_eventbus_manual));
         list.add(getString(R.string.main_action_reflect_ioc));
         list.add(getString(R.string.main_action_ui_touch_move_2));
@@ -147,6 +149,8 @@ public class AndroidUIActivity extends BaseActivity {
                 ReflectIocActivity.launch(activity);
             } else if(actionName.equals(getString(R.string.main_action_eventbus_manual))){
                 EventBusOneActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_okhttp_manual))){
+                OkHttpActivity.launch(activity);
             }
         }
     };

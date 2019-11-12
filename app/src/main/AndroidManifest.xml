@@ -55,6 +55,7 @@
         <activity android:name=".demo.reflect_ioc.ReflectIocActivity"/>
         <activity android:name=".demo.framwork.eventbus.EventBusOneActivity" />
         <activity android:name=".demo.framwork.eventbus.EventBusTwoActivity" />
+        <activity android:name=".demo.framwork.okhttp.OkHttpActivity" />
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

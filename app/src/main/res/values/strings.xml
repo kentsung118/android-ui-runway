@@ -32,6 +32,7 @@
     <string name="main_action_greendao">GreenDAO Demo</string>
     <string name="main_action_reflect_ioc">Reflect_Ioc</string>
     <string name="main_action_eventbus_manual">EventBus Manual Demo</string>
+    <string name="main_action_okhttp_manual">Okhttp Manual Demo</string>
 
     <string name="main_action_ui_touch_move">UI TouchMove</string>
     <string name="main_action_ui_touch_move_2">UI TouchMove_2</string>
