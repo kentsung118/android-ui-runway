@@ -58,19 +58,20 @@ public class OkHttpActivity extends BaseActivity {
 
 
     private void sendRequest() {
-        NEHttp.sendJsonRequest(url, "", Bean.class, new IJsonDataTransforListener<Bean>() {
-            @Override
-            public void onSuccess(Bean m) {
-                Log.d(TAG, "=======> " + m.toString());
-                Toast.makeText(OkHttpActivity.this, m.toString(), Toast.LENGTH_SHORT).show();
-            }
+        NEHttp.sendJsonRequest(url, "", Bean.class,
+                new IJsonDataTransforListener<Bean>() {
+                    @Override
+                    public void onSuccess(Bean m) {
+                        Log.d(TAG, "=======> " + m.toString());
+                        Toast.makeText(OkHttpActivity.this, m.toString(), Toast.LENGTH_SHORT).show();
+                    }
 
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "=======> onFailure");
-                Toast.makeText(OkHttpActivity.this, "onFailure：" + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d(TAG, "=======> onFailure");
+                        Toast.makeText(OkHttpActivity.this, "onFailure：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public static void launch(Activity activity) {

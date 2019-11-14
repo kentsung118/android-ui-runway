@@ -1,10 +1,12 @@
 package com.android.ui.kent.demo.reflect_ioc;
 
-import android.app.Activity;
-import android.view.View;
 import com.android.ui.kent.demo.reflect_ioc.anotation.ContentView;
 import com.android.ui.kent.demo.reflect_ioc.anotation.EventBase;
 import com.android.ui.kent.demo.reflect_ioc.anotation.InjectView;
+
+import android.app.Activity;
+import android.view.View;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -114,8 +116,8 @@ public class InjectManager {
 
                         //包，需要一個代理幫我們完成點擊動作
 
-                        //通過 annotationType獲取onClick註解的 value()值{R.id.tv,R.id.btn}
                         try {
+                            //通過 annotationType獲取onClick註解的 value()值{R.id.tv,R.id.btn}
                             Method valueMethod = annotationType.getDeclaredMethod("value");
                             int[] viewIds = (int[]) valueMethod.invoke(annotation);
 
@@ -124,8 +126,11 @@ public class InjectManager {
                             handler.add(callBackListener, method);
 
                             //int[] viewId = onclick.value();
-                            Object listener = Proxy.newProxyInstance(listenerType.getClassLoader(),
-                                    new Class[] { listenerType }, handler);
+                            //動態代理
+                            Object listener = Proxy.newProxyInstance(
+                                    listenerType.getClassLoader(),
+                                    new Class[]{listenerType},
+                                    handler);
 
                             for (int viewId : viewIds) {
                                 //獲取view (TextView)
