@@ -1,14 +1,15 @@
 package com.android.ui.kent.demo.framwork.retrofit;
 
+import com.android.ui.kent.demo.framwork.retrofit.annotation.Field;
+import com.android.ui.kent.demo.framwork.retrofit.annotation.GET;
+import com.android.ui.kent.demo.framwork.retrofit.annotation.POST;
+import com.android.ui.kent.demo.framwork.retrofit.annotation.Query;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import okhttp3.Call;
 import okhttp3.HttpUrl;
-import retrofit2.http.Field;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * aop 攔截方法的封裝信息

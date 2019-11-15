@@ -2,6 +2,9 @@ package com.android.ui.kent.demo.framwork.retrofit;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;
+import com.android.ui.kent.demo.framwork.retrofit.annotation.Field;
+import com.android.ui.kent.demo.framwork.retrofit.annotation.GET;
+import com.android.ui.kent.demo.framwork.retrofit.annotation.POST;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,12 +17,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.HttpUrl;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
+
+
 
 /**
+ * @See RetrofitTest {@link RetrofitTest }
+ * Run UnitTest
  * Created by songzhukai on 2019-11-15.
  */
 public class RetrofitActivity extends BaseActivity {
@@ -56,7 +59,6 @@ public class RetrofitActivity extends BaseActivity {
         Call get(@Field("ip") String ip, @Field("key") String key);
 
         @POST("/ip/ipNew")
-        @FormUrlEncoded
         Call post(@Field("ip") String ip, @Field("key") String key);
     }
 
@@ -68,23 +70,12 @@ public class RetrofitActivity extends BaseActivity {
     @OnClick(R.id.btn1)
     public void onClick() {
 
+        /** @See RetrofitTest {@link RetrofitTest}
+         *  Run UnitTest
+         */
         Retrofit retrofit = Retrofit.newBuilder()
                 .setBaseUrl(HttpUrl.parse(BASE_URL))
                 .build();
-
-        Host host = retrofit.create(Host.class);
-//        Call<ResponseBody> call = host.get(IP, KEY);
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                Log.d(TAG, "onResponse： " + response);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                Log.d(TAG, "onFailure： " + t);
-//            }
-//        });
 
     }
 
