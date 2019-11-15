@@ -1,5 +1,9 @@
 package com.android.ui.kent.demo.framwork.retrofit;
 
+import com.android.ui.kent.demo.framwork.retrofit.annotation.Field;
+import com.android.ui.kent.demo.framwork.retrofit.annotation.GET;
+import com.android.ui.kent.demo.framwork.retrofit.annotation.POST;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -13,10 +17,6 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
 
 /**
  * Created by songzhukai on 2019-11-15.
@@ -28,7 +28,6 @@ public class RetrofitTest {
         Call get(@Field("ip") String ip, @Field("key") String key);
 
         @POST("/ip/ipNew")
-        @FormUrlEncoded
         Call post(@Field("ip") String ip, @Field("key") String key);
     }
 
