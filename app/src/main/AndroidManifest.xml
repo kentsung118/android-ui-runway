@@ -56,6 +56,7 @@
         <activity android:name=".demo.framwork.eventbus.EventBusOneActivity" />
         <activity android:name=".demo.framwork.eventbus.EventBusTwoActivity" />
         <activity android:name=".demo.framwork.okhttp.OkHttpActivity" />
+        <activity android:name=".demo.framwork.retrofit.RetrofitActivity" />
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
