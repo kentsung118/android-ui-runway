@@ -5,6 +5,7 @@ import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.architecture.lifecycle.LifeCycleActivity;
 import com.android.ui.kent.demo.drawer.DrawerActivity;
 import com.android.ui.kent.demo.framwork.eventbus.EventBusOneActivity;
+import com.android.ui.kent.demo.framwork.glide.GlideActivity;
 import com.android.ui.kent.demo.framwork.okhttp.OkHttpActivity;
 import com.android.ui.kent.demo.indicator.IndicatorActivity;
 import com.android.ui.kent.demo.layout.contraint.ConstraintLayoutActivity;
@@ -66,6 +67,7 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_glide_manual));
         list.add(getString(R.string.main_action_okhttp_manual));
         list.add(getString(R.string.main_action_eventbus_manual));
         list.add(getString(R.string.main_action_reflect_ioc));
@@ -137,20 +139,22 @@ public class AndroidUIActivity extends BaseActivity {
                 RvScrollActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_rxjava_anim))) {
                 RxAnimActivity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_customize_view))){
+            } else if (actionName.equals(getString(R.string.main_action_customize_view))) {
                 CustomizeViewActivity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_transitiondrawable))){
+            } else if (actionName.equals(getString(R.string.main_action_transitiondrawable))) {
                 TransitionDrawableActivity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_ui_touch_move))){
+            } else if (actionName.equals(getString(R.string.main_action_ui_touch_move))) {
                 UITouchMoveActivity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_ui_touch_move_2))){
+            } else if (actionName.equals(getString(R.string.main_action_ui_touch_move_2))) {
                 UITouchMove2Activity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_reflect_ioc))){
+            } else if (actionName.equals(getString(R.string.main_action_reflect_ioc))) {
                 ReflectIocActivity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_eventbus_manual))){
+            } else if (actionName.equals(getString(R.string.main_action_eventbus_manual))) {
                 EventBusOneActivity.launch(activity);
-            } else if(actionName.equals(getString(R.string.main_action_okhttp_manual))){
+            } else if (actionName.equals(getString(R.string.main_action_okhttp_manual))) {
                 OkHttpActivity.launch(activity);
+            } else if (actionName.equals(getString(R.string.main_action_glide_manual))) {
+                GlideActivity.launch(activity);
             }
         }
     };
