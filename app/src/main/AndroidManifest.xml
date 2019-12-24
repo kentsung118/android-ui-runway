@@ -58,6 +58,7 @@
         <activity android:name=".demo.framwork.okhttp.OkHttpActivity" />
         <activity android:name=".demo.framwork.retrofit.RetrofitActivity" />
         <activity android:name=".demo.framwork.glide.GlideActivity" />
+        <activity android:name=".demo.shell.ShellActivity" />
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
