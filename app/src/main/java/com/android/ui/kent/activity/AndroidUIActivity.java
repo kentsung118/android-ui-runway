@@ -16,6 +16,7 @@ import com.android.ui.kent.demo.recyclerview.loadmore.LoadMoreActivity;
 import com.android.ui.kent.demo.recyclerview.multi_layer.MultiLayerActivity;
 import com.android.ui.kent.demo.recyclerview.scroll.RvScrollActivity;
 import com.android.ui.kent.demo.reflect_ioc.ReflectIocActivity;
+import com.android.ui.kent.demo.shell.ShellActivity;
 import com.android.ui.kent.demo.tab.TabActivity;
 import com.android.ui.kent.demo.ui_response.touch_event.UIResponseActivity;
 import com.android.ui.kent.demo.ui_response.touch_move.UITouchMove2Activity;
@@ -67,6 +68,7 @@ public class AndroidUIActivity extends BaseActivity {
     private void init() {
 
         List<String> list = new ArrayList<>();
+        list.add(getString(R.string.main_action_shell_demo));
         list.add(getString(R.string.main_action_glide_manual));
         list.add(getString(R.string.main_action_okhttp_manual));
         list.add(getString(R.string.main_action_eventbus_manual));
@@ -155,6 +157,8 @@ public class AndroidUIActivity extends BaseActivity {
                 OkHttpActivity.launch(activity);
             } else if (actionName.equals(getString(R.string.main_action_glide_manual))) {
                 GlideActivity.launch(activity);
+            } else if(actionName.equals(getString(R.string.main_action_shell_demo))){
+                ShellActivity.launch(activity);
             }
         }
     };
