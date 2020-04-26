@@ -77,6 +77,8 @@ public class RetrofitActivity extends BaseActivity {
                 .setBaseUrl(HttpUrl.parse(BASE_URL))
                 .build();
 
+        Host host = retrofit.create(Host.class);
+
     }
 
 
