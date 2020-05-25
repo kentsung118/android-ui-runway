@@ -1,7 +1,7 @@
 package com.android.ui.kent.demo.recyclerview.loadmore;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.android.ui.kent.common.NoDoubleClickUtils;
 
 /**

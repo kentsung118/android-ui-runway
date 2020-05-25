@@ -1,9 +1,9 @@
 package com.android.ui.kent.demo.mvvm.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.annotation.NonNull;
 
 import com.android.ui.kent.demo.mvvm.repo.GithubRepo;
 import com.android.ui.kent.demo.network.retrofit.vo.Repo;

@@ -1,6 +1,6 @@
 package com.android.ui.kent.demo.mvvm.viewmodel;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Kent Song on 2019/3/18.

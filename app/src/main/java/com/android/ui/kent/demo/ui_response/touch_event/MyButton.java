@@ -1,7 +1,7 @@
 package com.android.ui.kent.demo.ui_response.touch_event;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 

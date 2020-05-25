@@ -1,7 +1,7 @@
 package com.android.ui.kent.demo.mvvm.repo;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 
 import com.android.ui.kent.demo.application.MyApplication;
 import com.android.ui.kent.demo.mvvm.viewmodel.Lcee;
