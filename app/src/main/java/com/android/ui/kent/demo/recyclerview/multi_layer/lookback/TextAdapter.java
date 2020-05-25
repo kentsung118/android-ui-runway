@@ -1,6 +1,6 @@
 package com.android.ui.kent.demo.recyclerview.multi_layer.lookback;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 

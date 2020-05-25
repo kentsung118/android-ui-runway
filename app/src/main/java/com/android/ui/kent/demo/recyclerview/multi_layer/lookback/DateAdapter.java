@@ -1,7 +1,7 @@
 package com.android.ui.kent.demo.recyclerview.multi_layer.lookback;
 
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
+import androidx.annotation.Nullable;
+
 import android.view.View;
 import android.widget.TextView;
 

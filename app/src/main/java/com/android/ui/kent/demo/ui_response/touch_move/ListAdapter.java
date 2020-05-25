@@ -1,6 +1,6 @@
 package com.android.ui.kent.demo.ui_response.touch_move;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.Button;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.recyclerview.util.FocusQuickAdapter;

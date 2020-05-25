@@ -1,6 +1,6 @@
 package com.android.ui.kent.demo.recyclerview.loadmore;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 
 /**
@@ -467,7 +467,7 @@ public abstract class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapt
     protected abstract RecyclerView.ViewHolder onCreateContentItemViewHolder(ViewGroup parent, int contentViewType);
 
     /**
-     * This method works exactly the same as {@link #onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)}, but for header items.
+     * This method works exactly the same as {@link #onBindViewHolder(RecyclerView.ViewHolder, int)}, but for header items.
      *
      * @param headerViewHolder the view holder for the header item.
      * @param position the position.
@@ -475,7 +475,7 @@ public abstract class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapt
     protected abstract void onBindHeaderItemViewHolder(RecyclerView.ViewHolder headerViewHolder, int position);
 
     /**
-     * This method works exactly the same as {@link #onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)}, but for footer items.
+     * This method works exactly the same as {@link #onBindViewHolder(RecyclerView.ViewHolder, int)}, but for footer items.
      *
      * @param footerViewHolder the view holder for the footer item.
      * @param position the position.
@@ -483,7 +483,7 @@ public abstract class HeaderFooterRecyclerViewAdapter extends RecyclerView.Adapt
     protected abstract void onBindFooterItemViewHolder(RecyclerView.ViewHolder footerViewHolder, int position);
 
     /**
-     * This method works exactly the same as {@link #onBindViewHolder(android.support.v7.widget.RecyclerView.ViewHolder, int)}, but for content items.
+     * This method works exactly the same as {@link #onBindViewHolder(RecyclerView.ViewHolder, int)}, but for content items.
      *
      * @param contentViewHolder the view holder for the content item.
      * @param position the position.

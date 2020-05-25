@@ -19,8 +19,8 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import timber.log.Timber;
 

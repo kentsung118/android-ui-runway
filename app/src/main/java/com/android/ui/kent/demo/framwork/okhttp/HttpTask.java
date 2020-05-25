@@ -2,7 +2,7 @@ package com.android.ui.kent.demo.framwork.okhttp;
 
 import com.google.gson.Gson;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.Delayed;

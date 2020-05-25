@@ -1,6 +1,6 @@
 package com.android.ui.kent.demo.recyclerview.scroll;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;

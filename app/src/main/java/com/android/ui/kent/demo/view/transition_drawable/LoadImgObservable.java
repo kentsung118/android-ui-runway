@@ -13,7 +13,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;

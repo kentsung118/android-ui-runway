@@ -1,6 +1,6 @@
 package com.android.ui.kent.database.room.convert;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 import java.util.Date;
 

@@ -5,15 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
+import androidx.core.view.MenuItemCompat;
+import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.BaseActivity;

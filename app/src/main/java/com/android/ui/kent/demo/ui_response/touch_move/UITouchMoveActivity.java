@@ -3,7 +3,7 @@ package com.android.ui.kent.demo.ui_response.touch_move;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.android.ui.kent.R;
@@ -11,8 +11,8 @@ import com.android.ui.kent.demo.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
-import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
+import static androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
+import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
 
 public class UITouchMoveActivity extends BaseActivity {
 

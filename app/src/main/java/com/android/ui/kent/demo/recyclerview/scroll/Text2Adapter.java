@@ -1,6 +1,6 @@
 package com.android.ui.kent.demo.recyclerview.scroll;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.widget.Button;
 
 import com.android.ui.kent.R;

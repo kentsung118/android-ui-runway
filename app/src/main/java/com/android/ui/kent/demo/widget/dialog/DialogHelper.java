@@ -2,8 +2,8 @@ package com.android.ui.kent.demo.widget.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import com.android.ui.kent.R;
 
 /**
