@@ -97,7 +97,8 @@ public class TransitionDrawableActivity extends BaseActivity {
                 transitionDrawable = new TransitionDrawable(new Drawable[]{drawables[change % ids.length],
                         drawables[(change + 1) % ids.length]});
             } else {
-                transitionDrawable = new TransitionDrawable(new Drawable[]{mBitmapList.get(change % mBitmapList.size()),
+
+                transitionDrawable = new TransitionDrawable(new Drawable[]{mImageView.getBackground(),
                         mBitmapList.get((change + 1) % mBitmapList.size())});
             }
 
