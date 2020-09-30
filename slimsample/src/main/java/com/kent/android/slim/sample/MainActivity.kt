@@ -11,10 +11,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val mTitle = arrayOf(
-            "StartApp"
+            "StartApp",
+            "Transition Drawable"
     )
     private val mClasses = arrayOf<Class<*>>(
-            StartAppActivity::class.java
+            StartAppActivity::class.java,
+            TransitionDrawableActivity::class.java
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
