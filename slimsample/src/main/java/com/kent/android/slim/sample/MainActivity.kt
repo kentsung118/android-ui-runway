@@ -12,11 +12,14 @@ class MainActivity : AppCompatActivity() {
 
     private val mTitle = arrayOf(
             "StartApp",
-            "Transition Drawable"
+            "Transition Drawable",
+            "Constraint Layout"
+
     )
     private val mClasses = arrayOf<Class<*>>(
             StartAppActivity::class.java,
-            TransitionDrawableActivity::class.java
+            TransitionDrawableActivity::class.java,
+            ConstransLayoutDemoActivity::class.java
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
