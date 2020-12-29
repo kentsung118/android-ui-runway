@@ -3,4 +3,9 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="screen_item_focus">#0f93e7</color>
+    <color name="white_ten">#19ffffff</color>
+
+
 </resources>

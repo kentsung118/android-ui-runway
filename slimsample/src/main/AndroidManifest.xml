@@ -19,6 +19,7 @@
         <activity android:name=".StartAppActivity" />
         <activity android:name=".TransitionDrawableActivity" />
         <activity android:name=".ConstransLayoutDemoActivity" />
+        <activity android:name=".letv.desktopmanager.DesktopManagerActivity" />
     </application>
 
 </manifest>
