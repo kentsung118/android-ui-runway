@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/detail_bg">
+    android:background="@drawable/detail_bg"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
 
 
@@ -14,6 +16,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         />
 
     <TextView
@@ -24,9 +28,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/ToAddTitle"
-        android:text="将桌面移动到这里将隐藏此桌面"
+        android:text="将桌面移动到这里将隐藏此桌面1"
         android:textSize="26sp"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"
+        android:clipChildren="false"
+        android:clipToPadding="false"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
@@ -36,6 +42,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         />
 
 
