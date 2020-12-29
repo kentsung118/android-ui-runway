@@ -14,11 +14,15 @@
     app:resetByAni="false"
     app:shadowZ="0"
     app:widgetX="120"
-    app:widgetY="140">
+    app:widgetY="140"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <ImageView
             android:id="@+id/ic_lock"
@@ -27,6 +31,8 @@
             android:src="@drawable/ic_lock_screen_tag"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             />
 
         <ImageView
@@ -36,6 +42,8 @@
             android:src="@drawable/ic_top_right_home"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             />
 
         <TextView
@@ -48,6 +56,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:text="桌面"
             android:textColor="#000000"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
