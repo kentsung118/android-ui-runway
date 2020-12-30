@@ -26,6 +26,7 @@ class ScreenAdapter(val data: LinkedList<ScreenInfo>, val context: Context) : Re
             container.title.text = screen.packageName
             if (screen.locked) {
                 container.ic_lock.visibility = View.VISIBLE
+                container.isFocusable = false
             } else {
                 container.ic_lock.visibility = View.GONE
             }
@@ -64,26 +65,17 @@ class ScreenAdapter(val data: LinkedList<ScreenInfo>, val context: Context) : Re
         val s: ScreenInfo = data.removeAt(from)
         data.add(to, s)
         notifyItemMoved(from, to)
-//        if (mDataSetChangedListener != null) {
-//            mDataSetChangedListener.onItemMoved(from, to)
-//        }
     }
 
     fun deleteItem(position: Int): ScreenInfo {
         notifyItemRemoved(position)
         val result: ScreenInfo = data.removeAt(position)
-//        if (mDataSetChangedListener != null) {
-//            mDataSetChangedListener.onItemDelete(position)
-//        }
         return result
     }
 
     fun addItem(position: Int, s: ScreenInfo) {
         data.add(position, s)
         notifyItemInserted(position)
-//        if (mDataSetChangedListener != null) {
-//            mDataSetChangedListener.onItemInserted(position)
-//        }
     }
 
 }
