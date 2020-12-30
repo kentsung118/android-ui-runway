@@ -5,7 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/detail_bg"
     android:clipChildren="false"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
 
 
 
@@ -18,21 +20,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:descendantFocusability="afterDescendants"
         />
 
     <TextView
+        android:id="@+id/ToAddTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/InUseRv"
         app:layout_constraintBottom_toTopOf="@+id/ToAddRv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/ToAddTitle"
-        android:text="将桌面移动到这里将隐藏此桌面1"
+        android:text="将桌面移动到这里将隐藏此桌面2"
         android:textSize="26sp"
         android:textColor="#FFFFFF"
         android:clipChildren="false"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+    <com.kent.android.slim.sample.letv.desktopmanager.view.FocusProcessTextViewLayout
+        android:id="@+id/no_view"
+        android:layout_width="@dimen/item_width"
+        android:layout_height="@dimen/item_height"
+        app:layout_constraintTop_toBottomOf="@+id/ToAddTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="-18px"
+        android:layout_marginStart="-18px"
+        android:layout_marginTop="8dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:background="@drawable/desktop_manager_no_view_selector"
+
+        />
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
@@ -44,7 +68,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:descendantFocusability="afterDescendants"
+
         />
+
+
 
 
 

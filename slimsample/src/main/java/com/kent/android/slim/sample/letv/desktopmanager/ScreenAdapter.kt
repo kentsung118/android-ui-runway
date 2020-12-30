@@ -1,6 +1,7 @@
 package com.kent.android.slim.sample.letv.desktopmanager
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import java.util.*
 /**
  * Created by songzhukai on 2020/12/29.
  */
-class ScreenAdapter(val data: ArrayList<ScreenInfo>, val context: Context) : RecyclerView.Adapter<ScreenAdapter.ScreenInfoHolder>() {
+class ScreenAdapter(val data: LinkedList<ScreenInfo>, val context: Context) : RecyclerView.Adapter<ScreenAdapter.ScreenInfoHolder>() {
 
     private var mKeyListener: View.OnKeyListener? = null
     private var mFocusChangeListener: View.OnFocusChangeListener? = null
@@ -57,6 +58,32 @@ class ScreenAdapter(val data: ArrayList<ScreenInfo>, val context: Context) : Rec
 
     fun setFocusChangeListener(listener: View.OnFocusChangeListener) {
         mFocusChangeListener = listener
+    }
+
+    fun moveItem(from: Int, to: Int) {
+        val s: ScreenInfo = data.removeAt(from)
+        data.add(to, s)
+        notifyItemMoved(from, to)
+//        if (mDataSetChangedListener != null) {
+//            mDataSetChangedListener.onItemMoved(from, to)
+//        }
+    }
+
+    fun deleteItem(position: Int): ScreenInfo {
+        notifyItemRemoved(position)
+        val result: ScreenInfo = data.removeAt(position)
+//        if (mDataSetChangedListener != null) {
+//            mDataSetChangedListener.onItemDelete(position)
+//        }
+        return result
+    }
+
+    fun addItem(position: Int, s: ScreenInfo) {
+        data.add(position, s)
+        notifyItemInserted(position)
+//        if (mDataSetChangedListener != null) {
+//            mDataSetChangedListener.onItemInserted(position)
+//        }
     }
 
 }
