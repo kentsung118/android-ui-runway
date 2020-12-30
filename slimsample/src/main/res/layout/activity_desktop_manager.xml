@@ -33,7 +33,7 @@
         app:layout_constraintBottom_toTopOf="@+id/ToAddRv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="将桌面移动到这里将隐藏此桌面2"
+        android:text="将桌面移动到这里将隐藏此桌面1"
         android:textSize="26sp"
         android:textColor="#FFFFFF"
         android:clipChildren="false"
