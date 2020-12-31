@@ -1,5 +1,9 @@
 package com.kent.android.slim.sample.letv.desktopmanager
 
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
+
 class TestItem {
     /**
      * 位置向上移动
@@ -8,40 +12,31 @@ class TestItem {
     fun editUpSort(itemList: ArrayList<Item>, from: Int, to: Int): ArrayList<Item> {
 
         println("排序前：$itemList")
+        val locks = ArrayList<Int>()
+        var moveNum = 0
+
+        // step1.先记录锁的位置
+        for ((index, item) in itemList.withIndex()) {
+            if(index < to || index > from){
+                continue
+            }
+            if (item.lock) {
+                locks.add(index)
+            }
+        }
+
         val removedItem = itemList.removeAt(from)
         itemList.add(to, removedItem)
         println("排序(1)：$itemList")
 
-        var beginPoint = to
-        val endPoint = from
-        var moveNum = 0
-
-        while (beginPoint < endPoint) {
-
-            var to: Int? = null
-            for ((index, item) in itemList.withIndex()) {
-                //最后一笔，边界
-                if (index == endPoint)
-                    beginPoint = index
-
-                //若慢指针已检查过，忽略
-                if (index < beginPoint)
-                    continue
-
-                //仅有lock需处理，其他忽略
-                if (item.lock && to != null) {
-                    val lockItem = itemList.removeAt(index)
-                    itemList.add(to, lockItem)
-                    //处理move动画 move(to, index)
-                    println("moveItem from:$index ,to:$to")
-                    moveNum++
-                    beginPoint = index
-                    break
-                } else {
-                    to = index
-                    continue
-                }
-            }
+        // step2.将记录位置和后一位交换
+        for (from in locks) {
+            itemList[from]
+            val removedItem = itemList.removeAt(from)
+            val to = from + 1
+            itemList.add(to, removedItem)
+            moveNum++
+            println("moveItem from:$from ,to:$to")
         }
 
         println("排序(2)：$itemList")
@@ -56,45 +51,37 @@ class TestItem {
     fun editDownSort(itemList: ArrayList<Item>, from: Int, to: Int): ArrayList<Item> {
 
         println("排序前：$itemList")
+
+        val locks = LinkedList<Int>()
+        var moveNum = 0
+
+        // step1.先记录锁的位置
+        for ((index, item) in itemList.withIndex()) {
+            if(index < from || index > to){
+                continue
+            }
+            if (item.lock) {
+                locks.add(index)
+            }
+        }
+
+
+
         val removedItem = itemList.removeAt(from)
         itemList.add(to, removedItem)
         println("排序(1)：$itemList")
 
-        var beginPoint = to
-        var endPoint = from
-        var moveNum = 0
-
-        while (beginPoint > endPoint) {
-            var to: Int? = null
-
-            val count = itemList.size
-            for (index in count - 1 downTo 0) {
-                println("i$index")
-                //最后一笔，边界
-                if (index == endPoint)
-                    beginPoint = index
-
-                //若慢指针已检查过，忽略
-                if (index > beginPoint)
-                    continue
-
-                //仅有lock需处理，其他忽略
-                val item = itemList[index]
-                if (item.lock && to != null) {
-                    val lockItem = itemList.removeAt(index)
-                    itemList.add(to, lockItem)
-                    //处理move动画 move(to, index)
-                    println("moveItem from:$index ,to:$to")
-                    moveNum++
-                    beginPoint = index
-                    break
-                } else {
-                    to = index
-                    continue
-                }
-
-            }
+        // step2.将记录位置和后一位交换
+        while (locks.size != 0) {
+            val from = locks.removeLast()
+            val removedItem = itemList.removeAt(from)
+            val to = from - 1
+            itemList.add(to, removedItem)
+            moveNum++
+            println("moveItem from:$from ,to:$to")
         }
+
+
 
         println("排序(2)：$itemList")
         println("moveItem 次数：$moveNum")
