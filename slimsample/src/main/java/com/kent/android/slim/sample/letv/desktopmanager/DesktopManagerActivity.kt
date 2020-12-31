@@ -14,6 +14,7 @@ import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
 import com.kent.android.slim.sample.letv.desktopmanager.interfaces.Badge
 import kotlinx.android.synthetic.main.activity_desktop_manager.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by songzhukai on 2020/12/28.
@@ -52,7 +53,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         mScreenInfos = XmlLoader.loadScreenInfoFromXML(this, R.xml.default_screens_cibn)
         Log.d(tag, "mScreenInfos size = ${mScreenInfos.size}")
 
-        val linkedList = LinkedList(mScreenInfos)
+        val linkedList = ArrayList(mScreenInfos)
 
         mScreenInfos[10].locked = true
         mScreenInfos[9].locked = true
@@ -68,7 +69,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         mInUseAdapter = inUseAdapter
 
         //init ToAddRv
-        var toAddAdapter = ScreenAdapter(LinkedList(), this)
+        var toAddAdapter = ScreenAdapter(ArrayList(), this)
         toAddAdapter.setKeyListener(ToAddKeyListener())
         toAddAdapter.setFocusChangeListener(ToAddOnFocusChangeListener())
         ToAddRv.layoutManager = GridLayoutManager(this, spanNum)
