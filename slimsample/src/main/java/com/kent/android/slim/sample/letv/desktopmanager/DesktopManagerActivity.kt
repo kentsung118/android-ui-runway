@@ -20,13 +20,13 @@ import java.util.*
  */
 class DesktopManagerActivity : AppCompatActivity() {
 
-    val TAG = DesktopManagerActivity::class.simpleName
+    val tag = DesktopManagerActivity::class.simpleName
 
     lateinit var mScreenInfos: ArrayList<ScreenInfo>
     lateinit var mBadgeMap: HashMap<String, Badge>
     private var mEditMode = false
 
-    val SPAN_NUM = 7
+    val spanNum = 7
     lateinit var mInUseRv: RecyclerView
     lateinit var mInUseAdapter: ScreenAdapter
     val amInUse = RecyclerAnimator()
@@ -50,17 +50,18 @@ class DesktopManagerActivity : AppCompatActivity() {
 
     fun initData() {
         mScreenInfos = XmlLoader.loadScreenInfoFromXML(this, R.xml.default_screens_cibn)
-        Log.d(TAG, "mScreenInfos size = ${mScreenInfos.size}")
+        Log.d(tag, "mScreenInfos size = ${mScreenInfos.size}")
 
         val linkedList = LinkedList(mScreenInfos)
 
         mScreenInfos[10].locked = true
+        mScreenInfos[9].locked = true
 
         //init InUseRv
         var inUseAdapter = ScreenAdapter(linkedList, this)
         inUseAdapter.setKeyListener(InUseKeyListener())
         inUseAdapter.setFocusChangeListener(InUseOnFocusChangeListener())
-        InUseRv.layoutManager = GridLayoutManager(this, SPAN_NUM)
+        InUseRv.layoutManager = GridLayoutManager(this, spanNum)
         InUseRv.adapter = inUseAdapter
         InUseRv.itemAnimator = amInUse
         mInUseRv = InUseRv
@@ -70,7 +71,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         var toAddAdapter = ScreenAdapter(LinkedList(), this)
         toAddAdapter.setKeyListener(ToAddKeyListener())
         toAddAdapter.setFocusChangeListener(ToAddOnFocusChangeListener())
-        ToAddRv.layoutManager = GridLayoutManager(this, SPAN_NUM)
+        ToAddRv.layoutManager = GridLayoutManager(this, spanNum)
         ToAddRv.adapter = toAddAdapter
         ToAddRv.itemAnimator = amToAdd
         mToAddRv = ToAddRv
@@ -91,12 +92,12 @@ class DesktopManagerActivity : AppCompatActivity() {
 //        forceExitGuide()
         if (mEditMode) {
             // turn on
-            Log.d(TAG, "edit mode is on")
+            Log.d(tag, "edit mode is on")
 //            mBtnMain.setVisibility(View.INVISIBLE)
         } else {
 //            brushDatabase(false)
             // turn off;
-            Log.d(TAG, "edit mode is off")
+            Log.d(tag, "edit mode is off")
 //            if (rlvInUse.getAdapter().getItemCount() !== 0) {
 //                mBtnMain.setVisibility(View.VISIBLE)
 //            }
@@ -225,7 +226,7 @@ class DesktopManagerActivity : AppCompatActivity() {
                     when (keyCode) {
 
                         KeyEvent.KEYCODE_DPAD_LEFT -> {
-                            if(CalculateUtil.isOnRowFirstPos(inUseChildPos, SPAN_NUM)){
+                            if(CalculateUtil.isOnRowFirstPos(inUseChildPos, spanNum)){
                                 return true
                             }
                             to = inUseChildPos - 1;
@@ -233,7 +234,7 @@ class DesktopManagerActivity : AppCompatActivity() {
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                            if(CalculateUtil.isOnRowLastPos(inUseChildPos, SPAN_NUM)){
+                            if(CalculateUtil.isOnRowLastPos(inUseChildPos, spanNum)){
                                return true
                             }
                             to = inUseChildPos + 1;
@@ -241,13 +242,13 @@ class DesktopManagerActivity : AppCompatActivity() {
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_UP -> {
-                            to = inUseChildPos - SPAN_NUM
+                            to = inUseChildPos - spanNum
                             updateAdapterMove(from, to, v);
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_DOWN -> {
-                            if (!CalculateUtil.isInLastRow(mInUseAdapter.itemCount, inUseChildPos, SPAN_NUM)) {
-                                to = inUseChildPos + SPAN_NUM
+                            if (!CalculateUtil.isInLastRow(mInUseAdapter.itemCount, inUseChildPos, spanNum)) {
+                                to = inUseChildPos + spanNum
                                 updateAdapterMove(from, to, v);
                                 return true
                             }
@@ -299,7 +300,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         private fun updateAdapterDelete(position: Int, destPosition: Int,
                                         viewGroupPosition: Int) {
             mToAddAdapter.addItem(destPosition, mInUseAdapter.deleteItem(position))
-            Log.d(TAG, "position :$position--destPosition :$destPosition")
+            Log.d(tag, "position :$position--destPosition :$destPosition")
             amToAdd.addAnimationsStartedListener(
                     object : RecyclerAnimator.ItemAnimatorStartedListener {
                         override fun onAnimationsStarted(holder: RecyclerView.ViewHolder) {
@@ -362,7 +363,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         private fun updateAdapterDelete(position: Int, destPosition: Int,
                                         viewGroupPosition: Int) {
             mInUseAdapter.addItem(destPosition, mToAddAdapter.deleteItem(position))
-            Log.d(TAG, "position :$position--destPosition :$destPosition")
+            Log.d(tag, "position :$position--destPosition :$destPosition")
             amInUse.addAnimationsStartedListener(
                     object : RecyclerAnimator.ItemAnimatorStartedListener {
                         override fun onAnimationsStarted(holder: RecyclerView.ViewHolder) {

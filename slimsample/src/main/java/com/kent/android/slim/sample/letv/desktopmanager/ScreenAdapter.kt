@@ -23,7 +23,7 @@ class ScreenAdapter(val data: LinkedList<ScreenInfo>, val context: Context) : Re
         private val data: ScreenInfo? = null
 
         fun bindData(screen: ScreenInfo) {
-            container.title.text = screen.packageName
+            container.title.text = screen.packageName.split(".")[3]
             if (screen.locked) {
                 container.ic_lock.visibility = View.VISIBLE
                 container.isFocusable = false
@@ -62,9 +62,21 @@ class ScreenAdapter(val data: LinkedList<ScreenInfo>, val context: Context) : Re
     }
 
     fun moveItem(from: Int, to: Int) {
-        val s: ScreenInfo = data.removeAt(from)
-        data.add(to, s)
-        notifyItemMoved(from, to)
+//        val s: ScreenInfo = data.removeAt(from)
+//        data.add(to, s)
+//        notifyItemMoved(from, to)
+
+        Collections.swap(data, from, to + 1);
+
+        notifyItemMoved(from, to + 1)
+        notifyItemRangeRemoved(from , 2)
+        notifyItemRangeInserted(from ,2)
+//        notifyItemMoved(from, to + 3);
+//        notifyItemMoved(from + 2, to + 2);
+//        notifyItemMoved(from + 1, to+ 1);
+//        notifyItemMoved(from, to);
+
+
     }
 
     fun deleteItem(position: Int): ScreenInfo {
