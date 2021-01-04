@@ -4,7 +4,7 @@ import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TestItem(val spanNum: Int) {
+class TestItem(val spanNum: Int, val listener: MoveItemListener? = null) {
 
     private val notFound: Int = -1
 
@@ -30,6 +30,7 @@ class TestItem(val spanNum: Int) {
 
         val removedItem = itemList.removeAt(from)
         itemList.add(to, removedItem)
+        listener?.onMoveItem(from, to)
         println("排序(1)：$itemList")
 
         // step2.将记录位置和后一位交换
@@ -39,6 +40,7 @@ class TestItem(val spanNum: Int) {
             val to = from + 1
             itemList.add(to, removedItem)
             moveNum++
+            listener?.onMoveItem(from, to)
             println("moveItem from:$from ,to:$to")
         }
 
@@ -52,13 +54,9 @@ class TestItem(val spanNum: Int) {
      * 检查锁，并且和锁后一位交换位置
      * **/
     fun editDownSort(itemList: ArrayList<ScreenInfo>, from: Int, to: Int): ArrayList<ScreenInfo> {
-
         println("排序前：$itemList")
-
+        // step1.记录锁的位置
         val locks = LinkedList<Int>()
-        var moveNum = 0
-
-        // step1.先记录锁的位置
         for ((index, item) in itemList.withIndex()) {
             if (index < from || index > to) {
                 continue
@@ -67,27 +65,27 @@ class TestItem(val spanNum: Int) {
                 locks.add(index)
             }
         }
-
-
-        val removedItem = itemList.removeAt(from)
-        itemList.add(to, removedItem)
-        println("排序(1)：$itemList")
-
-        // step2.将记录位置和后一位交换
+        // step2.交换目标
+        exchangeItem(itemList, from, to)
+        // step3.处理锁：将记录位置和后一位交换
         while (locks.size != 0) {
-            val from = locks.removeLast()
-            val removedItem = itemList.removeAt(from)
-            val to = from - 1
-            itemList.add(to, removedItem)
-            moveNum++
-            println("moveItem from:$from ,to:$to")
+            val fromPos = locks.removeLast()
+            val toPos = fromPos - 1
+            exchangeItem(itemList, fromPos, toPos)
         }
 
-
-
-        println("排序(2)：$itemList")
-        println("moveItem 次数：$moveNum")
+        println("排序(Done)：$itemList")
         return itemList
+    }
+
+    private fun exchangeItem(itemList: ArrayList<ScreenInfo>, from: Int, to: Int) {
+        if (listener == null) {
+            val removedItem = itemList.removeAt(from)
+            itemList.add(to, removedItem)
+        } else {
+            listener.onMoveItem(from, to)
+        }
+        println("moveItem from:$from ,to:$to")
     }
 
     fun searchPosition(data: ArrayList<ScreenInfo>, currPos: Int, direction: Direction): Int {
@@ -101,7 +99,7 @@ class TestItem(val spanNum: Int) {
             Direction.RIGHT -> {
                 handleSearchRight(data, currPos)
             }
-            else ->  return notFound
+            else -> return notFound
         }
     }
 
@@ -143,6 +141,10 @@ class TestItem(val spanNum: Int) {
             }
         }
         return notFound
+    }
+
+    interface MoveItemListener {
+        fun onMoveItem(form: Int, to: Int)
     }
 
 
