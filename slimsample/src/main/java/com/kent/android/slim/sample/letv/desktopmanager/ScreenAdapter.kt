@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by songzhukai on 2020/12/29.
  */
-class ScreenAdapter(val data: ArrayList<ScreenInfo>, val context: Context) : RecyclerView.Adapter<ScreenAdapter.ScreenInfoHolder>() {
+class ScreenAdapter(var data: ArrayList<ScreenInfo>, val context: Context) : RecyclerView.Adapter<ScreenAdapter.ScreenInfoHolder>() {
 
     private var mKeyListener: View.OnKeyListener? = null
     private var mFocusChangeListener: View.OnFocusChangeListener? = null

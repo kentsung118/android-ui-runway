@@ -35,6 +35,7 @@ class DesktopManagerActivity : AppCompatActivity() {
     lateinit var mToAddRv: RecyclerView
     lateinit var mToAddAdapter: ScreenAdapter
     val amToAdd = RecyclerAnimator()
+    lateinit var mTestItem: TestItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +78,8 @@ class DesktopManagerActivity : AppCompatActivity() {
         toAddRv.itemAnimator = amToAdd
         mToAddRv = toAddRv
         mToAddAdapter = toAddAdapter
+
+        mTestItem = TestItem(spanNum, MoveItemListener())
     }
 
 
@@ -224,39 +227,50 @@ class DesktopManagerActivity : AppCompatActivity() {
                 } else {
                     val from = inUseChildPos
                     val to: Int
+
+                    var s1 = ""
+                    mInUseAdapter.data.forEach(){
+                        s1= s1 +it.packageName.split(".")[3]+","
+                    }
+                    Log.d(tag, "移动前：${s1}")
                     when (keyCode) {
 
                         KeyEvent.KEYCODE_DPAD_LEFT -> {
-                            if(CalculateUtil.isOnRowFirstPos(inUseChildPos, spanNum)){
+                            if (CalculateUtil.isOnRowFirstPos(inUseChildPos, spanNum)) {
                                 return true
                             }
-                            to = inUseChildPos - 1;
-                            updateAdapterMove(from, to, v);
+//                            to = inUseChildPos - 1;
+                            updateAdapterMove(from, 0, v, Direction.LEFT);
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                            if(CalculateUtil.isOnRowLastPos(inUseChildPos, spanNum)){
-                               return true
+                            if (CalculateUtil.isOnRowLastPos(inUseChildPos, spanNum)) {
+                                return true
                             }
-                            to = inUseChildPos + 1;
-                            updateAdapterMove(from, to, v);
+//                            to = inUseChildPos + 1;
+                            updateAdapterMove(from, 0, v, Direction.RIGHT);
+                            s1 = ""
+                            mInUseAdapter.data.forEach(){
+                                s1= s1 +it.packageName.split(".")[3]+","
+                            }
+                            Log.d(tag, "移动后：${s1}")
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_UP -> {
                             to = inUseChildPos - spanNum
-                            updateAdapterMove(from, to, v);
+                            updateAdapterMove(from, to, v, Direction.UP);
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_DOWN -> {
                             if (!CalculateUtil.isInLastRow(mInUseAdapter.itemCount, inUseChildPos, spanNum)) {
                                 to = inUseChildPos + spanNum
-                                updateAdapterMove(from, to, v);
+                                updateAdapterMove(from, to, v, Direction.DOWN);
                                 return true
                             }
 
                             // there a footer view at the end of the list
 //                            if (focusView === footer) {
-                            updateAdapterDelete(inUseChildPos, 0, 0)
+                            updateAdapterMove(inUseChildPos, 0, v, Direction.DOWN)
                             return true
 //                            }
 
@@ -271,46 +285,64 @@ class DesktopManagerActivity : AppCompatActivity() {
                         else -> {
                         }
                     }
+
+
                 }
 
             }
             return false
         }
 
-        fun updateAdapterMove(from: Int, to: Int, v: View) {
+        fun updateAdapterMove(from: Int, to: Int, v: View, direction: Direction) {
             if (to < 0 || to >= mInUseAdapter.itemCount) {
                 return
             }
-            mInUseAdapter.moveItem(from, to)
+
+            when (direction) {
+                Direction.LEFT -> {
+                    val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
+                    mTestItem.editUpSort(mInUseAdapter.data, from, pos)
+                }
+                Direction.RIGHT -> {
+                    val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
+                    mTestItem.editDownSort(mInUseAdapter.data, from, pos)
+                }
+                else -> {
+                    mInUseAdapter.moveItem(from, to)
+                }
+            }
             amInUse.addAnimationsFinishedListener(
                     RecyclerView.ItemAnimator.ItemAnimatorFinishedListener { // 动画结束后，检查view的位置，更新箭头的状态
                         (v.onFocusChangeListener as ScreenItemOnFocusChangeListener)
                                 .updateBadges(v, editMode)
                     })
-        }
 
 
-
-
-        /**
-         * transfer data between to Adapters, and update UI at the same time
-         * @param position position in InUseAdapter which to be deleted
-         * @param destPosition position in ToAddAdapter which to be added
-         * @param viewGroupPosition position in ViewGroup at which the view should get focus;
-         */
-        private fun updateAdapterDelete(position: Int, destPosition: Int,
-                                        viewGroupPosition: Int) {
-            mToAddAdapter.addItem(destPosition, mInUseAdapter.deleteItem(position))
-            Log.d(tag, "position :$position--destPosition :$destPosition")
-            amToAdd.addAnimationsStartedListener(
-                    object : RecyclerAnimator.ItemAnimatorStartedListener {
-                        override fun onAnimationsStarted(holder: RecyclerView.ViewHolder) {
-                            holder.itemView.requestFocus()
-                        }
-                    })
+//            /**
+//             * transfer data between to Adapters, and update UI at the same time
+//             * @param position position in InUseAdapter which to be deleted
+//             * @param destPosition position in ToAddAdapter which to be added
+//             * @param viewGroupPosition position in ViewGroup at which the view should get focus;
+//             */
+//            fun updateAdapterDelete(position: Int, destPosition: Int,
+//                                    viewGroupPosition: Int) {
+//                mToAddAdapter.addItem(destPosition, mInUseAdapter.deleteItem(position))
+//                Log.d(tag, "position :$position--destPosition :$destPosition")
+//                amToAdd.addAnimationsStartedListener(
+//                        object : RecyclerAnimator.ItemAnimatorStartedListener {
+//                            override fun onAnimationsStarted(holder: RecyclerView.ViewHolder) {
+//                                holder.itemView.requestFocus()
+//                            }
+//                        })
+//            }
         }
     }
 
+    private inner class MoveItemListener : TestItem.MoveItemListener {
+        override fun onMoveItem(form: Int, to: Int) {
+            mInUseAdapter.moveItem(form, to)
+        }
+    }
 
     private inner class ToAddKeyListener : View.OnKeyListener {
         override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
@@ -336,16 +368,15 @@ class DesktopManagerActivity : AppCompatActivity() {
                     val to: Int
                     when (keyCode) {
 
-                        KeyEvent.KEYCODE_DPAD_LEFT ,
+                        KeyEvent.KEYCODE_DPAD_LEFT,
                         KeyEvent.KEYCODE_DPAD_RIGHT,
                         KeyEvent.KEYCODE_DPAD_DOWN -> {
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_UP -> {
-                            updateAdapterDelete(inUseChildPos, mInUseAdapter.itemCount, 0)
+//                            updateAdapterDelete(inUseChildPos, mInUseAdapter.itemCount, 0)
                             return true;
                         }
-
 
 //                    KeyEvent.KEYCODE_BACK,
                         KeyEvent.KEYCODE_ENTER,
@@ -372,9 +403,6 @@ class DesktopManagerActivity : AppCompatActivity() {
                         }
                     })
         }
-
-
-
 
 
     }
@@ -458,3 +486,4 @@ class DesktopManagerActivity : AppCompatActivity() {
 
 
 }
+
