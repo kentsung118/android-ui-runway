@@ -1,5 +1,6 @@
 package com.kent.android.slim.sample.letv.desktopmanager
 
+import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
@@ -9,7 +10,7 @@ class TestItem {
      * 位置向上移动
      * 检查锁，并且和锁前一位交换位置
      * **/
-    fun editUpSort(itemList: ArrayList<Item>, from: Int, to: Int): ArrayList<Item> {
+    fun editUpSort(itemList: ArrayList<ScreenInfo>, from: Int, to: Int): ArrayList<ScreenInfo> {
 
         println("排序前：$itemList")
         val locks = ArrayList<Int>()
@@ -20,7 +21,7 @@ class TestItem {
             if(index < to || index > from){
                 continue
             }
-            if (item.lock) {
+            if (item.locked) {
                 locks.add(index)
             }
         }
@@ -48,7 +49,7 @@ class TestItem {
      * 位置向下移动
      * 检查锁，并且和锁后一位交换位置
      * **/
-    fun editDownSort(itemList: ArrayList<Item>, from: Int, to: Int): ArrayList<Item> {
+    fun editDownSort(itemList: ArrayList<ScreenInfo>, from: Int, to: Int): ArrayList<ScreenInfo> {
 
         println("排序前：$itemList")
 
@@ -60,7 +61,7 @@ class TestItem {
             if(index < from || index > to){
                 continue
             }
-            if (item.lock) {
+            if (item.locked) {
                 locks.add(index)
             }
         }
@@ -89,39 +90,5 @@ class TestItem {
     }
 }
 
-
-class Item(val id: String, val lock: Boolean = false) {
-    override fun toString(): String {
-        return "Item(id='$id')"
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Item
-
-        return id == other.id
-    }
-
-
-}
-
-
-fun main() {
-
-    val items = mutableListOf(
-            Item("A"),
-            Item("B", true),
-            Item("D"),
-            Item("C", true),
-            Item("E"),
-            Item("F"),
-            Item("G")
-    )
-    val itemTest = TestItem()
-    itemTest.editUpSort(items as ArrayList<Item>, 4, 0)
-
-}
 
 
