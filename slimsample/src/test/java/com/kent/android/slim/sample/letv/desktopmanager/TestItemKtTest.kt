@@ -1,6 +1,7 @@
 package com.kent.android.slim.sample.letv.desktopmanager
 
-import org.junit.Assert.*
+import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
+import org.junit.Assert.assertArrayEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -15,130 +16,151 @@ class TestItemKtTest {
     fun init() {
     }
 
+    class ScreenItem(pkgName: String, val locked: Boolean= false) : ScreenInfo(){
+        init {
+            super.setPackageName(pkgName)
+            super.setLocked(locked)
+        }
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+            other as ScreenInfo
+            return packageName == other.packageName
+        }
+
+        override fun toString(): String {
+            return "Item(pkgName='$packageName')"
+        }
+    }
+
+    fun screenItem(pkgName: String, locked: Boolean = false): ScreenInfo {
+        return ScreenItem(pkgName, locked)
+    }
+
     @Test
-    fun test_editUpSort_CrossTwoLock() {
+    fun keyUp_twoLocks_neighbor() {
         assertArrayEquals(
                 testItem.editUpSort(
                         mutableListOf(
-                            Item("A"),
-                            Item("B", true),
-                            Item("C", true),
-                            Item("D")
-                        ) as ArrayList<Item>, 3, 0).toArray()
+                                screenItem("A"),
+                                screenItem("B", true),
+                                screenItem("C", true),
+                                screenItem("D")
+                        ) as ArrayList<ScreenInfo>, 3, 0).toArray()
                 ,
                 arrayOf(
-                        Item("D"),
-                        Item("B", true),
-                        Item("C", true),
-                        Item("A")
+                        screenItem("D"),
+                        screenItem("B", true),
+                        screenItem("C", true),
+                        screenItem("A")
                 )
         )
     }
 
     @Test
-    fun test_editUpSort_ThreeTwoLock() {
+    fun keyUp_threeLocks_neighbor() {
         assertArrayEquals(
                 testItem.editUpSort(
                         mutableListOf(
-                                Item("A"),
-                                Item("B", true),
-                                Item("C", true),
-                                Item("D", true),
-                                Item("E")
-                        ) as ArrayList<Item>, 4, 0).toArray()
+                                screenItem("A"),
+                                screenItem("B", true),
+                                screenItem("C", true),
+                                screenItem("D", true),
+                                screenItem("E")
+                        ) as ArrayList<ScreenInfo>, 4, 0).toArray()
                 ,
                 arrayOf(
-                        Item("E"),
-                        Item("B", true),
-                        Item("C", true),
-                        Item("D", true),
-                        Item("A")
+                        screenItem("E"),
+                        screenItem("B", true),
+                        screenItem("C", true),
+                        screenItem("D", true),
+                        screenItem("A")
                 )
         )
     }
 
     @Test
-    fun test_editUpSort_CrossTwoLockWithSpace() {
+    fun keyUp_twoLocks_split() {
         assertArrayEquals(
                 testItem.editUpSort(
                         mutableListOf(
-                                Item("A"),
-                                Item("B", true),
-                                Item("C"),
-                                Item("D", true),
-                                Item("E")
-                        ) as ArrayList<Item>, 4, 0).toArray()
+                                screenItem("A"),
+                                screenItem("B", true),
+                                screenItem("C"),
+                                screenItem("D", true),
+                                screenItem("E")
+                        ) as ArrayList<ScreenInfo>, 4, 0).toArray()
                 ,
                 arrayOf(
-                        Item("E"),
-                        Item("B", true),
-                        Item("A"),
-                        Item("D", true),
-                        Item("C")
+                        screenItem("E"),
+                        screenItem("B", true),
+                        screenItem("A"),
+                        screenItem("D", true),
+                        screenItem("C")
                 )
         )
     }
 
     @Test
-    fun test_editDownSort_CrossTwoLock() {
+    fun keyDown_twoLocks_neighbor() {
         assertArrayEquals(
                 testItem.editDownSort(
                         mutableListOf(
-                                Item("A"),
-                                Item("B", true),
-                                Item("C", true),
-                                Item("D")
-                        ) as ArrayList<Item>, 0, 3).toArray()
+                                screenItem("A"),
+                                screenItem("B", true),
+                                screenItem("C", true),
+                                screenItem("D")
+                        ) as ArrayList<ScreenInfo>, 0, 3).toArray()
                 ,
                 arrayOf(
-                        Item("D"),
-                        Item("B", true),
-                        Item("C", true),
-                        Item("A")
+                        screenItem("D"),
+                        screenItem("B", true),
+                        screenItem("C", true),
+                        screenItem("A")
                 )
         )
     }
 
     @Test
-    fun test_editDownSort_CrossThreeLock() {
+    fun keyDown_threeLocks_neighbor() {
         assertArrayEquals(
                 testItem.editDownSort(
                         mutableListOf(
-                                Item("A"),
-                                Item("B", true),
-                                Item("C", true),
-                                Item("D", true),
-                                Item("E")
-                        ) as ArrayList<Item>, 0, 4).toArray()
+                                screenItem("A"),
+                                screenItem("B", true),
+                                screenItem("C", true),
+                                screenItem("D", true),
+                                screenItem("E")
+                        ) as ArrayList<ScreenInfo>, 0, 4).toArray()
                 ,
                 arrayOf(
-                        Item("E"),
-                        Item("B", true),
-                        Item("C", true),
-                        Item("D", true),
-                        Item("A")
+                        screenItem("E"),
+                        screenItem("B", true),
+                        screenItem("C", true),
+                        screenItem("D", true),
+                        screenItem("A")
                 )
         )
     }
 
     @Test
-    fun test_editDownSort_TwoLockWithSpace() {
+    fun keyDown_twoLocks_split() {
         assertArrayEquals(
                 testItem.editDownSort(
                         mutableListOf(
-                                Item("A"),
-                                Item("B", true),
-                                Item("C"),
-                                Item("D", true),
-                                Item("E")
-                        ) as ArrayList<Item>, 0, 4).toArray()
+                                screenItem("A"),
+                                screenItem("B", true),
+                                screenItem("C"),
+                                screenItem("D", true),
+                                screenItem("E")
+                        ) as ArrayList<ScreenInfo>, 0, 4).toArray()
                 ,
                 arrayOf(
-                        Item("C"),
-                        Item("B", true),
-                        Item("E", true),
-                        Item("D", true),
-                        Item("A")
+                        screenItem("C"),
+                        screenItem("B", true),
+                        screenItem("E", true),
+                        screenItem("D", true),
+                        screenItem("A")
                 )
         )
     }

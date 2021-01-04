@@ -14,7 +14,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/InUseRv"
+        android:id="@+id/inUseRv"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,11 +26,11 @@
         />
 
     <TextView
-        android:id="@+id/ToAddTitle"
+        android:id="@+id/toAddTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/InUseRv"
-        app:layout_constraintBottom_toTopOf="@+id/ToAddRv"
+        app:layout_constraintTop_toBottomOf="@+id/inUseRv"
+        app:layout_constraintBottom_toTopOf="@+id/toAddRv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="将桌面移动到这里将隐藏此桌面1"
@@ -45,7 +45,7 @@
         android:id="@+id/no_view"
         android:layout_width="@dimen/item_width"
         android:layout_height="@dimen/item_height"
-        app:layout_constraintTop_toBottomOf="@+id/ToAddTitle"
+        app:layout_constraintTop_toBottomOf="@+id/toAddTitle"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="-18px"
         android:layout_marginStart="-18px"
@@ -61,8 +61,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/ToAddRv"
-        app:layout_constraintTop_toBottomOf="@+id/ToAddTitle"
+        android:id="@+id/toAddRv"
+        app:layout_constraintTop_toBottomOf="@+id/toAddTitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

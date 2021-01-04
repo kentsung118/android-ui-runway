@@ -24,8 +24,8 @@ class DesktopManagerActivity : AppCompatActivity() {
     val tag = DesktopManagerActivity::class.simpleName
 
     lateinit var mScreenInfos: ArrayList<ScreenInfo>
-    lateinit var mBadgeMap: HashMap<String, Badge>
-    private var mEditMode = false
+    lateinit var badgeMap: HashMap<String, Badge>
+    private var editMode = false
 
     val spanNum = 7
     lateinit var mInUseRv: RecyclerView
@@ -46,7 +46,7 @@ class DesktopManagerActivity : AppCompatActivity() {
 
     fun initBadge() {
         val badgeHelper = BadgeHelper()
-        mBadgeMap = badgeHelper.initBadgeMap(this)
+        badgeMap = badgeHelper.initBadgeMap(this)
     }
 
     fun initData() {
@@ -62,20 +62,20 @@ class DesktopManagerActivity : AppCompatActivity() {
         var inUseAdapter = ScreenAdapter(linkedList, this)
         inUseAdapter.setKeyListener(InUseKeyListener())
         inUseAdapter.setFocusChangeListener(InUseOnFocusChangeListener())
-        InUseRv.layoutManager = GridLayoutManager(this, spanNum)
-        InUseRv.adapter = inUseAdapter
-        InUseRv.itemAnimator = amInUse
-        mInUseRv = InUseRv
+        inUseRv.layoutManager = GridLayoutManager(this, spanNum)
+        inUseRv.adapter = inUseAdapter
+        inUseRv.itemAnimator = amInUse
+        mInUseRv = inUseRv
         mInUseAdapter = inUseAdapter
 
         //init ToAddRv
         var toAddAdapter = ScreenAdapter(ArrayList(), this)
         toAddAdapter.setKeyListener(ToAddKeyListener())
         toAddAdapter.setFocusChangeListener(ToAddOnFocusChangeListener())
-        ToAddRv.layoutManager = GridLayoutManager(this, spanNum)
-        ToAddRv.adapter = toAddAdapter
-        ToAddRv.itemAnimator = amToAdd
-        mToAddRv = ToAddRv
+        toAddRv.layoutManager = GridLayoutManager(this, spanNum)
+        toAddRv.adapter = toAddAdapter
+        toAddRv.itemAnimator = amToAdd
+        mToAddRv = toAddRv
         mToAddAdapter = toAddAdapter
     }
 
@@ -88,10 +88,10 @@ class DesktopManagerActivity : AppCompatActivity() {
         if (view == null) {
             return
         }
-        mEditMode = !mEditMode
+        editMode = !editMode
         // TODO once enter edit mode.should not show edit any more
 //        forceExitGuide()
-        if (mEditMode) {
+        if (editMode) {
             // turn on
             Log.d(tag, "edit mode is on")
 //            mBtnMain.setVisibility(View.INVISIBLE)
@@ -105,7 +105,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         }
         if (view.onFocusChangeListener is ScreenItemOnFocusChangeListener) {
             val listener: ScreenItemOnFocusChangeListener = view.onFocusChangeListener as ScreenItemOnFocusChangeListener
-            listener.updateBadges(view, mEditMode)
+            listener.updateBadges(view, editMode)
         }
     }
 
@@ -139,17 +139,17 @@ class DesktopManagerActivity : AppCompatActivity() {
             }
 
 
-            if (mEditMode) {
+            if (editMode) {
                 if (shouldShowArrow) {
 //                    mHandler.sendEmptyMessageDelayed(DesktopManagerActivity.START_ARROW_ANIMATION,
 //                            DesktopManagerActivity.DEFAULT_ARROW_ANIMATION_INTERVAL.toLong())
                     val useChildren: List<ScreenInfo> = mInUseAdapter.getDataList()
                     val useChildPos: Int = mInUseRv.getChildPosition(v)
-                    mBadgeMap.get(BadgeKey.EDGE)?.setTargetViewGroup(v as ViewGroup)
-                    mBadgeMap.get(BadgeKey.RIGHT)?.setTargetViewGroup(v as ViewGroup)
-                    mBadgeMap.get(BadgeKey.DOWN)?.setTargetViewGroup(v as ViewGroup)
-                    mBadgeMap.get(BadgeKey.LEFT)?.setTargetViewGroup(v as ViewGroup)
-                    mBadgeMap.get(BadgeKey.UP)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.EDGE)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.RIGHT)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.DOWN)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.LEFT)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.UP)?.setTargetViewGroup(v as ViewGroup)
                     // 根据左右item内容的状态，判断如何绘制UI
 //                    if (useChildPos < mInUseAdapter.getItemCount() - 1) {
 //                        badgeList.get(KEY_RIGHT)?.setTargetViewGroup(v as ViewGroup)
@@ -185,13 +185,13 @@ class DesktopManagerActivity : AppCompatActivity() {
                     return
                 }
             }
-            mBadgeMap.get(BadgeKey.DOWN)?.remove()
-            mBadgeMap.get(BadgeKey.UP)?.remove()
-            mBadgeMap.get(BadgeKey.RIGHT)?.remove()
-            mBadgeMap.get(BadgeKey.LEFT)?.remove()
-            mBadgeMap.get(BadgeKey.EDGE)?.remove()
-            mBadgeMap.get(BadgeKey.RIGHT_DISABLE)?.remove()
-            mBadgeMap.get(BadgeKey.LEFT_DISABLE)?.remove()
+            badgeMap.get(BadgeKey.DOWN)?.remove()
+            badgeMap.get(BadgeKey.UP)?.remove()
+            badgeMap.get(BadgeKey.RIGHT)?.remove()
+            badgeMap.get(BadgeKey.LEFT)?.remove()
+            badgeMap.get(BadgeKey.EDGE)?.remove()
+            badgeMap.get(BadgeKey.RIGHT_DISABLE)?.remove()
+            badgeMap.get(BadgeKey.LEFT_DISABLE)?.remove()
         }
     }
 
@@ -206,7 +206,7 @@ class DesktopManagerActivity : AppCompatActivity() {
                 // not in Edit Mode
 
                 // Edit Mode
-                if (!mEditMode) {
+                if (!editMode) {
                     when (keyCode) {
                         KeyEvent.KEYCODE_ENTER,
                         KeyEvent.KEYCODE_DPAD_CENTER -> {
@@ -285,7 +285,7 @@ class DesktopManagerActivity : AppCompatActivity() {
             amInUse.addAnimationsFinishedListener(
                     RecyclerView.ItemAnimator.ItemAnimatorFinishedListener { // 动画结束后，检查view的位置，更新箭头的状态
                         (v.onFocusChangeListener as ScreenItemOnFocusChangeListener)
-                                .updateBadges(v, mEditMode)
+                                .updateBadges(v, editMode)
                     })
         }
 
@@ -319,7 +319,7 @@ class DesktopManagerActivity : AppCompatActivity() {
                 // not in Edit Mode
 
                 // Edit Mode
-                if (!mEditMode) {
+                if (!editMode) {
                     when (keyCode) {
                         KeyEvent.KEYCODE_ENTER,
                         KeyEvent.KEYCODE_DPAD_CENTER -> {
@@ -400,17 +400,17 @@ class DesktopManagerActivity : AppCompatActivity() {
             }
 
 
-            if (mEditMode) {
+            if (editMode) {
                 if (shouldShowArrow) {
 //                    mHandler.sendEmptyMessageDelayed(DesktopManagerActivity.START_ARROW_ANIMATION,
 //                            DesktopManagerActivity.DEFAULT_ARROW_ANIMATION_INTERVAL.toLong())
                     val useChildren: List<ScreenInfo> = mInUseAdapter.getDataList()
                     val useChildPos: Int = mInUseRv.getChildPosition(v)
-                    mBadgeMap.get(BadgeKey.EDGE)?.setTargetViewGroup(v as ViewGroup)
-                    mBadgeMap.get(BadgeKey.RIGHT)?.setTargetViewGroup(v as ViewGroup)
-                    mBadgeMap.get(BadgeKey.DOWN)?.setTargetViewGroup(v as ViewGroup)
-                    mBadgeMap.get(BadgeKey.LEFT)?.setTargetViewGroup(v as ViewGroup)
-                    mBadgeMap.get(BadgeKey.UP)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.EDGE)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.RIGHT)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.DOWN)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.LEFT)?.setTargetViewGroup(v as ViewGroup)
+                    badgeMap.get(BadgeKey.UP)?.setTargetViewGroup(v as ViewGroup)
                     // 根据左右item内容的状态，判断如何绘制UI
 //                    if (useChildPos < mInUseAdapter.getItemCount() - 1) {
 //                        badgeList.get(KEY_RIGHT)?.setTargetViewGroup(v as ViewGroup)
@@ -446,13 +446,13 @@ class DesktopManagerActivity : AppCompatActivity() {
                     return
                 }
             }
-            mBadgeMap.get(BadgeKey.DOWN)?.remove()
-            mBadgeMap.get(BadgeKey.UP)?.remove()
-            mBadgeMap.get(BadgeKey.RIGHT)?.remove()
-            mBadgeMap.get(BadgeKey.LEFT)?.remove()
-            mBadgeMap.get(BadgeKey.EDGE)?.remove()
-            mBadgeMap.get(BadgeKey.RIGHT_DISABLE)?.remove()
-            mBadgeMap.get(BadgeKey.LEFT_DISABLE)?.remove()
+            badgeMap.get(BadgeKey.DOWN)?.remove()
+            badgeMap.get(BadgeKey.UP)?.remove()
+            badgeMap.get(BadgeKey.RIGHT)?.remove()
+            badgeMap.get(BadgeKey.LEFT)?.remove()
+            badgeMap.get(BadgeKey.EDGE)?.remove()
+            badgeMap.get(BadgeKey.RIGHT_DISABLE)?.remove()
+            badgeMap.get(BadgeKey.LEFT_DISABLE)?.remove()
         }
     }
 
