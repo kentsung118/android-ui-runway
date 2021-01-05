@@ -207,6 +207,10 @@ class DesktopManagerActivity : AppCompatActivity() {
                         KeyEvent.KEYCODE_DPAD_DOWN -> {
                             updateAdapterMove(from, v, Direction.DOWN)
                             return true
+
+                            // 如果是最后一行
+
+
                         }
 //                      KeyEvent.KEYCODE_BACK,
                         KeyEvent.KEYCODE_ENTER,
@@ -249,6 +253,24 @@ class DesktopManagerActivity : AppCompatActivity() {
                         .updateBadges(v, editMode)
             }
 
+        }
+
+        /**
+         * transfer data between to Adapters, and update UI at the same time
+         * @param position position in InUseAdapter which to be deleted
+         * @param destPosition position in ToAddAdapter which to be added
+         * @param viewGroupPosition position in ViewGroup at which the view should get focus;
+         */
+        private fun updateAdapterDelete(position: Int, destPosition: Int,
+                                        viewGroupPosition: Int) {
+            mToAddAdapter.addItem(destPosition, mInUseAdapter.deleteItem(position))
+            Log.d(tag, "position :$position--destPosition :$destPosition")
+            amToAdd.addAnimationsStartedListener(
+                    object : RecyclerAnimator.ItemAnimatorStartedListener {
+                        override fun onAnimationsStarted(holder: RecyclerView.ViewHolder) {
+                            holder.itemView.requestFocus()
+                        }
+                    })
         }
     }
 

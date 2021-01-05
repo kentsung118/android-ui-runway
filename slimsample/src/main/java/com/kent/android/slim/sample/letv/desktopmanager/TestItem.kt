@@ -4,9 +4,12 @@ import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TestItem(val spanNum: Int, val listener: MoveItemListener? = null) {
+class TestItem(val spanNum: Int,
+               val listener: MoveItemListener? = null,
+               val inUse: Boolean = true) {
 
     private val notFound: Int = -1
+    private val doCross: Int = -2
 
     /**
      * 位置向上移动
@@ -112,7 +115,10 @@ class TestItem(val spanNum: Int, val listener: MoveItemListener? = null) {
     }
 
     private fun handleSearchDown(data: ArrayList<ScreenInfo>, currPos: Int): Int {
-        if (currPos + 1 + spanNum > data.size ) {
+        if(CalculateUtil.isInLastRow(data.size, currPos, spanNum)){
+            return doCross
+        }
+        if (currPos + 1 + spanNum > data.size) {
             return notFound
         }
         val target = currPos + spanNum
