@@ -112,7 +112,7 @@ class TestItem(val spanNum: Int, val listener: MoveItemListener? = null) {
     }
 
     private fun handleSearchDown(data: ArrayList<ScreenInfo>, currPos: Int): Int {
-        if (currPos + 1 + spanNum >= data.size ) {
+        if (currPos + 1 + spanNum > data.size ) {
             return notFound
         }
         val target = currPos + spanNum

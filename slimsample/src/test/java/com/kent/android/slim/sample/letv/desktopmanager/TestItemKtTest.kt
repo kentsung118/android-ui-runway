@@ -291,7 +291,15 @@ class TestItemKtTest {
         val r1 = testItem.searchPosition(initData(10, lockPos = arrayOf()), 1, Direction.DOWN)
         Assert.assertEquals(8, r1)
 
-        //上移有锁，往右找
+        //下移
+        val r2 = testItem.searchPosition(initData(20, lockPos = arrayOf()), 12, Direction.DOWN)
+        Assert.assertEquals(19, r2)
+
+    }
+
+    @Test
+    fun keyDown_withLock() {
+        //下移有锁，往右找
         val r2 = testItem.searchPosition(initData(10, lockPos = arrayOf(8)), 1, Direction.DOWN)
         Assert.assertEquals(9, r2)
 
