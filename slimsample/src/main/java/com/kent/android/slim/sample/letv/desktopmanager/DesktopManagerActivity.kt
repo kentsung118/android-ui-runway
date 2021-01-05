@@ -50,6 +50,17 @@ class DesktopManagerActivity : AppCompatActivity() {
         badgeMap = badgeHelper.initBadgeMap(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        //设定首页
+        inUseRv.postDelayed(Runnable {
+            val view= inUseRv.getChildAt(0)
+            view?.let {
+                badgeMap[BadgeKey.HOME]?.setTargetViewGroup(view as ViewGroup)
+            }
+        },300)
+    }
+
     fun initData() {
         mScreenInfos = XmlLoader.loadScreenInfoFromXML(this, R.xml.default_screens_cibn)
         Log.d(tag, "mScreenInfos size = ${mScreenInfos.size}")
@@ -61,7 +72,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         mScreenInfos[2].locked = true
 
         //init InUseRv
-        var inUseAdapter = ScreenAdapter(linkedList, this)
+        val inUseAdapter = ScreenAdapter(linkedList, this)
         inUseAdapter.setKeyListener(InUseKeyListener())
         inUseAdapter.setFocusChangeListener(InUseOnFocusChangeListener())
         inUseRv.layoutManager = GridLayoutManager(this, spanNum)
@@ -71,7 +82,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         mInUseAdapter = inUseAdapter
 
         //init ToAddRv
-        var toAddAdapter = ScreenAdapter(ArrayList(), this)
+        val toAddAdapter = ScreenAdapter(ArrayList(), this)
         toAddAdapter.setKeyListener(ToAddKeyListener())
         toAddAdapter.setFocusChangeListener(ToAddOnFocusChangeListener())
         toAddRv.layoutManager = GridLayoutManager(this, spanNum)
@@ -92,6 +103,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         if (view == null) {
             return
         }
+
         editMode = !editMode
         // TODO once enter edit mode.should not show edit any more
 //        forceExitGuide()
