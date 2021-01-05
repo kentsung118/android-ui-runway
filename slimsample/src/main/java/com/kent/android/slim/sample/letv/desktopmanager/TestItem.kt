@@ -99,7 +99,7 @@ class TestItem(val spanNum: Int, val listener: MoveItemListener? = null) {
 
         //向前找寻下个节点，直到边界
         var offset = 0
-        while ((currPos + 1 + offset) % spanNum != 1) {
+        while ((currPos + 1 + offset) % spanNum != 0) {
             offset++ //向前找寻下个节点
             if (currPos + 1 + offset > data.size) {
                 return notFound
