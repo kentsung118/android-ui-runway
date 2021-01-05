@@ -87,7 +87,40 @@ class TestItem(val spanNum: Int, val listener: MoveItemListener? = null) {
             Direction.RIGHT -> {
                 handleSearchRight(data, currPos)
             }
+            Direction.UP -> {
+                handleSearchUp(data, currPos)
+            }
+            Direction.DOWN -> {
+                handleSearchDown(data, currPos)
+            }
             else -> return notFound
+        }
+    }
+
+    private fun handleSearchUp(data: ArrayList<ScreenInfo>, currPos: Int): Int {
+        if (currPos + 1 <= spanNum) {
+            return notFound
+        }
+
+        val target = currPos - spanNum
+        val item = data[target]
+        if (!item.locked) {
+            return target
+        } else {
+            return handleSearchRight(data, target)
+        }
+    }
+
+    private fun handleSearchDown(data: ArrayList<ScreenInfo>, currPos: Int): Int {
+        if (currPos + 1 + spanNum >= data.size ) {
+            return notFound
+        }
+        val target = currPos + spanNum
+        val item = data[target]
+        if (!item.locked) {
+            return target
+        } else {
+            return handleSearchRight(data, target)
         }
     }
 

@@ -58,6 +58,7 @@ class DesktopManagerActivity : AppCompatActivity() {
 
         mScreenInfos[10].locked = true
         mScreenInfos[9].locked = true
+        mScreenInfos[2].locked = true
 
         //init InUseRv
         var inUseAdapter = ScreenAdapter(linkedList, this)
@@ -229,8 +230,8 @@ class DesktopManagerActivity : AppCompatActivity() {
                     val to: Int
 
                     var s1 = ""
-                    mInUseAdapter.data.forEach(){
-                        s1= s1 +it.packageName.split(".")[3]+","
+                    mInUseAdapter.data.forEach() {
+                        s1 = s1 + it.packageName.split(".")[3] + ","
                     }
                     Log.d(tag, "移动前：${s1}")
                     when (keyCode) {
@@ -250,8 +251,8 @@ class DesktopManagerActivity : AppCompatActivity() {
 //                            to = inUseChildPos + 1;
                             updateAdapterMove(from, 0, v, Direction.RIGHT);
                             s1 = ""
-                            mInUseAdapter.data.forEach(){
-                                s1= s1 +it.packageName.split(".")[3]+","
+                            mInUseAdapter.data.forEach() {
+                                s1 = s1 + it.packageName.split(".")[3] + ","
                             }
                             Log.d(tag, "移动后：${s1}")
                             return true;
@@ -301,10 +302,30 @@ class DesktopManagerActivity : AppCompatActivity() {
             when (direction) {
                 Direction.LEFT -> {
                     val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
+                    if (pos == -1) {
+                        return
+                    }
                     mTestItem.editUpSort(mInUseAdapter.data, from, pos)
                 }
                 Direction.RIGHT -> {
                     val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
+                    if (pos == -1) {
+                        return
+                    }
+                    mTestItem.editDownSort(mInUseAdapter.data, from, pos)
+                }
+                Direction.UP -> {
+                    val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
+                    if (pos == -1) {
+                        return
+                    }
+                    mTestItem.editUpSort(mInUseAdapter.data, from, pos)
+                }
+                Direction.DOWN -> {
+                    val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
+                    if (pos == -1) {
+                        return
+                    }
                     mTestItem.editDownSort(mInUseAdapter.data, from, pos)
                 }
                 else -> {
