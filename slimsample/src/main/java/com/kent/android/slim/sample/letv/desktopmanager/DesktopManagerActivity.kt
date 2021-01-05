@@ -148,44 +148,15 @@ class DesktopManagerActivity : AppCompatActivity() {
 //                    mHandler.sendEmptyMessageDelayed(DesktopManagerActivity.START_ARROW_ANIMATION,
 //                            DesktopManagerActivity.DEFAULT_ARROW_ANIMATION_INTERVAL.toLong())
                     val useChildren: List<ScreenInfo> = mInUseAdapter.getDataList()
-                    val useChildPos: Int = mInUseRv.getChildPosition(v)
+                    val currPos: Int = mInUseRv.getChildPosition(v)
+                    Log.d("kentsong", "currPos=${currPos}")
+                    //框线圆角
                     badgeMap.get(BadgeKey.EDGE)?.setTargetViewGroup(v as ViewGroup)
-                    badgeMap.get(BadgeKey.RIGHT)?.setTargetViewGroup(v as ViewGroup)
-                    badgeMap.get(BadgeKey.DOWN)?.setTargetViewGroup(v as ViewGroup)
-                    badgeMap.get(BadgeKey.LEFT)?.setTargetViewGroup(v as ViewGroup)
-                    badgeMap.get(BadgeKey.UP)?.setTargetViewGroup(v as ViewGroup)
-                    // 根据左右item内容的状态，判断如何绘制UI
-//                    if (useChildPos < mInUseAdapter.getItemCount() - 1) {
-//                        badgeList.get(KEY_RIGHT)?.setTargetViewGroup(v as ViewGroup)
-//                        badgeList.get(KEY_RIGHT_DISABLE)?.remove()
-//                    } else {
-                    // reach the right boundary
-//                        badgeList.get(KEY_RIGHT)?.remove()
-//                        badgeList.get(KEY_RIGHT_DISABLE)?.setTargetViewGroup(v as ViewGroup)
-//                    }
-//                    if (useChildPos > mSortOffsetPosition) {
-//                        badgeList.get(KEY_LEFT)?.setTargetViewGroup(v as ViewGroup)
-//                        badgeList.get(KEY_LEFT_DISABLE)?.remove()
-//                    } else {
-//                        // reach the left boundary
-//                        badgeList.get(KEY_LEFT)?.remove()
-//                        badgeList.get(KEY_LEFT_DISABLE)?.setTargetViewGroup(v as ViewGroup)
-//                    }
-                    // 根据是否能够移除，判断是否添加下箭头
-//                    if (useChildren[useChildPos].removable) {
-//                        badgeList.get(KEY_DOWN)?.setTargetViewGroup(v as ViewGroup) // v as _root_ide_package_.android.view.ViewGroup is ViewGroup
-//                    } else {
-//                        // can't be removed
-//                        badgeList.get(KEY_DOWN)?.remove()
-//                    }
-//                    // 根据是否能够排序，判断是否添加左右肩头
-//                    // this judge must be done at last
-//                    if (!useChildren[useChildPos].sortable) {
-//                        badgeList.get(KEY_LEFT)?.remove()
-//                        badgeList.get(KEY_LEFT_DISABLE)?.setTargetViewGroup(v as ViewGroup)
-//                        badgeList.get(KEY_RIGHT)?.remove()
-//                        badgeList.get(KEY_RIGHT_DISABLE)?.setTargetViewGroup(v as ViewGroup)
-//                    }
+                    //箭头
+                    validShowArrow(currPos, v, Direction.RIGHT, BadgeKey.RIGHT)
+                    validShowArrow(currPos, v, Direction.LEFT, BadgeKey.LEFT)
+                    validShowArrow(currPos, v, Direction.UP, BadgeKey.UP)
+                    validShowArrow(currPos, v, Direction.DOWN, BadgeKey.DOWN)
                     return
                 }
             }
@@ -196,6 +167,14 @@ class DesktopManagerActivity : AppCompatActivity() {
             badgeMap.get(BadgeKey.EDGE)?.remove()
             badgeMap.get(BadgeKey.RIGHT_DISABLE)?.remove()
             badgeMap.get(BadgeKey.LEFT_DISABLE)?.remove()
+        }
+
+        private fun validShowArrow(pos: Int, view: View, direction: Direction, badgeKey: String) {
+            if (mTestItem.searchPosition(mInUseAdapter.data, pos, direction) != -1) {
+                badgeMap[badgeKey]?.setTargetViewGroup(view as ViewGroup)
+            } else {
+                badgeMap[badgeKey]?.remove()
+            }
         }
     }
 
@@ -299,44 +278,31 @@ class DesktopManagerActivity : AppCompatActivity() {
                 return
             }
 
+            val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
+            if (pos == -1) {
+                return
+            }
+            Log.d("kentsong", "flag1")
             when (direction) {
-                Direction.LEFT -> {
-                    val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
-                    if (pos == -1) {
-                        return
-                    }
-                    mTestItem.editUpSort(mInUseAdapter.data, from, pos)
-                }
-                Direction.RIGHT -> {
-                    val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
-                    if (pos == -1) {
-                        return
-                    }
-                    mTestItem.editDownSort(mInUseAdapter.data, from, pos)
-                }
+                Direction.LEFT,
                 Direction.UP -> {
-                    val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
-                    if (pos == -1) {
-                        return
-                    }
                     mTestItem.editUpSort(mInUseAdapter.data, from, pos)
                 }
+                Direction.RIGHT,
                 Direction.DOWN -> {
-                    val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
-                    if (pos == -1) {
-                        return
-                    }
                     mTestItem.editDownSort(mInUseAdapter.data, from, pos)
                 }
                 else -> {
                     mInUseAdapter.moveItem(from, to)
                 }
             }
-            amInUse.addAnimationsFinishedListener(
-                    RecyclerView.ItemAnimator.ItemAnimatorFinishedListener { // 动画结束后，检查view的位置，更新箭头的状态
-                        (v.onFocusChangeListener as ScreenItemOnFocusChangeListener)
-                                .updateBadges(v, editMode)
-                    })
+            Log.d("kentsong", "flag3.1")
+            amInUse.addAnimationsFinishedListener {
+                // 动画结束后，检查view的位置，更新箭头的状态
+                Log.d("kentsong", "flag4")
+                (v.onFocusChangeListener as ScreenItemOnFocusChangeListener)
+                        .updateBadges(v, editMode)
+            }
 
 
 //            /**

@@ -62,21 +62,10 @@ class ScreenAdapter(var data: ArrayList<ScreenInfo>, val context: Context) : Rec
     }
 
     fun moveItem(from: Int, to: Int) {
+        Log.d("kentsong","flag3 moveItem")
         val s: ScreenInfo = data.removeAt(from)
         data.add(to, s)
         notifyItemMoved(from, to)
-
-//        Collections.swap(data, from, to + 1);
-//          editUpSort(data, 12, 5)
-//        notifyItemMoved(from, to + 1)
-//        notifyItemRangeRemoved(from , 2)
-//        notifyItemRangeInserted(from ,2)
-//        notifyItemMoved(from, to + 3);
-//        notifyItemMoved(from + 2, to + 2);
-//        notifyItemMoved(from + 1, to+ 1);
-//        notifyItemMoved(from, to);
-
-
     }
 
     fun deleteItem(position: Int): ScreenInfo {
@@ -90,53 +79,5 @@ class ScreenAdapter(var data: ArrayList<ScreenInfo>, val context: Context) : Rec
         notifyItemInserted(position)
     }
 
-
-    fun editUpSort(itemList: ArrayList<ScreenInfo>, from: Int, to: Int) {
-
-        println("排序前：$itemList")
-        val removedItem = itemList.removeAt(from)
-        itemList.add(to, removedItem)
-        println("排序(1)：$itemList")
-        notifyItemMoved(from, to)
-
-
-        var beginPoint = to
-        var endPoint = from
-        var moveNum = 0
-
-        while (beginPoint < endPoint) {
-
-            var to: Int? = null
-            for ((index, item) in itemList.withIndex()) {
-                //最后一笔，边界
-                if (index == endPoint)
-                    beginPoint = index
-
-                //若慢指针已检查过，忽略
-                if (index < beginPoint)
-                    continue
-
-                //仅有lock需处理，其他忽略
-                if (item.locked && to != null) {
-                    val lockItem = itemList.removeAt(index)
-                    itemList.add(to, lockItem)
-                    //处理move动画 move(to, index)
-                    notifyItemMoved(index, to)
-
-                    println("moveItem from:$index ,to:$to")
-
-                    moveNum ++
-                    beginPoint = index
-                    break
-                } else {
-                    to = index
-                    continue
-                }
-            }
-        }
-
-        println("排序(2)：$itemList")
-        println("moveItem 次数：$moveNum")
-    }
 
 }
