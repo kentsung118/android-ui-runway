@@ -54,11 +54,11 @@ class DesktopManagerActivity : AppCompatActivity() {
         super.onResume()
         //设定首页
         inUseRv.postDelayed(Runnable {
-            val view= inUseRv.getChildAt(0)
+            val view = inUseRv.getChildAt(0)
             view?.let {
                 badgeMap[BadgeKey.HOME]?.setTargetViewGroup(view as ViewGroup)
             }
-        },300)
+        }, 300)
     }
 
     fun initData() {
@@ -105,20 +105,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         }
 
         editMode = !editMode
-        // TODO once enter edit mode.should not show edit any more
-//        forceExitGuide()
-        if (editMode) {
-            // turn on
-            Log.d(tag, "edit mode is on")
-//            mBtnMain.setVisibility(View.INVISIBLE)
-        } else {
-//            brushDatabase(false)
-            // turn off;
-            Log.d(tag, "edit mode is off")
-//            if (rlvInUse.getAdapter().getItemCount() !== 0) {
-//                mBtnMain.setVisibility(View.VISIBLE)
-//            }
-        }
+        Log.d(tag, "editMode turn $editMode")
         if (view.onFocusChangeListener is ScreenItemOnFocusChangeListener) {
             val listener: ScreenItemOnFocusChangeListener = view.onFocusChangeListener as ScreenItemOnFocusChangeListener
             listener.updateBadges(view, editMode)
@@ -148,20 +135,13 @@ class DesktopManagerActivity : AppCompatActivity() {
          * @param shouldShowArrow
          */
         override fun updateBadges(v: View?, shouldShowArrow: Boolean) {
-            // LetvLog.i(TAG, "Focus " + shouldShowArrow + " view has gain focus :" + v);
-//            stopArrowAnimation()
             if (v == null) {
                 return
             }
 
-
             if (editMode) {
                 if (shouldShowArrow) {
-//                    mHandler.sendEmptyMessageDelayed(DesktopManagerActivity.START_ARROW_ANIMATION,
-//                            DesktopManagerActivity.DEFAULT_ARROW_ANIMATION_INTERVAL.toLong())
-                    val useChildren: List<ScreenInfo> = mInUseAdapter.getDataList()
                     val currPos: Int = mInUseRv.getChildPosition(v)
-                    Log.d("kentsong", "currPos=${currPos}")
                     //框线圆角
                     badgeMap.get(BadgeKey.EDGE)?.setTargetViewGroup(v as ViewGroup)
                     //箭头
@@ -177,8 +157,6 @@ class DesktopManagerActivity : AppCompatActivity() {
             badgeMap.get(BadgeKey.RIGHT)?.remove()
             badgeMap.get(BadgeKey.LEFT)?.remove()
             badgeMap.get(BadgeKey.EDGE)?.remove()
-            badgeMap.get(BadgeKey.RIGHT_DISABLE)?.remove()
-            badgeMap.get(BadgeKey.LEFT_DISABLE)?.remove()
         }
 
         private fun validShowArrow(pos: Int, view: View, direction: Direction, badgeKey: String) {
@@ -196,7 +174,6 @@ class DesktopManagerActivity : AppCompatActivity() {
      */
     private inner class InUseKeyListener : View.OnKeyListener {
         override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-            val inUseChildPos: Int = mInUseRv.getChildPosition(v)
             if (event.action == KeyEvent.ACTION_DOWN) {
                 // not in Edit Mode
 
@@ -212,60 +189,24 @@ class DesktopManagerActivity : AppCompatActivity() {
                         else -> {
                         }
                     }
-//                    val v = FocusFinder.getInstance().findNextFocus(mInUseRv, v , View.FOCUS_DOWN)
-//                    if(v == null){
-//                        return true
-//                    }
                 } else {
-                    val from = inUseChildPos
-                    val to: Int
-
-                    var s1 = ""
-                    mInUseAdapter.data.forEach() {
-                        s1 = s1 + it.packageName.split(".")[3] + ","
-                    }
-                    Log.d(tag, "移动前：${s1}")
+                    val from = mInUseRv.getChildLayoutPosition(v)
                     when (keyCode) {
-
                         KeyEvent.KEYCODE_DPAD_LEFT -> {
-                            if (CalculateUtil.isOnRowFirstPos(inUseChildPos, spanNum)) {
-                                return true
-                            }
-//                            to = inUseChildPos - 1;
-                            updateAdapterMove(from, 0, v, Direction.LEFT);
+                            updateAdapterMove(from, v, Direction.LEFT);
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                            if (CalculateUtil.isOnRowLastPos(inUseChildPos, spanNum)) {
-                                return true
-                            }
-//                            to = inUseChildPos + 1;
-                            updateAdapterMove(from, 0, v, Direction.RIGHT);
-                            s1 = ""
-                            mInUseAdapter.data.forEach() {
-                                s1 = s1 + it.packageName.split(".")[3] + ","
-                            }
-                            Log.d(tag, "移动后：${s1}")
+                            updateAdapterMove(from, v, Direction.RIGHT);
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_UP -> {
-                            to = inUseChildPos - spanNum
-                            updateAdapterMove(from, to, v, Direction.UP);
+                            updateAdapterMove(from, v, Direction.UP);
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_DOWN -> {
-                            if (!CalculateUtil.isInLastRow(mInUseAdapter.itemCount, inUseChildPos, spanNum)) {
-                                to = inUseChildPos + spanNum
-                                updateAdapterMove(from, to, v, Direction.DOWN);
-                                return true
-                            }
-
-                            // there a footer view at the end of the list
-//                            if (focusView === footer) {
-                            updateAdapterMove(inUseChildPos, 0, v, Direction.DOWN)
+                            updateAdapterMove(from, v, Direction.DOWN)
                             return true
-//                            }
-
                         }
 //                      KeyEvent.KEYCODE_BACK,
                         KeyEvent.KEYCODE_ENTER,
@@ -285,16 +226,13 @@ class DesktopManagerActivity : AppCompatActivity() {
             return false
         }
 
-        fun updateAdapterMove(from: Int, to: Int, v: View, direction: Direction) {
-            if (to < 0 || to >= mInUseAdapter.itemCount) {
-                return
-            }
+        fun updateAdapterMove(from: Int, v: View, direction: Direction) {
 
             val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
             if (pos == -1) {
                 return
             }
-            Log.d("kentsong", "flag1")
+
             when (direction) {
                 Direction.LEFT,
                 Direction.UP -> {
@@ -304,36 +242,13 @@ class DesktopManagerActivity : AppCompatActivity() {
                 Direction.DOWN -> {
                     mTestItem.editDownSort(mInUseAdapter.data, from, pos)
                 }
-                else -> {
-                    mInUseAdapter.moveItem(from, to)
-                }
             }
-            Log.d("kentsong", "flag3.1")
             amInUse.addAnimationsFinishedListener {
                 // 动画结束后，检查view的位置，更新箭头的状态
-                Log.d("kentsong", "flag4")
                 (v.onFocusChangeListener as ScreenItemOnFocusChangeListener)
                         .updateBadges(v, editMode)
             }
 
-
-//            /**
-//             * transfer data between to Adapters, and update UI at the same time
-//             * @param position position in InUseAdapter which to be deleted
-//             * @param destPosition position in ToAddAdapter which to be added
-//             * @param viewGroupPosition position in ViewGroup at which the view should get focus;
-//             */
-//            fun updateAdapterDelete(position: Int, destPosition: Int,
-//                                    viewGroupPosition: Int) {
-//                mToAddAdapter.addItem(destPosition, mInUseAdapter.deleteItem(position))
-//                Log.d(tag, "position :$position--destPosition :$destPosition")
-//                amToAdd.addAnimationsStartedListener(
-//                        object : RecyclerAnimator.ItemAnimatorStartedListener {
-//                            override fun onAnimationsStarted(holder: RecyclerView.ViewHolder) {
-//                                holder.itemView.requestFocus()
-//                            }
-//                        })
-//            }
         }
     }
 
