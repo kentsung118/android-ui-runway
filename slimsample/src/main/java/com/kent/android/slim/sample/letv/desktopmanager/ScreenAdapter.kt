@@ -27,7 +27,6 @@ class ScreenAdapter(var data: ArrayList<ScreenInfo>, val context: Context) : Rec
             container.title.text = screen.packageName.split(".")[3]
             if (screen.locked) {
                 container.ic_lock.visibility = View.VISIBLE
-                container.isFocusable = false
             } else {
                 container.ic_lock.visibility = View.GONE
             }
