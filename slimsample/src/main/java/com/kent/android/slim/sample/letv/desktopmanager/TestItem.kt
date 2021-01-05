@@ -13,12 +13,9 @@ class TestItem(val spanNum: Int, val listener: MoveItemListener? = null) {
      * 检查锁，并且和锁前一位交换位置
      * **/
     fun editUpSort(itemList: ArrayList<ScreenInfo>, from: Int, to: Int): ArrayList<ScreenInfo> {
-
         println("排序前：$itemList")
-        val locks = ArrayList<Int>()
-        var moveNum = 0
-
         // step1.先记录锁的位置
+        val locks = LinkedList<Int>()
         for ((index, item) in itemList.withIndex()) {
             if (index < to || index > from) {
                 continue
@@ -27,25 +24,16 @@ class TestItem(val spanNum: Int, val listener: MoveItemListener? = null) {
                 locks.add(index)
             }
         }
-
-        val removedItem = itemList.removeAt(from)
-        itemList.add(to, removedItem)
-        listener?.onMoveItem(from, to)
+        // step2.交换目标
+        exchangeItem(itemList, from, to)
         println("排序(1)：$itemList")
-
-        // step2.将记录位置和后一位交换
-        for (from in locks) {
-            itemList[from]
-            val removedItem = itemList.removeAt(from)
-            val to = from + 1
-            itemList.add(to, removedItem)
-            moveNum++
-            listener?.onMoveItem(from, to)
-            println("moveItem from:$from ,to:$to")
+        // step3.将记录位置和后一位交换
+        while (locks.size != 0) {
+            val fromPos = locks.removeFirst()
+            val toPos = fromPos + 1
+            exchangeItem(itemList, fromPos, toPos)
         }
-
-        println("排序(2)：$itemList")
-        println("moveItem 次数：$moveNum")
+        println("排序(Done)：$itemList")
         return itemList
     }
 
