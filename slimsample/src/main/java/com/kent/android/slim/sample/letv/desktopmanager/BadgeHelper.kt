@@ -106,11 +106,22 @@ class BadgeHelper {
         // 左上角：锁
         frameParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
-        frameParams.gravity = Gravity.TOP or Gravity.END
+        frameParams.gravity = Gravity.TOP or Gravity.START
         val lockIcon = BadgeImageView(context)
         lockIcon.setImageResource(R.drawable.ic_lock_screen_tag)
         lockIcon.setPadding(iconPadding, iconPadding, 0, 0)
         lockIcon.setCustomizedLayoutParams(frameParams)
+
+        // 右上角：home
+        frameParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+        frameParams.gravity = Gravity.TOP or Gravity.END
+        val homeIcon = BadgeImageView(context)
+        homeIcon.setImageResource(R.drawable.ic_top_right_home)
+        homeIcon.setPadding(0, iconPadding, iconPadding, 0)
+        homeIcon.setCustomizedLayoutParams(frameParams)
+        homeIcon.setScaleType(ImageView.ScaleType.CENTER_INSIDE)
+
 
         // 边缘：just a little bigger then item
         val whiteEdgeWidth = resources.getDimensionPixelSize(R.dimen.item_width) + 4
@@ -127,7 +138,7 @@ class BadgeHelper {
         badgeMap.put(BadgeKey.RIGHT_DISABLE, arrowRightDisable)
         badgeMap.put(BadgeKey.UP, arrowUp)
         badgeMap.put(BadgeKey.DOWN, arrowDown)
-//        badgeMap.put(Key.KEY_HOME, createHomeBadge())
+        badgeMap.put(BadgeKey.HOME, homeIcon)
         badgeMap.put(BadgeKey.EDGE, whiteEdge)
 
         return badgeMap
