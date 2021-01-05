@@ -294,7 +294,6 @@ class TestItemKtTest {
         //下移
         val r2 = testItem.searchPosition(initData(20, lockPos = arrayOf()), 12, Direction.DOWN)
         Assert.assertEquals(19, r2)
-
     }
 
     @Test
@@ -310,6 +309,13 @@ class TestItemKtTest {
         //下移有锁*7，往右找
         val r4 = testItem.searchPosition(initData(20, lockPos = arrayOf(7, 8, 9, 10, 11, 12, 13)), 1, Direction.DOWN)
         Assert.assertEquals(-1, r4)
+    }
+
+    @Test
+    fun keyDown_cross() {
+        //下移
+        val r1 = testItem.searchPosition(initData(10, lockPos = arrayOf()), 8, Direction.DOWN)
+        Assert.assertEquals(-2, r1)
     }
 
 
