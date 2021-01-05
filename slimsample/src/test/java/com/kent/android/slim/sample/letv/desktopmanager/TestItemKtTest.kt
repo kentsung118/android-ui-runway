@@ -239,8 +239,12 @@ class TestItemKtTest {
         Assert.assertEquals(3, r1)
 
         //右移边界
-        val r3 = testItem.searchPosition(initData(8, lockPos = arrayOf()), 7, Direction.RIGHT)
-        Assert.assertEquals(-1, r3)
+        val r2 = testItem.searchPosition(initData(8, lockPos = arrayOf()), 7, Direction.RIGHT)
+        Assert.assertEquals(-1, r2)
+
+        //左边界往右移
+        val r3 = testItem.searchPosition(initData(20, lockPos = arrayOf()), 7, Direction.RIGHT)
+        Assert.assertEquals(8, r3)
     }
 
     @Test
@@ -250,7 +254,7 @@ class TestItemKtTest {
         Assert.assertEquals(4, r2)
 
         //右移有锁*2
-        val r3 = testItem.searchPosition(initData(7, lockPos = arrayOf(3,4)), 2, Direction.RIGHT)
+        val r3 = testItem.searchPosition(initData(7, lockPos = arrayOf(3, 4)), 2, Direction.RIGHT)
         Assert.assertEquals(5, r3)
 
         //有锁、边界情况
