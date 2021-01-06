@@ -11,10 +11,12 @@ import org.junit.Test
  */
 class TestItemKtTest {
 
-    var testItem = TestItem(7)
+    val spanNum = 7
+    private lateinit var testItem: TestItem
 
     @Before
     fun init() {
+        testItem = TestItem(spanNum, inUse = true)
     }
 
     class ScreenItem(pkgName: String, val locked: Boolean = false) : ScreenInfo() {
@@ -315,6 +317,14 @@ class TestItemKtTest {
     fun keyDown_cross() {
         //下移
         val r1 = testItem.searchPosition(initData(10, lockPos = arrayOf()), 8, Direction.DOWN)
+        Assert.assertEquals(-2, r1)
+    }
+
+    @Test
+    fun keyUp_cross() {
+        testItem = TestItem(spanNum, inUse = false)
+        //上移
+        val r1 = testItem.searchPosition(initData(10, lockPos = arrayOf()), 6, Direction.UP)
         Assert.assertEquals(-2, r1)
     }
 
