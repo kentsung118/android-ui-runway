@@ -1,9 +1,8 @@
 package com.kent.android.slim.sample.letv.desktopmanager
 
-public enum class Direction {
+enum class Direction {
     LEFT,
     RIGHT,
     UP,
     DOWN
-
 }
