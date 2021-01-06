@@ -6,7 +6,7 @@ import kotlin.collections.ArrayList
 
 class TestItem(val spanNum: Int,
                val listener: MoveItemListener? = null,
-               val inUse: Boolean = true) {
+               val isInUse: Boolean = true) {
 
     private val notFound: Int = -1
     private val cross: Int = -2
@@ -84,24 +84,15 @@ class TestItem(val spanNum: Int,
             return notFound
 
         return when (direction) {
-            Direction.LEFT -> {
-                handleSearchLeft(data, currPos)
-            }
-            Direction.RIGHT -> {
-                handleSearchRight(data, currPos)
-            }
-            Direction.UP -> {
-                handleSearchUp(data, currPos)
-            }
-            Direction.DOWN -> {
-                handleSearchDown(data, currPos)
-            }
-            else -> return notFound
+            Direction.LEFT -> handleSearchLeft(data, currPos)
+            Direction.RIGHT -> handleSearchRight(data, currPos)
+            Direction.UP -> handleSearchUp(data, currPos)
+            Direction.DOWN -> handleSearchDown(data, currPos)
         }
     }
 
     private fun handleSearchUp(data: ArrayList<ScreenInfo>, currPos: Int): Int {
-        if(!inUse && CalculateUtil.isInFirstRow(currPos, spanNum)){
+        if (!isInUse && CalculateUtil.isInFirstRow(currPos, spanNum)) {
             return cross
         }
 
@@ -119,7 +110,7 @@ class TestItem(val spanNum: Int,
     }
 
     private fun handleSearchDown(data: ArrayList<ScreenInfo>, currPos: Int): Int {
-        if(CalculateUtil.isInLastRow(data.size, currPos, spanNum)){
+        if (CalculateUtil.isInLastRow(data.size, currPos, spanNum) && isInUse) {
             return cross
         }
         if (currPos + 1 + spanNum > data.size) {

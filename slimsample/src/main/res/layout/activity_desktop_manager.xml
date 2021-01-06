@@ -42,7 +42,8 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:focusable="false"
-        android:focusableInTouchMode="false"/>
+        android:focusableInTouchMode="false"
+        android:layout_marginStart="20dp"/>
 
     <com.kent.android.slim.sample.letv.desktopmanager.view.FocusProcessTextViewLayout
         android:id="@+id/no_view"
@@ -51,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toAddTitle"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="-18px"
-        android:layout_marginStart="-18px"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
@@ -74,6 +75,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:descendantFocusability="afterDescendants"
+        android:layout_marginStart="20dp"
 
         />
 
