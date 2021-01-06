@@ -13,10 +13,12 @@ class TestItemKtTest {
 
     val spanNum = 7
     private lateinit var testItem: TestItem
+    private lateinit var testItemToAdd: TestItem
 
     @Before
     fun init() {
-        testItem = TestItem(spanNum, inUse = true)
+        testItem = TestItem(spanNum, isInUse = true)
+        testItemToAdd = TestItem(spanNum, isInUse = false)
     }
 
     class ScreenItem(pkgName: String, val locked: Boolean = false) : ScreenInfo() {
@@ -296,6 +298,10 @@ class TestItemKtTest {
         //下移
         val r2 = testItem.searchPosition(initData(20, lockPos = arrayOf()), 12, Direction.DOWN)
         Assert.assertEquals(19, r2)
+
+        //下移
+        val r3 = testItemToAdd.searchPosition(initData(2, lockPos = arrayOf()), 1, Direction.DOWN)
+        Assert.assertEquals(-1, r3)
     }
 
     @Test
@@ -322,9 +328,8 @@ class TestItemKtTest {
 
     @Test
     fun keyUp_cross() {
-        testItem = TestItem(spanNum, inUse = false)
         //上移
-        val r1 = testItem.searchPosition(initData(10, lockPos = arrayOf()), 6, Direction.UP)
+        val r1 = testItemToAdd.searchPosition(initData(10, lockPos = arrayOf()), 6, Direction.UP)
         Assert.assertEquals(-2, r1)
     }
 

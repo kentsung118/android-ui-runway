@@ -36,6 +36,7 @@ class DesktopManagerActivity : AppCompatActivity() {
     lateinit var mToAddAdapter: ScreenAdapter
     val amToAdd = RecyclerAnimator()
     lateinit var mTestItem: TestItem
+    lateinit var mTestItemToAdd: TestItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +93,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         mToAddAdapter = toAddAdapter
 
         mTestItem = TestItem(spanNum, MoveItemListener())
+        mTestItemToAdd = TestItem(spanNum, ToAddMoveItemListener(), false)
     }
 
 
@@ -191,6 +193,7 @@ class DesktopManagerActivity : AppCompatActivity() {
                     }
                 } else {
                     val from = mInUseRv.getChildLayoutPosition(v)
+
                     when (keyCode) {
                         KeyEvent.KEYCODE_DPAD_LEFT -> {
                             updateAdapterMove(from, v, Direction.LEFT);
@@ -205,12 +208,13 @@ class DesktopManagerActivity : AppCompatActivity() {
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_DOWN -> {
-                            updateAdapterMove(from, v, Direction.DOWN)
+                            val pos = mTestItem.searchPosition(mInUseAdapter.data, from, Direction.DOWN)
+                            if (pos == -2) {
+                                updateAdapterDelete(from, 0)
+                            } else {
+                                updateAdapterMove(from, v, Direction.DOWN)
+                            }
                             return true
-
-                            // 如果是最后一行
-
-
                         }
 //                      KeyEvent.KEYCODE_BACK,
                         KeyEvent.KEYCODE_ENTER,
@@ -261,8 +265,7 @@ class DesktopManagerActivity : AppCompatActivity() {
          * @param destPosition position in ToAddAdapter which to be added
          * @param viewGroupPosition position in ViewGroup at which the view should get focus;
          */
-        private fun updateAdapterDelete(position: Int, destPosition: Int,
-                                        viewGroupPosition: Int) {
+        private fun updateAdapterDelete(position: Int, destPosition: Int) {
             mToAddAdapter.addItem(destPosition, mInUseAdapter.deleteItem(position))
             Log.d(tag, "position :$position--destPosition :$destPosition")
             amToAdd.addAnimationsStartedListener(
@@ -280,9 +283,14 @@ class DesktopManagerActivity : AppCompatActivity() {
         }
     }
 
+    private inner class ToAddMoveItemListener : TestItem.MoveItemListener {
+        override fun onMoveItem(form: Int, to: Int) {
+            mToAddAdapter.moveItem(form, to)
+        }
+    }
+
     private inner class ToAddKeyListener : View.OnKeyListener {
         override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-            val inUseChildPos: Int = mToAddRv.getChildPosition(v)
             if (event.action == KeyEvent.ACTION_DOWN) {
                 // not in Edit Mode
 
@@ -300,18 +308,29 @@ class DesktopManagerActivity : AppCompatActivity() {
                     }
 
                 } else {
-                    val from = inUseChildPos
+                    val from = mToAddRv.getChildPosition(v)
                     val to: Int
                     when (keyCode) {
-
-                        KeyEvent.KEYCODE_DPAD_LEFT,
-                        KeyEvent.KEYCODE_DPAD_RIGHT,
+                        KeyEvent.KEYCODE_DPAD_LEFT -> {
+                            updateAdapterMove(from, v, Direction.LEFT);
+                            return true
+                        }
+                        KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                            updateAdapterMove(from, v, Direction.RIGHT);
+                            return true
+                        }
                         KeyEvent.KEYCODE_DPAD_DOWN -> {
-                            return true;
+                            updateAdapterMove(from, v, Direction.DOWN);
+                            return true
                         }
                         KeyEvent.KEYCODE_DPAD_UP -> {
-//                            updateAdapterDelete(inUseChildPos, mInUseAdapter.itemCount, 0)
-                            return true;
+                            val pos = mTestItemToAdd.searchPosition(mInUseAdapter.data, from, Direction.UP)
+                            if (pos == -2) {
+                                updateAdapterDelete(from, mInUseAdapter.itemCount)
+                            } else {
+                                updateAdapterMove(from, v, Direction.UP)
+                            }
+                            return true
                         }
 
 //                    KeyEvent.KEYCODE_BACK,
@@ -328,8 +347,32 @@ class DesktopManagerActivity : AppCompatActivity() {
             return false
         }
 
-        private fun updateAdapterDelete(position: Int, destPosition: Int,
-                                        viewGroupPosition: Int) {
+        fun updateAdapterMove(from: Int, v: View, direction: Direction) {
+
+            val pos = mTestItemToAdd.searchPosition(mToAddAdapter.data, from, direction)
+            if (pos == -1) {
+                return
+            }
+
+            when (direction) {
+                Direction.LEFT,
+                Direction.UP -> {
+                    mTestItemToAdd.editUpSort(mToAddAdapter.data, from, pos)
+                }
+                Direction.RIGHT,
+                Direction.DOWN -> {
+                    mTestItemToAdd.editDownSort(mToAddAdapter.data, from, pos)
+                }
+            }
+            amToAdd.addAnimationsFinishedListener {
+                // 动画结束后，检查view的位置，更新箭头的状态
+                (v.onFocusChangeListener as ScreenItemOnFocusChangeListener)
+                        .updateBadges(v, editMode)
+            }
+
+        }
+
+        private fun updateAdapterDelete(position: Int, destPosition: Int) {
             mInUseAdapter.addItem(destPosition, mToAddAdapter.deleteItem(position))
             Log.d(tag, "position :$position--destPosition :$destPosition")
             amInUse.addAnimationsStartedListener(
@@ -357,56 +400,18 @@ class DesktopManagerActivity : AppCompatActivity() {
          * @param shouldShowArrow
          */
         override fun updateBadges(v: View?, shouldShowArrow: Boolean) {
-            // LetvLog.i(TAG, "Focus " + shouldShowArrow + " view has gain focus :" + v);
-//            stopArrowAnimation()
             if (v == null) {
                 return
             }
 
-
             if (editMode) {
                 if (shouldShowArrow) {
-//                    mHandler.sendEmptyMessageDelayed(DesktopManagerActivity.START_ARROW_ANIMATION,
-//                            DesktopManagerActivity.DEFAULT_ARROW_ANIMATION_INTERVAL.toLong())
-                    val useChildren: List<ScreenInfo> = mInUseAdapter.getDataList()
-                    val useChildPos: Int = mInUseRv.getChildPosition(v)
+                    val currPos: Int = mInUseRv.getChildPosition(v)
                     badgeMap.get(BadgeKey.EDGE)?.setTargetViewGroup(v as ViewGroup)
-                    badgeMap.get(BadgeKey.RIGHT)?.setTargetViewGroup(v as ViewGroup)
-                    badgeMap.get(BadgeKey.DOWN)?.setTargetViewGroup(v as ViewGroup)
-                    badgeMap.get(BadgeKey.LEFT)?.setTargetViewGroup(v as ViewGroup)
-                    badgeMap.get(BadgeKey.UP)?.setTargetViewGroup(v as ViewGroup)
-                    // 根据左右item内容的状态，判断如何绘制UI
-//                    if (useChildPos < mInUseAdapter.getItemCount() - 1) {
-//                        badgeList.get(KEY_RIGHT)?.setTargetViewGroup(v as ViewGroup)
-//                        badgeList.get(KEY_RIGHT_DISABLE)?.remove()
-//                    } else {
-                    // reach the right boundary
-//                        badgeList.get(KEY_RIGHT)?.remove()
-//                        badgeList.get(KEY_RIGHT_DISABLE)?.setTargetViewGroup(v as ViewGroup)
-//                    }
-//                    if (useChildPos > mSortOffsetPosition) {
-//                        badgeList.get(KEY_LEFT)?.setTargetViewGroup(v as ViewGroup)
-//                        badgeList.get(KEY_LEFT_DISABLE)?.remove()
-//                    } else {
-//                        // reach the left boundary
-//                        badgeList.get(KEY_LEFT)?.remove()
-//                        badgeList.get(KEY_LEFT_DISABLE)?.setTargetViewGroup(v as ViewGroup)
-//                    }
-                    // 根据是否能够移除，判断是否添加下箭头
-//                    if (useChildren[useChildPos].removable) {
-//                        badgeList.get(KEY_DOWN)?.setTargetViewGroup(v as ViewGroup) // v as _root_ide_package_.android.view.ViewGroup is ViewGroup
-//                    } else {
-//                        // can't be removed
-//                        badgeList.get(KEY_DOWN)?.remove()
-//                    }
-//                    // 根据是否能够排序，判断是否添加左右肩头
-//                    // this judge must be done at last
-//                    if (!useChildren[useChildPos].sortable) {
-//                        badgeList.get(KEY_LEFT)?.remove()
-//                        badgeList.get(KEY_LEFT_DISABLE)?.setTargetViewGroup(v as ViewGroup)
-//                        badgeList.get(KEY_RIGHT)?.remove()
-//                        badgeList.get(KEY_RIGHT_DISABLE)?.setTargetViewGroup(v as ViewGroup)
-//                    }
+                    validShowArrow(currPos, v, Direction.RIGHT, BadgeKey.RIGHT)
+                    validShowArrow(currPos, v, Direction.LEFT, BadgeKey.LEFT)
+                    validShowArrow(currPos, v, Direction.UP, BadgeKey.UP)
+                    validShowArrow(currPos, v, Direction.DOWN, BadgeKey.DOWN)
                     return
                 }
             }
@@ -415,8 +420,14 @@ class DesktopManagerActivity : AppCompatActivity() {
             badgeMap.get(BadgeKey.RIGHT)?.remove()
             badgeMap.get(BadgeKey.LEFT)?.remove()
             badgeMap.get(BadgeKey.EDGE)?.remove()
-            badgeMap.get(BadgeKey.RIGHT_DISABLE)?.remove()
-            badgeMap.get(BadgeKey.LEFT_DISABLE)?.remove()
+        }
+
+        private fun validShowArrow(pos: Int, view: View, direction: Direction, badgeKey: String) {
+            if (mTestItemToAdd.searchPosition(mToAddAdapter.data, pos, direction) != -1) {
+                badgeMap[badgeKey]?.setTargetViewGroup(view as ViewGroup)
+            } else {
+                badgeMap[badgeKey]?.remove()
+            }
         }
     }
 
