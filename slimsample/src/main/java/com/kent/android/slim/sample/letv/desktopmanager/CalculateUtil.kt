@@ -26,6 +26,10 @@ object CalculateUtil {
         return rvMaxRow == currRow
     }
 
+    fun isInFirstRow(currPos: Int, spanCount: Int): Boolean {
+        return currPos < spanCount
+    }
+
     /**
      * 是否在该行最后一个位置
      */

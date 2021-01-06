@@ -9,7 +9,7 @@ class TestItem(val spanNum: Int,
                val inUse: Boolean = true) {
 
     private val notFound: Int = -1
-    private val doCross: Int = -2
+    private val cross: Int = -2
 
     /**
      * 位置向上移动
@@ -101,6 +101,10 @@ class TestItem(val spanNum: Int,
     }
 
     private fun handleSearchUp(data: ArrayList<ScreenInfo>, currPos: Int): Int {
+        if(!inUse && CalculateUtil.isInFirstRow(currPos, spanNum)){
+            return cross
+        }
+
         if (currPos + 1 <= spanNum) {
             return notFound
         }
@@ -116,7 +120,7 @@ class TestItem(val spanNum: Int,
 
     private fun handleSearchDown(data: ArrayList<ScreenInfo>, currPos: Int): Int {
         if(CalculateUtil.isInLastRow(data.size, currPos, spanNum)){
-            return doCross
+            return cross
         }
         if (currPos + 1 + spanNum > data.size) {
             return notFound
