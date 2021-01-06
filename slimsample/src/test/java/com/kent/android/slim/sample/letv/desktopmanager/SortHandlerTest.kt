@@ -9,16 +9,16 @@ import org.junit.Test
 /**
  * Created by songzhukai on 2020/12/31.
  */
-class TestItemKtTest {
+class SortHandlerTest {
 
     val spanNum = 7
-    private lateinit var testItem: TestItem
-    private lateinit var testItemToAdd: TestItem
+    private lateinit var mSortHandler: SortHandler
+    private lateinit var mSortHandlerToAdd: SortHandler
 
     @Before
     fun init() {
-        testItem = TestItem(spanNum, isInUse = true)
-        testItemToAdd = TestItem(spanNum, isInUse = false)
+        mSortHandler = SortHandler(spanNum, isInUse = true)
+        mSortHandlerToAdd = SortHandler(spanNum, isInUse = false)
     }
 
     class ScreenItem(pkgName: String, val locked: Boolean = false) : ScreenInfo() {
@@ -72,7 +72,7 @@ class TestItemKtTest {
     @Test
     fun keyUp_twoLocks_neighbor() {
         assertArrayEquals(
-                testItem.editUpSort(
+                mSortHandler.editUpSort(
                         mutableListOf(
                                 screenItem("A"),
                                 screenItem("B", true),
@@ -92,7 +92,7 @@ class TestItemKtTest {
     @Test
     fun keyUp_threeLocks_neighbor() {
         assertArrayEquals(
-                testItem.editUpSort(
+                mSortHandler.editUpSort(
                         mutableListOf(
                                 screenItem("A"),
                                 screenItem("B", true),
@@ -114,7 +114,7 @@ class TestItemKtTest {
     @Test
     fun keyUp_twoLocks_split() {
         assertArrayEquals(
-                testItem.editUpSort(
+                mSortHandler.editUpSort(
                         mutableListOf(
                                 screenItem("A"),
                                 screenItem("B", true),
@@ -136,7 +136,7 @@ class TestItemKtTest {
     @Test
     fun keyDown_twoLocks_neighbor() {
         assertArrayEquals(
-                testItem.editDownSort(
+                mSortHandler.editDownSort(
                         mutableListOf(
                                 screenItem("A"),
                                 screenItem("B", true),
@@ -156,7 +156,7 @@ class TestItemKtTest {
     @Test
     fun keyDown_threeLocks_neighbor() {
         assertArrayEquals(
-                testItem.editDownSort(
+                mSortHandler.editDownSort(
                         mutableListOf(
                                 screenItem("A"),
                                 screenItem("B", true),
@@ -178,7 +178,7 @@ class TestItemKtTest {
     @Test
     fun keyDown_twoLocks_split() {
         assertArrayEquals(
-                testItem.editDownSort(
+                mSortHandler.editDownSort(
                         mutableListOf(
                                 screenItem("A"),
                                 screenItem("B", true),
@@ -200,7 +200,7 @@ class TestItemKtTest {
     @Test
     fun keyLeft_normal() {
         //左移
-        val r1 = testItem.searchPosition(mutableListOf(
+        val r1 = mSortHandler.searchPosition(mutableListOf(
                 screenItem("A"),
                 screenItem("B"),
                 screenItem("C"),
@@ -209,7 +209,7 @@ class TestItemKtTest {
         Assert.assertEquals(2, r1)
 
         //左移边界
-        val r2 = testItem.searchPosition(mutableListOf(
+        val r2 = mSortHandler.searchPosition(mutableListOf(
                 screenItem("A"),
                 screenItem("B"),
                 screenItem("C"),
@@ -224,112 +224,112 @@ class TestItemKtTest {
     @Test
     fun keyLeft_withLock() {
         //有锁的情况
-        val r3 = testItem.searchPosition(initData(4, lockPos = arrayOf(2)), 3, Direction.LEFT)
+        val r3 = mSortHandler.searchPosition(initData(4, lockPos = arrayOf(2)), 3, Direction.LEFT)
         Assert.assertEquals(1, r3)
 
         //有锁*2的情况
-        val r4 = testItem.searchPosition(initData(4, lockPos = arrayOf(1, 2)), 3, Direction.LEFT)
+        val r4 = mSortHandler.searchPosition(initData(4, lockPos = arrayOf(1, 2)), 3, Direction.LEFT)
         Assert.assertEquals(0, r4)
 
         //有锁、边界情况
-        val r5 = testItem.searchPosition(initData(9, lockPos = arrayOf(7)), 8, Direction.LEFT)
+        val r5 = mSortHandler.searchPosition(initData(9, lockPos = arrayOf(7)), 8, Direction.LEFT)
         Assert.assertEquals(-1, r5)
     }
 
     @Test
     fun keyRight_normal() {
         //右移
-        val r1 = testItem.searchPosition(initData(4, lockPos = arrayOf()), 2, Direction.RIGHT)
+        val r1 = mSortHandler.searchPosition(initData(4, lockPos = arrayOf()), 2, Direction.RIGHT)
         Assert.assertEquals(3, r1)
 
         //右边界往右移
-        val r2 = testItem.searchPosition(initData(8, lockPos = arrayOf()), 7, Direction.RIGHT)
+        val r2 = mSortHandler.searchPosition(initData(8, lockPos = arrayOf()), 7, Direction.RIGHT)
         Assert.assertEquals(-1, r2)
 
         //从左边界往右移
-        val r3 = testItem.searchPosition(initData(20, lockPos = arrayOf()), 7, Direction.RIGHT)
+        val r3 = mSortHandler.searchPosition(initData(20, lockPos = arrayOf()), 7, Direction.RIGHT)
         Assert.assertEquals(8, r3)
 
         //右边界往右移
-        val r4 = testItem.searchPosition(initData(10, lockPos = arrayOf()), 9, Direction.RIGHT)
+        val r4 = mSortHandler.searchPosition(initData(10, lockPos = arrayOf()), 9, Direction.RIGHT)
         Assert.assertEquals(-1, r4)
     }
 
     @Test
     fun keyRight_withLock() {
         //右移有锁
-        val r2 = testItem.searchPosition(initData(7, lockPos = arrayOf(3)), 2, Direction.RIGHT)
+        val r2 = mSortHandler.searchPosition(initData(7, lockPos = arrayOf(3)), 2, Direction.RIGHT)
         Assert.assertEquals(4, r2)
 
         //右移有锁*2
-        val r3 = testItem.searchPosition(initData(7, lockPos = arrayOf(3, 4)), 2, Direction.RIGHT)
+        val r3 = mSortHandler.searchPosition(initData(7, lockPos = arrayOf(3, 4)), 2, Direction.RIGHT)
         Assert.assertEquals(5, r3)
 
         //有锁、边界情况
-        val r5 = testItem.searchPosition(initData(9, lockPos = arrayOf(7)), 6, Direction.RIGHT)
+        val r5 = mSortHandler.searchPosition(initData(9, lockPos = arrayOf(7)), 6, Direction.RIGHT)
         Assert.assertEquals(-1, r5)
     }
 
     @Test
     fun keyUp_normal() {
         //上移
-        val r1 = testItem.searchPosition(initData(10, lockPos = arrayOf()), 7, Direction.UP)
+        val r1 = mSortHandler.searchPosition(initData(10, lockPos = arrayOf()), 7, Direction.UP)
         Assert.assertEquals(0, r1)
 
         //上移有锁，往右找
-        val r2 = testItem.searchPosition(initData(10, lockPos = arrayOf(0)), 7, Direction.UP)
+        val r2 = mSortHandler.searchPosition(initData(10, lockPos = arrayOf(0)), 7, Direction.UP)
         Assert.assertEquals(1, r2)
 
         //上移有锁*2，往右找
-        val r3 = testItem.searchPosition(initData(10, lockPos = arrayOf(0, 1)), 7, Direction.UP)
+        val r3 = mSortHandler.searchPosition(initData(10, lockPos = arrayOf(0, 1)), 7, Direction.UP)
         Assert.assertEquals(2, r3)
 
         //上移有锁*7，往右找
-        val r4 = testItem.searchPosition(initData(10, lockPos = arrayOf(0, 1, 2, 3, 4, 5, 6)), 7, Direction.UP)
+        val r4 = mSortHandler.searchPosition(initData(10, lockPos = arrayOf(0, 1, 2, 3, 4, 5, 6)), 7, Direction.UP)
         Assert.assertEquals(-1, r4)
     }
 
     @Test
     fun keyDown_normal() {
         //下移
-        val r1 = testItem.searchPosition(initData(10, lockPos = arrayOf()), 1, Direction.DOWN)
+        val r1 = mSortHandler.searchPosition(initData(10, lockPos = arrayOf()), 1, Direction.DOWN)
         Assert.assertEquals(8, r1)
 
         //下移
-        val r2 = testItem.searchPosition(initData(20, lockPos = arrayOf()), 12, Direction.DOWN)
+        val r2 = mSortHandler.searchPosition(initData(20, lockPos = arrayOf()), 12, Direction.DOWN)
         Assert.assertEquals(19, r2)
 
         //下移
-        val r3 = testItemToAdd.searchPosition(initData(2, lockPos = arrayOf()), 1, Direction.DOWN)
+        val r3 = mSortHandlerToAdd.searchPosition(initData(2, lockPos = arrayOf()), 1, Direction.DOWN)
         Assert.assertEquals(-1, r3)
     }
 
     @Test
     fun keyDown_withLock() {
         //下移有锁，往右找
-        val r2 = testItem.searchPosition(initData(10, lockPos = arrayOf(8)), 1, Direction.DOWN)
+        val r2 = mSortHandler.searchPosition(initData(10, lockPos = arrayOf(8)), 1, Direction.DOWN)
         Assert.assertEquals(9, r2)
 
         //下移有锁*2，往右找
-        val r3 = testItem.searchPosition(initData(20, lockPos = arrayOf(8, 9)), 1, Direction.DOWN)
+        val r3 = mSortHandler.searchPosition(initData(20, lockPos = arrayOf(8, 9)), 1, Direction.DOWN)
         Assert.assertEquals(10, r3)
 
         //下移有锁*7，往右找
-        val r4 = testItem.searchPosition(initData(20, lockPos = arrayOf(7, 8, 9, 10, 11, 12, 13)), 1, Direction.DOWN)
+        val r4 = mSortHandler.searchPosition(initData(20, lockPos = arrayOf(7, 8, 9, 10, 11, 12, 13)), 1, Direction.DOWN)
         Assert.assertEquals(-1, r4)
     }
 
     @Test
     fun keyDown_cross() {
         //下移
-        val r1 = testItem.searchPosition(initData(10, lockPos = arrayOf()), 8, Direction.DOWN)
+        val r1 = mSortHandler.searchPosition(initData(10, lockPos = arrayOf()), 8, Direction.DOWN)
         Assert.assertEquals(-2, r1)
     }
 
     @Test
     fun keyUp_cross() {
         //上移
-        val r1 = testItemToAdd.searchPosition(initData(10, lockPos = arrayOf()), 6, Direction.UP)
+        val r1 = mSortHandlerToAdd.searchPosition(initData(10, lockPos = arrayOf()), 6, Direction.UP)
         Assert.assertEquals(-2, r1)
     }
 

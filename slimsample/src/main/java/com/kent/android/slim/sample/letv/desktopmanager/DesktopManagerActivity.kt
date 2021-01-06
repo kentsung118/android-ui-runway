@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kent.android.slim.sample.R
+import com.kent.android.slim.sample.letv.desktopmanager.SortHandler.Companion.cross
+import com.kent.android.slim.sample.letv.desktopmanager.SortHandler.Companion.notFound
 import com.kent.android.slim.sample.letv.desktopmanager.anim.RecyclerAnimator
 import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
 import com.kent.android.slim.sample.letv.desktopmanager.interfaces.Badge
@@ -35,8 +37,8 @@ class DesktopManagerActivity : AppCompatActivity() {
     lateinit var mToAddRv: RecyclerView
     lateinit var mToAddAdapter: ScreenAdapter
     val amToAdd = RecyclerAnimator()
-    lateinit var mTestItem: TestItem
-    lateinit var mTestItemToAdd: TestItem
+    lateinit var mInUseHandler: SortHandler
+    lateinit var mToAddHandler: SortHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,8 +94,8 @@ class DesktopManagerActivity : AppCompatActivity() {
         mToAddRv = toAddRv
         mToAddAdapter = toAddAdapter
 
-        mTestItem = TestItem(spanNum, MoveItemListener())
-        mTestItemToAdd = TestItem(spanNum, ToAddMoveItemListener(), false)
+        mInUseHandler = SortHandler(spanNum, MoveItemListener())
+        mToAddHandler = SortHandler(spanNum, ToAddMoveItemListener(), false)
     }
 
 
@@ -162,7 +164,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         }
 
         private fun validShowArrow(pos: Int, view: View, direction: Direction, badgeKey: String) {
-            if (mTestItem.searchPosition(mInUseAdapter.data, pos, direction) != -1) {
+            if (mInUseHandler.searchPosition(mInUseAdapter.data, pos, direction) != notFound) {
                 badgeMap[badgeKey]?.setTargetViewGroup(view as ViewGroup)
             } else {
                 badgeMap[badgeKey]?.remove()
@@ -188,8 +190,6 @@ class DesktopManagerActivity : AppCompatActivity() {
                             toggleEditMode(v)
                             return true
                         }
-                        else -> {
-                        }
                     }
                 } else {
                     val from = mInUseRv.getChildLayoutPosition(v)
@@ -208,8 +208,8 @@ class DesktopManagerActivity : AppCompatActivity() {
                             return true;
                         }
                         KeyEvent.KEYCODE_DPAD_DOWN -> {
-                            val pos = mTestItem.searchPosition(mInUseAdapter.data, from, Direction.DOWN)
-                            if (pos == -2) {
+                            val pos = mInUseHandler.searchPosition(mInUseAdapter.data, from, Direction.DOWN)
+                            if (pos == cross) {
                                 updateAdapterDelete(from, 0)
                             } else {
                                 updateAdapterMove(from, v, Direction.DOWN)
@@ -236,19 +236,19 @@ class DesktopManagerActivity : AppCompatActivity() {
 
         fun updateAdapterMove(from: Int, v: View, direction: Direction) {
 
-            val pos = mTestItem.searchPosition(mInUseAdapter.data, from, direction)
-            if (pos == -1) {
+            val pos = mInUseHandler.searchPosition(mInUseAdapter.data, from, direction)
+            if (pos == notFound) {
                 return
             }
 
             when (direction) {
                 Direction.LEFT,
                 Direction.UP -> {
-                    mTestItem.editUpSort(mInUseAdapter.data, from, pos)
+                    mInUseHandler.editUpSort(mInUseAdapter.data, from, pos)
                 }
                 Direction.RIGHT,
                 Direction.DOWN -> {
-                    mTestItem.editDownSort(mInUseAdapter.data, from, pos)
+                    mInUseHandler.editDownSort(mInUseAdapter.data, from, pos)
                 }
             }
             amInUse.addAnimationsFinishedListener {
@@ -277,13 +277,13 @@ class DesktopManagerActivity : AppCompatActivity() {
         }
     }
 
-    private inner class MoveItemListener : TestItem.MoveItemListener {
+    private inner class MoveItemListener : SortHandler.MoveItemListener {
         override fun onMoveItem(form: Int, to: Int) {
             mInUseAdapter.moveItem(form, to)
         }
     }
 
-    private inner class ToAddMoveItemListener : TestItem.MoveItemListener {
+    private inner class ToAddMoveItemListener : SortHandler.MoveItemListener {
         override fun onMoveItem(form: Int, to: Int) {
             mToAddAdapter.moveItem(form, to)
         }
@@ -309,7 +309,6 @@ class DesktopManagerActivity : AppCompatActivity() {
 
                 } else {
                     val from = mToAddRv.getChildPosition(v)
-                    val to: Int
                     when (keyCode) {
                         KeyEvent.KEYCODE_DPAD_LEFT -> {
                             updateAdapterMove(from, v, Direction.LEFT);
@@ -324,8 +323,8 @@ class DesktopManagerActivity : AppCompatActivity() {
                             return true
                         }
                         KeyEvent.KEYCODE_DPAD_UP -> {
-                            val pos = mTestItemToAdd.searchPosition(mInUseAdapter.data, from, Direction.UP)
-                            if (pos == -2) {
+                            val pos = mToAddHandler.searchPosition(mInUseAdapter.data, from, Direction.UP)
+                            if (pos == cross) {
                                 updateAdapterDelete(from, mInUseAdapter.itemCount)
                             } else {
                                 updateAdapterMove(from, v, Direction.UP)
@@ -349,19 +348,19 @@ class DesktopManagerActivity : AppCompatActivity() {
 
         fun updateAdapterMove(from: Int, v: View, direction: Direction) {
 
-            val pos = mTestItemToAdd.searchPosition(mToAddAdapter.data, from, direction)
-            if (pos == -1) {
+            val pos = mToAddHandler.searchPosition(mToAddAdapter.data, from, direction)
+            if (pos == notFound) {
                 return
             }
 
             when (direction) {
                 Direction.LEFT,
                 Direction.UP -> {
-                    mTestItemToAdd.editUpSort(mToAddAdapter.data, from, pos)
+                    mToAddHandler.editUpSort(mToAddAdapter.data, from, pos)
                 }
                 Direction.RIGHT,
                 Direction.DOWN -> {
-                    mTestItemToAdd.editDownSort(mToAddAdapter.data, from, pos)
+                    mToAddHandler.editDownSort(mToAddAdapter.data, from, pos)
                 }
             }
             amToAdd.addAnimationsFinishedListener {
@@ -423,7 +422,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         }
 
         private fun validShowArrow(pos: Int, view: View, direction: Direction, badgeKey: String) {
-            if (mTestItemToAdd.searchPosition(mToAddAdapter.data, pos, direction) != -1) {
+            if (mToAddHandler.searchPosition(mToAddAdapter.data, pos, direction) != notFound) {
                 badgeMap[badgeKey]?.setTargetViewGroup(view as ViewGroup)
             } else {
                 badgeMap[badgeKey]?.remove()

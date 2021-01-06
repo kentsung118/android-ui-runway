@@ -4,12 +4,17 @@ import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
 import java.util.*
 import kotlin.collections.ArrayList
 
-class TestItem(val spanNum: Int,
-               val listener: MoveItemListener? = null,
-               val isInUse: Boolean = true) {
+/**
+ * 维护工具类
+ */
+class SortHandler(private val spanNum: Int,
+                  private val listener: MoveItemListener? = null,
+                  val isInUse: Boolean = true) {
 
-    private val notFound: Int = -1
-    private val cross: Int = -2
+    companion object{
+        const val notFound = -1
+        const val cross = -2
+    }
 
     /**
      * 位置向上移动
