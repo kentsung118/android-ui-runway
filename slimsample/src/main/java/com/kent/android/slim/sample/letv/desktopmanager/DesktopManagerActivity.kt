@@ -62,6 +62,9 @@ class DesktopManagerActivity : AppCompatActivity() {
                 badgeMap[BadgeKey.HOME]?.setTargetViewGroup(view as ViewGroup)
             }
         }, 300)
+
+        guideView.background = resources.getDrawable(R.drawable.desktop_manager_guide_1)
+        guideView.visibility = View.VISIBLE
     }
 
     fun initData() {
@@ -128,11 +131,15 @@ class DesktopManagerActivity : AppCompatActivity() {
         }
     }
 
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        //TODO here is guideView to hadle
+        if(false){
+            
+        }
 
 
-
-
-
+        return super.dispatchKeyEvent(event)
+    }
 
     inner class InUse {
         /**
@@ -265,7 +272,7 @@ class DesktopManagerActivity : AppCompatActivity() {
 
                 if (editMode) {
                     if (shouldShowArrow) {
-                        val currPos: Int = mInUseRv.getChildPosition(v)
+                        val currPos: Int = mInUseRv.getChildLayoutPosition(v)
                         //框线圆角
                         badgeMap.get(BadgeKey.EDGE)?.setTargetViewGroup(v as ViewGroup)
                         //箭头
