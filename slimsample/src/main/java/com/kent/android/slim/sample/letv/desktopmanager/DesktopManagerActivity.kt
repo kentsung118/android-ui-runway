@@ -1,11 +1,15 @@
 package com.kent.android.slim.sample.letv.desktopmanager
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kent.android.slim.sample.R
@@ -15,6 +19,7 @@ import com.kent.android.slim.sample.letv.desktopmanager.anim.RecyclerAnimator
 import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
 import com.kent.android.slim.sample.letv.desktopmanager.interfaces.Badge
 import kotlinx.android.synthetic.main.activity_desktop_manager.*
+import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -39,6 +44,7 @@ class DesktopManagerActivity : AppCompatActivity() {
     val amToAdd = RecyclerAnimator()
     lateinit var mInUseHandler: SortHandler
     lateinit var mToAddHandler: SortHandler
+    lateinit var mGuide: Guide
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,8 +69,15 @@ class DesktopManagerActivity : AppCompatActivity() {
             }
         }, 300)
 
-        guideView.background = resources.getDrawable(R.drawable.desktop_manager_guide_1)
-        guideView.visibility = View.VISIBLE
+//        startGuide()
+    }
+
+
+
+    private fun startGuide(){
+        val resources = arrayListOf<Int>(R.drawable.desktop_manager_guide_1, R.drawable.desktop_manager_guide_2)
+        mGuide = Guide(guideView, LinkedList<Int>(resources))
+        mGuide.start()
     }
 
     fun initData() {
@@ -131,12 +144,17 @@ class DesktopManagerActivity : AppCompatActivity() {
         }
     }
 
-    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        //TODO here is guideView to hadle
-        if(false){
-            
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.action == KeyEvent.ACTION_DOWN) {
+            when(event.keyCode){
+                KeyEvent.KEYCODE_DPAD_RIGHT ->{
+                    if(guideView.visibility == View.VISIBLE){
+                        mGuide.stop()
+                        return true
+                    }
+                }
+            }
         }
-
 
         return super.dispatchKeyEvent(event)
     }
@@ -446,6 +464,48 @@ class DesktopManagerActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    class Guide(val v: View, val drawables: LinkedList<Int>) {
+
+        private val mHandler = MsgHandler(this)
+
+        fun start() {
+            //外部檢查是否有使用過教學
+            //啟動 sendMsg 10s 後換照片
+            v.visibility = View.VISIBLE
+            next()
+        }
+
+        private fun next() {
+            if (drawables.size > 0) {
+                val drawableRes = drawables.removeFirst()
+                v.background = v.resources.getDrawable(drawableRes)
+                mHandler.sendEmptyMessageDelayed(0, 1000 * 10)
+            } else {
+                stop()
+            }
+        }
+
+        fun stop() {
+            mHandler.removeCallbacksAndMessages(null)
+            v.visibility = View.GONE
+            //有人為操作，中斷停止 msgHandler
+        }
+
+        //避免内存泄漏使用 companion object & WeakReference 持有 BgHandler
+        companion object {
+            class MsgHandler(guide: Guide) : Handler(Looper.getMainLooper()) {
+                private val mReference: WeakReference<Guide> = WeakReference(guide)
+                override fun handleMessage(msg: Message) {
+
+                    mReference.get()?.let {
+                        it.next()
+                    }
+                }
+            }
+        }
+
     }
 
 
