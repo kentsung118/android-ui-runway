@@ -73,8 +73,7 @@ class DesktopManagerActivity : AppCompatActivity() {
     }
 
 
-
-    private fun startGuide(){
+    private fun startGuide() {
         val resources = arrayListOf<Int>(R.drawable.desktop_manager_guide_1, R.drawable.desktop_manager_guide_2)
         mGuide = Guide(guideView, LinkedList<Int>(resources))
         mGuide.start()
@@ -146,9 +145,9 @@ class DesktopManagerActivity : AppCompatActivity() {
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_DOWN) {
-            when(event.keyCode){
-                KeyEvent.KEYCODE_DPAD_RIGHT ->{
-                    if(guideView.visibility == View.VISIBLE){
+            when (event.keyCode) {
+                KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                    if (guideView.visibility == View.VISIBLE) {
                         mGuide.stop()
                         return true
                     }
@@ -222,7 +221,7 @@ class DesktopManagerActivity : AppCompatActivity() {
                 return false
             }
 
-            fun updateAdapterMove(from: Int, v: View, direction: Direction) {
+            private fun updateAdapterMove(from: Int, v: View, direction: Direction) {
 
                 val pos = mInUseHandler.searchPosition(mInUseAdapter.data, from, direction)
                 if (pos == notFound) {
@@ -382,7 +381,7 @@ class DesktopManagerActivity : AppCompatActivity() {
                 return false
             }
 
-            fun updateAdapterMove(from: Int, v: View, direction: Direction) {
+            private fun updateAdapterMove(from: Int, v: View, direction: Direction) {
 
                 val pos = mToAddHandler.searchPosition(mToAddAdapter.data, from, direction)
                 if (pos == notFound) {
