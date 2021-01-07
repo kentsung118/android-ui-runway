@@ -5,16 +5,19 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * 维护工具类
+ * 维护桌面顺序工具类
  */
 class SortHandler(private val spanNum: Int,
                   private val listener: MoveItemListener? = null,
-                  val isInUse: Boolean = true) {
+                  private val isInUse: Boolean = true) {
+
 
     companion object{
-        const val notFound = -1
-        const val cross = -2
+        const val NotFound = -1
+        const val Cross = -2
     }
+
+
 
     /**
      * 位置向上移动
@@ -86,7 +89,7 @@ class SortHandler(private val spanNum: Int,
 
     fun searchPosition(data: ArrayList<ScreenInfo>, currPos: Int, direction: Direction): Int {
         if (data.size <= currPos)
-            return notFound
+            return NotFound
 
         return when (direction) {
             Direction.LEFT -> handleSearchLeft(data, currPos)
@@ -98,11 +101,11 @@ class SortHandler(private val spanNum: Int,
 
     private fun handleSearchUp(data: ArrayList<ScreenInfo>, currPos: Int): Int {
         if (!isInUse && CalculateUtil.isInFirstRow(currPos, spanNum)) {
-            return cross
+            return Cross
         }
 
         if (currPos + 1 <= spanNum) {
-            return notFound
+            return NotFound
         }
 
         val target = currPos - spanNum
@@ -116,10 +119,10 @@ class SortHandler(private val spanNum: Int,
 
     private fun handleSearchDown(data: ArrayList<ScreenInfo>, currPos: Int): Int {
         if (CalculateUtil.isInLastRow(data.size, currPos, spanNum) && isInUse) {
-            return cross
+            return Cross
         }
         if (currPos + 1 + spanNum > data.size) {
-            return notFound
+            return NotFound
         }
         val target = currPos + spanNum
         val item = data[target]
@@ -133,7 +136,7 @@ class SortHandler(private val spanNum: Int,
     private fun handleSearchRight(data: ArrayList<ScreenInfo>, currPos: Int): Int {
         if ((currPos + 1) % spanNum == 0) {
             //右边界，不能移动
-            return notFound
+            return NotFound
         }
 
         //向前找寻下个节点，直到边界
@@ -141,7 +144,7 @@ class SortHandler(private val spanNum: Int,
         while ((currPos + 1 + offset) % spanNum != 0) {
             offset++ //向前找寻下个节点
             if (currPos + 1 + offset > data.size) {
-                return notFound
+                return NotFound
             }
 
             val target = currPos + offset
@@ -149,13 +152,13 @@ class SortHandler(private val spanNum: Int,
                 return target
             }
         }
-        return notFound
+        return NotFound
     }
 
     private fun handleSearchLeft(data: ArrayList<ScreenInfo>, currPos: Int): Int {
         if ((currPos + 1) % spanNum == 1) {
             //左边界，不能移动
-            return notFound
+            return NotFound
         }
 
         //向前找寻下个节点，直到边界
@@ -167,7 +170,7 @@ class SortHandler(private val spanNum: Int,
                 return target
             }
         }
-        return notFound
+        return NotFound
     }
 
     interface MoveItemListener {
