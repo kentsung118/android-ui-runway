@@ -9,12 +9,11 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kent.android.slim.sample.R
-import com.kent.android.slim.sample.letv.desktopmanager.SortHandler.Companion.cross
-import com.kent.android.slim.sample.letv.desktopmanager.SortHandler.Companion.notFound
+import com.kent.android.slim.sample.letv.desktopmanager.SortHandler.Companion.Cross
+import com.kent.android.slim.sample.letv.desktopmanager.SortHandler.Companion.NotFound
 import com.kent.android.slim.sample.letv.desktopmanager.anim.RecyclerAnimator
 import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
 import com.kent.android.slim.sample.letv.desktopmanager.interfaces.Badge
@@ -34,7 +33,7 @@ class DesktopManagerActivity : AppCompatActivity() {
     lateinit var badgeMap: HashMap<String, Badge>
     private var editMode = false
 
-    val spanNum = 7
+    private val spanNum = 7
     lateinit var mInUseRv: RecyclerView
     lateinit var mInUseAdapter: ScreenAdapter
     val amInUse = RecyclerAnimator()
@@ -196,7 +195,11 @@ class DesktopManagerActivity : AppCompatActivity() {
                             }
                             KeyEvent.KEYCODE_DPAD_DOWN -> {
                                 val pos = mInUseHandler.searchPosition(mInUseAdapter.data, from, Direction.DOWN)
-                                if (pos == cross) {
+                                if (pos == Cross ) {
+                                    if(amInUse.isRunning){
+                                        //等待动画完毕，否则 cross 会崩溃
+                                        return true
+                                    }
                                     updateAdapterDelete(from, 0)
                                 } else {
                                     updateAdapterMove(from, v, Direction.DOWN)
@@ -224,7 +227,7 @@ class DesktopManagerActivity : AppCompatActivity() {
             private fun updateAdapterMove(from: Int, v: View, direction: Direction) {
 
                 val pos = mInUseHandler.searchPosition(mInUseAdapter.data, from, direction)
-                if (pos == notFound) {
+                if (pos == NotFound) {
                     return
                 }
 
@@ -308,7 +311,7 @@ class DesktopManagerActivity : AppCompatActivity() {
             }
 
             private fun validShowArrow(pos: Int, view: View, direction: Direction, badgeKey: String) {
-                if (mInUseHandler.searchPosition(mInUseAdapter.data, pos, direction) != notFound) {
+                if (mInUseHandler.searchPosition(mInUseAdapter.data, pos, direction) != NotFound) {
                     badgeMap[badgeKey]?.setTargetViewGroup(view as ViewGroup)
                 } else {
                     badgeMap[badgeKey]?.remove()
@@ -343,7 +346,7 @@ class DesktopManagerActivity : AppCompatActivity() {
                         }
 
                     } else {
-                        val from = mToAddRv.getChildPosition(v)
+                        val from = mToAddRv.getChildAdapterPosition(v)
                         when (keyCode) {
                             KeyEvent.KEYCODE_DPAD_LEFT -> {
                                 updateAdapterMove(from, v, Direction.LEFT);
@@ -359,7 +362,10 @@ class DesktopManagerActivity : AppCompatActivity() {
                             }
                             KeyEvent.KEYCODE_DPAD_UP -> {
                                 val pos = mToAddHandler.searchPosition(mInUseAdapter.data, from, Direction.UP)
-                                if (pos == cross) {
+                                if (pos == Cross) {
+                                    if(amToAdd.isRunning){
+                                        return true
+                                    }
                                     updateAdapterDelete(from, mInUseAdapter.itemCount)
                                 } else {
                                     updateAdapterMove(from, v, Direction.UP)
@@ -384,7 +390,7 @@ class DesktopManagerActivity : AppCompatActivity() {
             private fun updateAdapterMove(from: Int, v: View, direction: Direction) {
 
                 val pos = mToAddHandler.searchPosition(mToAddAdapter.data, from, direction)
-                if (pos == notFound) {
+                if (pos == NotFound) {
                     return
                 }
 
@@ -456,7 +462,7 @@ class DesktopManagerActivity : AppCompatActivity() {
             }
 
             private fun validShowArrow(pos: Int, view: View, direction: Direction, badgeKey: String) {
-                if (mToAddHandler.searchPosition(mToAddAdapter.data, pos, direction) != notFound) {
+                if (mToAddHandler.searchPosition(mToAddAdapter.data, pos, direction) != NotFound) {
                     badgeMap[badgeKey]?.setTargetViewGroup(view as ViewGroup)
                 } else {
                     badgeMap[badgeKey]?.remove()

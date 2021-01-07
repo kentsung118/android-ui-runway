@@ -21,4 +21,23 @@ fun main() {
 
     }
     println("---main end---")
+
+    val s2 = ::TextUtils
+//    val s1 = :: SortHandler
+//    s1(1,null,false).editDownSort()
+    val foo = {x:Int, y:Int -> x+y}
+    fun foo2(x:Int) = {y:Int -> x+y}
+
+    println(foo(1,2))
+    println(foo2(1).invoke(3))
+
+
+    val w = {
+        if(false){
+            1
+        }else {
+            2
+        }
+    }
+
 }
