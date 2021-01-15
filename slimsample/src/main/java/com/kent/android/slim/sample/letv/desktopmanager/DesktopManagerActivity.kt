@@ -93,6 +93,7 @@ class DesktopManagerActivity : AppCompatActivity() {
         val inUseAdapter = ScreenAdapter(linkedList, this)
         inUseAdapter.setKeyListener(inUse.InUseKeyListener())
         inUseAdapter.setFocusChangeListener(inUse.InUseOnFocusChangeListener())
+        inUseAdapter.setLongClickListener(inUse.LongClickListener())
         inUseRv.layoutManager = GridLayoutManager(this, spanNum)
         inUseRv.adapter = inUseAdapter
         inUseRv.itemAnimator = amInUse
@@ -146,10 +147,12 @@ class DesktopManagerActivity : AppCompatActivity() {
         if (event.action == KeyEvent.ACTION_DOWN) {
             when (event.keyCode) {
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                    if (guideView.visibility == View.VISIBLE) {
-                        mGuide.stop()
-                        return true
-                    }
+//                    if (guideView.visibility == View.VISIBLE) {
+//                        mGuide.stop()
+//                        return true
+//                    }
+                    val view = currentFocus
+                    Log.d("kentsong",""+view)
                 }
             }
         }
@@ -206,7 +209,7 @@ class DesktopManagerActivity : AppCompatActivity() {
                                 }
                                 return true
                             }
-//                      KeyEvent.KEYCODE_BACK,
+                      KeyEvent.KEYCODE_BACK,
                             KeyEvent.KEYCODE_ENTER,
                             KeyEvent.KEYCODE_DPAD_CENTER -> {
                                 // toggle edit mode
@@ -270,6 +273,13 @@ class DesktopManagerActivity : AppCompatActivity() {
         inner class MoveItemListener : SortHandler.MoveItemListener {
             override fun onMoveItem(form: Int, to: Int) {
                 mInUseAdapter.moveItem(form, to)
+            }
+        }
+
+        inner class LongClickListener : View.OnLongClickListener {
+            override fun onLongClick(v: View?): Boolean {
+                Log.d("kentSong","onLongClick viw:$v")
+                return true
             }
         }
 
