@@ -19,6 +19,7 @@ class ScreenAdapter(var data: ArrayList<ScreenInfo>, val context: Context) : Rec
 
     private var mKeyListener: View.OnKeyListener? = null
     private var mFocusChangeListener: View.OnFocusChangeListener? = null
+    private var mLongClickListener: View.OnLongClickListener? = null
 
     class ScreenInfoHolder(val container: View) : RecyclerView.ViewHolder(container) {
         private val data: ScreenInfo? = null
@@ -46,6 +47,7 @@ class ScreenAdapter(var data: ArrayList<ScreenInfo>, val context: Context) : Rec
     override fun onBindViewHolder(holder: ScreenInfoHolder, position: Int) {
         holder.container.setOnKeyListener(mKeyListener)
         holder.container.setOnFocusChangeListener(mFocusChangeListener)
+        holder.container.setOnLongClickListener(mLongClickListener)
         holder.bindData(data[position])
     }
 
@@ -59,6 +61,10 @@ class ScreenAdapter(var data: ArrayList<ScreenInfo>, val context: Context) : Rec
 
     fun setFocusChangeListener(listener: View.OnFocusChangeListener) {
         mFocusChangeListener = listener
+    }
+
+    fun setLongClickListener(listener: View.OnLongClickListener) {
+        mLongClickListener = listener
     }
 
     fun moveItem(from: Int, to: Int) {
