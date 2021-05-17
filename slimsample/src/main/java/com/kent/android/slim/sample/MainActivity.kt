@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.kent.android.slim.sample.letv.desktopmanager.DesktopManagerActivity
+import com.kent.android.slim.sample.workmanager.WorkActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -15,14 +16,16 @@ class MainActivity : AppCompatActivity() {
             "StartApp",
             "Transition Drawable",
             "Constraint Layout",
-            "DesktopManager"
+            "DesktopManager",
+            "WorkManager"
 
     )
     private val mClasses = arrayOf<Class<*>>(
             StartAppActivity::class.java,
             TransitionDrawableActivity::class.java,
             ConstransLayoutDemoActivity::class.java,
-            DesktopManagerActivity::class.java
+            DesktopManagerActivity::class.java,
+            WorkActivity::class.java
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

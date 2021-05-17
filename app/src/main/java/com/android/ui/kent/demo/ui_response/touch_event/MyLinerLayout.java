@@ -1,10 +1,12 @@
 package com.android.ui.kent.demo.ui_response.touch_event;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Kent on 2018/4/27.
@@ -19,9 +21,9 @@ public class MyLinerLayout extends LinearLayout {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         //super.dispatchTouchEvent(ev);
-        System.out.println("内层MyLinearLayout 中调用  dispatchTouchEvent()");
-        System.out.println("super.dispatchTouchEvent()默认返回true 表示继续分发");
-        System.out.println("--------------------------------------------------");
+        Log.i(UIResponseActivity.TAG,"内层MyLinearLayout 中调用  dispatchTouchEvent()");
+        Log.i(UIResponseActivity.TAG,"super.dispatchTouchEvent()默认返回true 表示继续分发");
+        Log.i(UIResponseActivity.TAG,"--------------------------------------------------");
         return super.dispatchTouchEvent(ev);
         //return false;
     }
@@ -30,10 +32,12 @@ public class MyLinerLayout extends LinearLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         //super.onInterceptTouchEvent(ev);
-        System.out.println("内层MyLinearLayout 中调用  onInterceptTouchEvent()");
-        System.out.println("super.onInterceptTouchEvent()默认返回false 表示不拦截");
-        System.out.println("--------------------------------------------------");
-        return super.onInterceptTouchEvent(ev);
+        Log.i(UIResponseActivity.TAG,"内层MyLinearLayout 中调用  onInterceptTouchEvent()");
+//        Log.i(UIResponseActivity.TAG,"super.onInterceptTouchEvent()默认返回false 表示不拦截");
+//        Log.i(UIResponseActivity.TAG,"--------------------------------------------------");
+        Log.i(UIResponseActivity.TAG,"内层MyLinearLayout 中调用  onInterceptTouchEvent() 进行拦截 true ");
+//        return super.onInterceptTouchEvent(ev);
+        return true;
 
     }
     //注意:
@@ -43,18 +47,20 @@ public class MyLinerLayout extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                System.out.println("内层MyLinearLayout 中调用  onTouchEvent()--->ACTION_DOWN");
+                Log.i(UIResponseActivity.TAG,"内层MyLinearLayout 中调用  onTouchEvent()--->ACTION_DOWN");
                 break;
             case MotionEvent.ACTION_MOVE:
-                System.out.println("内层MyLinearLayout 中调用  onTouchEvent()--->ACTION_MOVE");
+                Log.i(UIResponseActivity.TAG,"内层MyLinearLayout 中调用  onTouchEvent()--->ACTION_MOVE");
                 break;
             case MotionEvent.ACTION_UP:
-                System.out.println("内层MyLinearLayout 中调用  onTouchEvent()--->ACTION_UP");
+                Log.i(UIResponseActivity.TAG,"内层MyLinearLayout 中调用  onTouchEvent()--->ACTION_UP");
             default:
                 break;
         }
-        System.out.println("super.onTouchEvent()默认返回false 表示未消费事件");
-        System.out.println("--------------------------------------------------");
-        return super.onTouchEvent(event);
+//        Log.i(UIResponseActivity.TAG,"super.onTouchEvent()默认返回false 表示未消费事件");
+//        Log.i(UIResponseActivity.TAG,"--------------------------------------------------");
+//        return super.onTouchEvent(event);
+        Log.i(UIResponseActivity.TAG,"内层MyLinearLayout  super.onTouchEvent()消费事件");
+        return true;
     }
 }

@@ -20,6 +20,7 @@
         <activity android:name=".TransitionDrawableActivity" />
         <activity android:name=".ConstransLayoutDemoActivity" />
         <activity android:name=".letv.desktopmanager.DesktopManagerActivity" />
+        <activity android:name=".workmanager.WorkActivity" />
     </application>
 
 </manifest>

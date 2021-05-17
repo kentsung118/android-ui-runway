@@ -1,9 +1,11 @@
 package com.android.ui.kent.demo.ui_response.touch_event;
 
 import android.content.Context;
-import androidx.appcompat.widget.AppCompatButton;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
+
+import androidx.appcompat.widget.AppCompatButton;
 
 /**
  * Created by Kent on 2018/4/27.
@@ -17,9 +19,9 @@ public class MyButton extends AppCompatButton {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        System.out.println("自定义Button 中调用 dispatchTouchEvent()");
-        System.out.println("super.dispatchTouchEvent默认返回true");
-        System.out.println("--------------------------------------------------");
+        Log.i(UIResponseActivity.TAG,"自定义Button 中调用 dispatchTouchEvent()");
+        Log.i(UIResponseActivity.TAG,"super.dispatchTouchEvent默认返回true");
+        Log.i(UIResponseActivity.TAG,"--------------------------------------------------");
         return super.dispatchTouchEvent(event);
     }
 
@@ -29,19 +31,19 @@ public class MyButton extends AppCompatButton {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                System.out.println("自定义Button 中调用 onTouchEvent()--->ACTION_DOWN");
+                Log.i(UIResponseActivity.TAG,"自定义Button 中调用 onTouchEvent()--->ACTION_DOWN");
                 break;
             case MotionEvent.ACTION_MOVE:
-                System.out.println("自定义Button 中调用 onTouchEvent()--->ACTION_MOVE");
+                Log.i(UIResponseActivity.TAG,"自定义Button 中调用 onTouchEvent()--->ACTION_MOVE");
                 break;
             case MotionEvent.ACTION_UP:
-                System.out.println("自定义Button 中调用 onTouchEvent()--->ACTION_UP");
+                Log.i(UIResponseActivity.TAG,"自定义Button 中调用 onTouchEvent()--->ACTION_UP");
                 break;
             default:
                 break;
         }
-        System.out.println("super.onTouchEvent()默认返回true");
-        System.out.println("--------------------------------------------------");
+        Log.i(UIResponseActivity.TAG,"super.onTouchEvent()默认返回true");
+        Log.i(UIResponseActivity.TAG,"--------------------------------------------------");
         return super.onTouchEvent(event);
     }
 
