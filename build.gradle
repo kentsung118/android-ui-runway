@@ -20,12 +20,22 @@ buildscript {
 
 
     repositories {
-        jcenter()
         maven {
-            url 'https://maven.google.com/'
-            name 'Google'
+            url 'https://maven.aliyun.com/repository/jcenter'
         }
-        google()
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+            url 'https://www.jitpack.io'
+        }
+        mavenCentral()
+//        jcenter()
+//        maven {
+//            url 'https://maven.google.com/'
+//            name 'Google'
+//        }
+//        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.2'
@@ -38,12 +48,22 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
-        maven { url 'http://dl.bintray.com/populov/maven' }
-        mavenCentral()
+//        jcenter()
+//        maven { url 'http://dl.bintray.com/populov/maven' }
+//        mavenCentral()
+//        maven {
+//            url 'https://maven.google.com/'
+//            name 'Google'
+//        }
+        //在大陸取得不到海外 maven repo，用阿里雲 maven repo 替代...
         maven {
-            url 'https://maven.google.com/'
-            name 'Google'
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+            url 'https://www.jitpack.io'
         }
 
         //宣告本地*.aar的lib位置，加载成功的话在 External Libraries 看得到
