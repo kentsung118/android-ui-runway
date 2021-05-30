@@ -7,4 +7,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <declare-styleable name="FocusProcess">
+        <attr name="initNarrow" format="float" />
+        <attr name="resetByAni" format="boolean" />
+        <attr name="duration" format="integer" />
+        <attr name="pivotX" format="float" />
+        <attr name="pivotY" format="float" />
+        <attr name="shadowZ" format="integer" />
+        <attr name="widgetRes" format="reference" />
+        <attr name="widgetX" format="integer" />
+        <attr name="widgetY" format="integer" />
+        <attr name="finalNarrow" format="float" />
+    </declare-styleable>
+
 </resources>
