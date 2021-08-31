@@ -20,26 +20,26 @@ buildscript {
 
 
     repositories {
-        maven { url 'https://maven.aliyun.com/repository/central' }
-        maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/mvn/guide' }
-        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        //大陸才用
+//        maven { url 'https://maven.aliyun.com/repository/central' }
+//        maven { url 'https://maven.aliyun.com/repository/public' }
+//        maven { url 'https://maven.aliyun.com/repository/google' }
+//        maven { url 'https://maven.aliyun.com/mvn/guide' }
+//        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
 
 
-//        maven {
-//            url 'https://www.jitpack.io'
-//        }
-//        mavenCentral()
-//        jcenter()
-//        maven {
-//            url 'https://maven.google.com/'
-//            name 'Google'
-//        }
-//        google()
+        maven {
+            url 'https://www.jitpack.io'
+        }
+        mavenCentral()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.2'
+        classpath 'com.android.tools.build:gradle:4.2.2'
 //      classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.20"
 
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
@@ -49,19 +49,18 @@ buildscript {
 
 allprojects {
     repositories {
-//        jcenter()
-//        maven { url 'http://dl.bintray.com/populov/maven' }
-//        mavenCentral()
-//        maven {
-//            url 'https://maven.google.com/'
-//            name 'Google'
-//        }
+        maven { url 'http://dl.bintray.com/populov/maven' }
+        mavenCentral()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
         //在大陸取得不到海外 maven repo，用阿里雲 maven repo 替代...
-        maven { url 'https://maven.aliyun.com/repository/central' }
-        maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/mvn/guide' }
-        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+//        maven { url 'https://maven.aliyun.com/repository/central' }
+//        maven { url 'https://maven.aliyun.com/repository/public' }
+//        maven { url 'https://maven.aliyun.com/repository/google' }
+//        maven { url 'https://maven.aliyun.com/mvn/guide' }
+//        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
 
         //宣告本地*.aar的lib位置，加载成功的话在 External Libraries 看得到
         flatDir {

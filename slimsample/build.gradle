@@ -18,10 +18,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('key/letvkey')
-            storePassword 'bGktbGVpQGxldHYuY29tLHF3ZXJ0eXVpb3A='
-            keyAlias 'letvkey'
-            keyPassword 'bGktbGVpQGxldHYuY29tLHF3ZXJ0eXVpb3A='
+            storeFile file('../keystore/demokey')
+            storePassword '123456'
+            keyAlias 'kent'
+            keyPassword '123456'
         }
     }
 

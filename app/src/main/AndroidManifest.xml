@@ -18,41 +18,66 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter> <!--URL Scheme启动-->
+                <!--必有项-->
+                <action android:name="android.intent.action.VIEW" />
+                <!--如果希望该应用可以通过浏览器的连接启动，则添加该项-->
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!--表示该页面可以被隐式调用，必须加上该项-->
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--协议部分-->
+                <data
+                    android:scheme="kent"
+                    android:host="ui-runway"
+                    android:path="/home" />
+            </intent-filter>
         </activity>
 
-        <activity android:name=".demo.recyclerview.RecyclerViewActivity"/>
-        <activity android:name=".demo.listview.ListViewActivity"/>
-        <activity android:name=".demo.alarm.AlarmActivity"/>
-        <activity android:name=".demo.drawer.DrawerActivity"/>
-        <activity android:name=".demo.tab.TabActivity"/>
-        <activity android:name=".demo.indicator.IndicatorActivity"/>
-        <activity android:name=".demo.view.CardActivity"/>
-        <activity android:name=".demo.network.retrofit.RetrofitActivity"/>
-        <activity android:name=".demo.network.okhttp.OKHttpActivity"/>
-        <activity android:name=".demo.network.rxjava.RxJavaActivity"/>
-        <activity android:name=".demo.eventbus.EventBusActivity"/>
-        <activity android:name=".demo.widget.dialog.DialogActivity"/>
-        <activity android:name=".demo.recyclerview.loadmore.LoadMoreActivity"/>
-        <activity android:name=".demo.layout.contraint.ConstraintLayoutActivity"/>
-        <activity android:name=".demo.layout.style.StyleSelectorActivity"/>
-        <activity android:name=".demo.ui_response.touch_event.UIResponseActivity"/>
+        <activity android:name=".demo.recyclerview.RecyclerViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="kent"
+                    android:pathPrefix="/demo1" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".demo.listview.ListViewActivity" />
+        <activity android:name=".demo.alarm.AlarmActivity" />
+        <activity android:name=".demo.drawer.DrawerActivity" />
+        <activity android:name=".demo.tab.TabActivity" />
+        <activity android:name=".demo.indicator.IndicatorActivity" />
+        <activity android:name=".demo.view.CardActivity" />
+        <activity android:name=".demo.network.retrofit.RetrofitActivity" />
+        <activity android:name=".demo.network.okhttp.OKHttpActivity" />
+        <activity android:name=".demo.network.rxjava.RxJavaActivity" />
+        <activity android:name=".demo.eventbus.EventBusActivity" />
+        <activity android:name=".demo.widget.dialog.DialogActivity" />
+        <activity android:name=".demo.recyclerview.loadmore.LoadMoreActivity" />
+        <activity android:name=".demo.layout.contraint.ConstraintLayoutActivity" />
+        <activity android:name=".demo.layout.style.StyleSelectorActivity" />
+        <activity android:name=".demo.ui_response.touch_event.UIResponseActivity" />
         <activity android:name=".demo.recyclerview.multi_layer.MultiLayerActivity" />
-        <activity android:name=".demo.widget.view.MarqueeViewActivity"/>
-        <activity android:name=".demo.architecture.lifecycle.LifeCycleActivity"/>
-        <activity android:name=".demo.recyclerview.scroll.RvScrollActivity"/>
-        <activity android:name=".demo.architecture.room.RoomActivity"/>
-        <activity android:name=".demo.mvvm.view.MvvmActivity"/>
-        <activity android:name=".demo.udp.UdpActivity"/>
+        <activity android:name=".demo.widget.view.MarqueeViewActivity" />
+        <activity android:name=".demo.architecture.lifecycle.LifeCycleActivity" />
+        <activity android:name=".demo.recyclerview.scroll.RvScrollActivity" />
+        <activity android:name=".demo.architecture.room.RoomActivity" />
+        <activity android:name=".demo.mvvm.view.MvvmActivity" />
+        <activity android:name=".demo.udp.UdpActivity" />
         <activity android:name=".activity.AndroidArcActivity" />
         <activity android:name=".activity.AndroidUIActivity" />
         <activity android:name=".activity.NetworkActivity" />
         <activity android:name=".rxjava.sample.anim.RxAnimActivity" />
         <activity android:name=".demo.view.CustomizeViewActivity" />
-        <activity android:name=".demo.db.GreenDaoActivity"/>
+        <activity android:name=".demo.db.GreenDaoActivity" />
         <activity android:name=".demo.view.TransitionDrawableActivity" />
-        <activity android:name=".demo.ui_response.touch_move.UITouchMoveActivity"/>
-        <activity android:name=".demo.ui_response.touch_move.UITouchMove2Activity"/>
-        <activity android:name=".demo.reflect_ioc.ReflectIocActivity"/>
+        <activity android:name=".demo.ui_response.touch_move.UITouchMoveActivity" />
+        <activity android:name=".demo.ui_response.touch_move.UITouchMove2Activity" />
+        <activity android:name=".demo.reflect_ioc.ReflectIocActivity" />
         <activity android:name=".demo.framwork.eventbus.EventBusOneActivity" />
         <activity android:name=".demo.framwork.eventbus.EventBusTwoActivity" />
         <activity android:name=".demo.framwork.okhttp.OkHttpActivity" />
@@ -63,8 +88,7 @@
         <receiver
             android:name=".demo.alarm.AlarmReceiver"
             android:enabled="true"
-            android:exported="true" >
-        </receiver>
+            android:exported="true"></receiver>
 
     </application>
 
