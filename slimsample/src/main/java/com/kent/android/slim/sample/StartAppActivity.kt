@@ -17,8 +17,8 @@ class StartAppActivity : AppCompatActivity() {
 
         uri_btn.setOnClickListener {
             try {
-                val intent = Intent("com.dangbei.dbmusic.action.foreign_router")
-                val uriData = "music://com.dangbei.dbmusic/foreign_router?path=%7B%22jump_type%22%3A%221%22%2C%22package%22%3A%22%22%2C%22link%22%3A%22music%3A%5C%2F%5C%2Fplay%3Ftype%3D4%26id%3D261209789%22%7D"
+                val intent = Intent("android.intent.action.VIEW")
+                val uriData = "kent://ui-runway/home"
                 intent.data = Uri.parse(uriData)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)

@@ -2,6 +2,7 @@ package com.android.ui.kent.demo.recyclerview;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -49,6 +50,10 @@ public class RecyclerViewActivity extends BaseActivity implements BaseActivity.M
 
         initToolbar();
         init();
+        // ATTENTION: This was auto-generated to handle app links.
+        Intent appLinkIntent = getIntent();
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
     }
 
     private void initToolbar() {
