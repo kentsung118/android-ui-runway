@@ -44,7 +44,7 @@ public class MyApplication extends MultiDexApplication {
 
         Stetho.initializeWithDefaults(this);
         mAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
-        initGreenDao();
+//        initGreenDao();
     }
 
     public static AppComponent getAppComponent() {
