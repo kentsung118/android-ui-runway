@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
             "Transition Drawable",
             "Constraint Layout",
             "DesktopManager",
-            "WorkManager"
+            "WorkManager",
+            "Room"
 
     )
     private val mClasses = arrayOf<Class<*>>(
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity() {
             TransitionDrawableActivity::class.java,
             ConstransLayoutDemoActivity::class.java,
             DesktopManagerActivity::class.java,
-            WorkActivity::class.java
+            WorkActivity::class.java,
+            RoomActivity::class.java
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -21,6 +21,7 @@
         <activity android:name=".ConstransLayoutDemoActivity" />
         <activity android:name=".letv.desktopmanager.DesktopManagerActivity" />
         <activity android:name=".workmanager.WorkActivity" />
+        <activity android:name=".RoomActivity" />
     </application>
 
 </manifest>
