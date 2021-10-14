@@ -1,4 +1,4 @@
-package com.kent.android.slim.sample.room
+package com.kent.android.slim.sample.room.user
 
 import androidx.room.*
 
