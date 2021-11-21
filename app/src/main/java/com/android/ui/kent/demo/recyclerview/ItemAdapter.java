@@ -1,7 +1,11 @@
 package com.android.ui.kent.demo.recyclerview;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +73,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         //ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //依viewType決定使用item_layout
         View rootView;
+        Log.d("kentsung", "onCreateViewHolder viewType="+viewType);
         if(viewType == ITEM_TYPE_1.ordinal()){
             rootView =  LayoutInflater.from(context).inflate(R.layout.view_item_recycler_type_1, null, false);
             //rootView.setLayoutParams(lp);
@@ -84,7 +89,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-
+        Log.d("kentsung", "onBindViewHolder position="+position);
         //可以彈性Bind兩種以上viewHolder
         if(viewHolder instanceof ViewHolder1){
             ViewHolder1 holder = (ViewHolder1)viewHolder;
@@ -98,7 +103,23 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     }
 
+    @Override
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
+        Log.d("kentsung", "onViewAttachedToWindow holder="+holder);
+        super.onViewAttachedToWindow(holder);
+    }
 
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        Log.d("kentsung", "onViewDetachedFromWindow holder="+holder);
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+        Log.d("kentsung", "onViewRecycled holder="+holder);
+        super.onViewRecycled(holder);
+    }
 
     @Override
     public int getItemCount() {
