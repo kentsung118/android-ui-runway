@@ -1,6 +1,10 @@
 package com.android.ui.kent.demo.ui_response.touch_move;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.Button;
 import com.android.ui.kent.R;
 import com.android.ui.kent.demo.recyclerview.util.FocusQuickAdapter;
@@ -37,5 +41,38 @@ public class ListAdapter extends FocusQuickAdapter<ListAdapter.ButtonVO, BaseVie
         public void setText(String text) {
             this.text = text;
         }
+    }
+
+    @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        Log.d("kentsung", "onBindViewHolder position="+position);
+        super.onBindViewHolder(holder, position);
+    }
+
+    @Override
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d("kentsung", "onCreateViewHolder viewType="+viewType);
+
+        return super.onCreateViewHolder(parent, viewType);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(BaseViewHolder holder) {
+        Log.d("kentsung", "onViewAttachedToWindow holder="+holder);
+
+        super.onViewAttachedToWindow(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull BaseViewHolder holder) {
+        Log.d("kentsung", "onViewDetachedFromWindow holder="+holder);
+
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull BaseViewHolder holder) {
+        Log.d("kentsung", "onViewRecycled holder="+holder);
+        super.onViewRecycled(holder);
     }
 }
