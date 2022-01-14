@@ -3,6 +3,9 @@ package com.android.ui.kent.demo.ui_response.touch_move;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,8 +19,8 @@ import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
 
 public class UITouchMoveActivity extends BaseActivity {
 
-    @BindView(R.id.my_rv_1)
-    MyRecyclerView myRecyclerView1;
+//    @BindView(R.id.my_rv_1)
+//    MyRecyclerView myRecyclerView1;
     @BindView(R.id.my_rv_2)
     MyRecyclerView myRecyclerView2;
 
@@ -29,13 +32,23 @@ public class UITouchMoveActivity extends BaseActivity {
         ButterKnife.bind(this);
         initToolbar();
 
+
+
         ListAdapter adapter1 = new ListAdapter(genData(50));
         ListAdapter adapter2 = new ListAdapter(genData(50));
 
-        myRecyclerView1.setLayoutManager(new LinearLayoutManager(this, HORIZONTAL, false));
-        myRecyclerView1.setAdapter(adapter1);
+//        myRecyclerView1.setLayoutManager(new LinearLayoutManager(this, HORIZONTAL, false));
+//        myRecyclerView1.setAdapter(adapter1);
         myRecyclerView2.setLayoutManager(new LinearLayoutManager(this, VERTICAL, false));
         myRecyclerView2.setAdapter(adapter2);
+
+        findViewById(R.id.button9).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("kentsung", "onClick");
+                adapter2.notifyDataSetChanged();
+            }
+        });
     }
 
     private void initToolbar() {

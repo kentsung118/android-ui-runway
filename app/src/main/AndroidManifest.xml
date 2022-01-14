@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <queries>
+        <package android:name="com.twitter.android" />
+    </queries>
+
     <application
         android:name=".demo.application.MyApplication"
         android:allowBackup="true"
@@ -84,6 +88,9 @@
         <activity android:name=".demo.framwork.retrofit.RetrofitActivity" />
         <activity android:name=".demo.framwork.glide.GlideActivity" />
         <activity android:name=".demo.shell.ShellActivity" />
+        <activity android:name=".demo.block.BlockActivity" />
+        <activity android:name=".demo.twitter.TwitterActivity" />
+        <activity android:name=".activity.ThirdPartyActivity" />
 
         <receiver
             android:name=".demo.alarm.AlarmReceiver"

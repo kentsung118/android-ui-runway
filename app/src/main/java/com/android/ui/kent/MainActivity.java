@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.ui.kent.activity.AndroidArcActivity;
 import com.android.ui.kent.activity.AndroidUIActivity;
 import com.android.ui.kent.activity.NetworkActivity;
+import com.android.ui.kent.activity.ThirdPartyActivity;
 import com.android.ui.kent.demo.BaseActivity;
 import com.android.ui.kent.demo.network.rxjava.RxJavaActivity;
 
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity {
         list.add(getString(R.string.main_type_android_arc));
         list.add(getString(R.string.main_type_network));
         list.add(getString(R.string.main_type_RxJava));
+        list.add(getString(R.string.main_type_3rd));
 
         ArrayAdapter<String> listAdapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
@@ -69,6 +71,8 @@ public class MainActivity extends BaseActivity {
                 NetworkActivity.launch(activity);
             } else if (actionName.equals(activity.getString(R.string.main_type_RxJava))) {
                 RxJavaActivity.launch(activity);
+            } else if (actionName.equals(activity.getString(R.string.main_type_3rd))) {
+                ThirdPartyActivity.launch(activity);
             }
         }
     };

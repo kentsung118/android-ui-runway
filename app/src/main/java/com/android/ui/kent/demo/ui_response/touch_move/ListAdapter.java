@@ -72,7 +72,7 @@ public class ListAdapter extends FocusQuickAdapter<ListAdapter.ButtonVO, BaseVie
 
     @Override
     public void onViewRecycled(@NonNull BaseViewHolder holder) {
-        Log.d("kentsung", "onViewRecycled holder="+holder);
+        Log.d("kentsung", "onViewRecycled holder="+holder+", pos="+holder.getLayoutPosition());
         super.onViewRecycled(holder);
     }
 }
