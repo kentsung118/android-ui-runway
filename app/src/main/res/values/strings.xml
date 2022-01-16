@@ -30,6 +30,7 @@
     <string name="main_action_customize_view">Customize View</string>
     <string name="main_action_transitiondrawable">TransitionDrawable</string>
     <string name="main_action_greendao">GreenDAO Demo</string>
+    <string name="main_action_okhttp">OKhttp Demo</string>
     <string name="main_action_reflect_ioc">Reflect_Ioc</string>
     <string name="main_action_eventbus_manual">EventBus Manual Demo</string>
     <string name="main_action_okhttp_manual">Okhttp Manual Demo</string>

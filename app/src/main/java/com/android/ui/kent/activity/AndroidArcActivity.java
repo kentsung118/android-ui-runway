@@ -54,6 +54,7 @@ public class AndroidArcActivity extends BaseActivity {
         list.add(getString(R.string.main_action_alarm_manager));
         list.add(getString(R.string.main_action_EventBus));
         list.add(getString(R.string.main_action_greendao));
+        list.add(getString(R.string.main_action_okhttp));
 
 
         ArrayAdapter<String> listAdapter =

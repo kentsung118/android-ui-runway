@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import com.android.ui.kent.demo.framwork.okhttp.OkHttpClientActivity
 import com.kent.android.slim.sample.letv.desktopmanager.DesktopManagerActivity
 import com.kent.android.slim.sample.workmanager.WorkActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,7 +19,8 @@ class MainActivity : AppCompatActivity() {
             "Constraint Layout",
             "DesktopManager",
             "WorkManager",
-            "Room"
+            "Room",
+            "OkHttpClientActivity"
 
     )
     private val mClasses = arrayOf<Class<*>>(
@@ -27,7 +29,8 @@ class MainActivity : AppCompatActivity() {
             ConstransLayoutDemoActivity::class.java,
             DesktopManagerActivity::class.java,
             WorkActivity::class.java,
-            RoomActivity::class.java
+            RoomActivity::class.java,
+            OkHttpClientActivity::class.java
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
