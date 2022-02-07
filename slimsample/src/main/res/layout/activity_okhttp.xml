@@ -12,7 +12,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="send Request"/>
+        android:text="no cache send Request"/>
+
+    <Button
+        android:id="@+id/cache_only_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="cache only send Request"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
