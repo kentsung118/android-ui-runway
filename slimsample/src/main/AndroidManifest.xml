@@ -28,6 +28,12 @@
         <activity android:name=".workmanager.WorkActivity" />
         <activity android:name=".RoomActivity" />
         <activity android:name="com.android.ui.kent.demo.framwork.okhttp.OkHttpClientActivity" />
+        <activity android:name=".share.ShareActivity" android:exported="true" />
     </application>
+
+    <queries>
+        <package android:name="com.instagram.android" />
+        <package android:name="com.facebook.katana" />
+    </queries>
 
 </manifest>

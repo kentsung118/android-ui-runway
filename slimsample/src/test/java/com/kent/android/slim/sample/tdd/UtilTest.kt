@@ -52,4 +52,20 @@ class UtilTest {
 
         Assert.assertEquals("Kent", Normal().ok())
     }
+
+    @Test
+    fun version_compare() {
+        // give
+        val util = Util()
+        Assert.assertTrue(util.compareVersion("2.111.0.0", "2.111.0.0"))
+        Assert.assertTrue(util.compareVersion("2.112.0.0", "2.111.0.0"))
+        Assert.assertTrue(util.compareVersion("2.112.0.900", "2.111.0.0"))
+        Assert.assertTrue(util.compareVersion("3.1.0.0", "2.111.0.0"))
+        Assert.assertFalse(util.compareVersion("2.100.0.0", "2.111.0.0"))
+        Assert.assertFalse(util.compareVersion("2.109.1.0", "2.111.0.0"))
+        Assert.assertFalse(util.compareVersion("1.100.0.0", "2.111.0.0"))
+        Assert.assertFalse(util.compareVersion("2.100.0.0", ""))
+        Assert.assertFalse(util.compareVersion("2.100.0.0", "2.100"))
+        Assert.assertTrue(util.compareVersion("2.100.0.0", "2.99.0.0"))
+    }
 }

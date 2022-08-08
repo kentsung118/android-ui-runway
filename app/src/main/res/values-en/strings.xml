@@ -49,7 +49,7 @@
     <string name="main_type_android_ui">Andorid UI</string>
     <string name="main_type_network">Network</string>
     <string name="main_type_RxJava">RxJava</string>
-    <string name="main_type_3rd">Third party%1$</string>
+    <string name="main_type_3rd">Third party%</string>
 
 
 </resources>

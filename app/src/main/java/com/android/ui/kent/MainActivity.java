@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.multidex.BuildConfig;
+
 import com.android.ui.kent.activity.AndroidArcActivity;
 import com.android.ui.kent.activity.AndroidUIActivity;
 import com.android.ui.kent.activity.NetworkActivity;
@@ -34,6 +36,7 @@ public class MainActivity extends BaseActivity {
 
         initToolbar();
         init();
+        BuildConfig.BUILD_TYPE
     }
 
     private void initToolbar() {
@@ -48,7 +51,7 @@ public class MainActivity extends BaseActivity {
         list.add(getString(R.string.main_type_android_arc));
         list.add(getString(R.string.main_type_network));
         list.add(getString(R.string.main_type_RxJava));
-        list.add(getString(R.string.main_type_3rd));
+        list.add(getString(R.string.main_type_3rd, 1111));
 
         ArrayAdapter<String> listAdapter =
                 new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);

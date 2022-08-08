@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/picked_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_reader_pic1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="reader_pic1"
+                />
+
+            <Button
+                android:id="@+id/btn_reader_pic2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="reader_pic2"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_uri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            />
+
+        <ImageView
+            android:id="@+id/img_2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            />
+    </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ig_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/picked_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/btn_ig_story_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="IG Story(bg)"
+            />
+
+        <Button
+            android:id="@+id/btn_ig_story_sticker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="IG Story(sticker)"
+            />
+
+        <Button
+            android:id="@+id/btn_ig_story_bg_sticker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="IG Story\n(bg+sticker)"
+            />
+
+    </LinearLayout>
+
+
+
+
+
+    <Button
+        android:id="@+id/btn_ig_feed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ig_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAllCaps="false"
+        android:text="IG Feed(Img)"
+        />
+
+    <Button
+        android:id="@+id/btn_fb_story"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_ig_feed"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAllCaps="false"
+        android:text="FB Story(Img)"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

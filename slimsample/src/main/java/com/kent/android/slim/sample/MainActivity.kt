@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.android.ui.kent.demo.framwork.okhttp.OkHttpClientActivity
 import com.kent.android.slim.sample.letv.desktopmanager.DesktopManagerActivity
+import com.kent.android.slim.sample.share.ShareActivity
 import com.kent.android.slim.sample.workmanager.WorkActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,7 +21,8 @@ class MainActivity : AppCompatActivity() {
             "DesktopManager",
             "WorkManager",
             "Room",
-            "OkHttpClientActivity"
+            "OkHttpClientActivity",
+            "Third party Share",
 
     )
     private val mClasses = arrayOf<Class<*>>(
@@ -30,7 +32,8 @@ class MainActivity : AppCompatActivity() {
             DesktopManagerActivity::class.java,
             WorkActivity::class.java,
             RoomActivity::class.java,
-            OkHttpClientActivity::class.java
+            OkHttpClientActivity::class.java,
+            ShareActivity::class.java,
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

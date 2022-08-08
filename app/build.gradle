@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.dokka'
+
 //apply plugin: 'org.greenrobot.greendao'
 
 repositories {
@@ -36,6 +38,14 @@ android {
             storePassword '123456'
             keyAlias 'kent'
             keyPassword '123456'
+        }
+    }
+
+    dokkaHtml.configure {
+        dokkaSourceSets {
+            named("main") {
+                noAndroidSdkLink.set(false)
+            }
         }
     }
 
