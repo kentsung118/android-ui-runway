@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_startapp.*
 import java.util.*
@@ -58,8 +59,28 @@ class StartAppActivity : AppCompatActivity() {
                     Log.d("kentsung", action)
                     val calendar =  Calendar.getInstance()
                     calendar.time = Date()
-                    val minute = calendar.get(Calendar.MINUTE)
-                    Log.d("kentsung", "minute=$minute")
+                    when (val minute = calendar.get(Calendar.MINUTE)) {
+                        in 0..5,
+                        in 11..15,
+                        in 21..25,
+                        in 31..35,
+                        in 41..45,
+                        in 51..55,
+                        -> {
+                            Log.d("kentsung", ""+minute)
+                        }
+                        in 6..10,
+                        in 16..20,
+                        in 26..30,
+                        in 36..40,
+                        in 46..50,
+                        in 56..59,
+                        -> {
+                            Log.d("kentsung", ""+minute)
+                        }
+                    }
+
+
                 }
             }
 
