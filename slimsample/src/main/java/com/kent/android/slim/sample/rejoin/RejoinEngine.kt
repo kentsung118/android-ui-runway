@@ -2,8 +2,6 @@ package com.kent.android.slim.sample.rejoin
 
 import androidx.annotation.MainThread
 import com.google.gson.Gson
-import com.kent.android.slim.sample.Constants.init
-import com.kent.android.slim.sample.rejoin.RejoinContract.featureMapping
 
 /**
  * Create by Kent Sung on 2023/1/16.
@@ -24,8 +22,8 @@ class RejoinManager(val config: RejoinConfig) {
 
     init {
         // parse remoteMap from RejoinConfig
-        remoteMap[RejoinContract.FeatureKey.Camera.name] = RestoreEvent.CameraEvent(
-            RejoinContract.FeatureKey.Camera.name,
+        remoteMap[RejoinContract.Features.Camera.name] = RestoreEvent.CameraEvent(
+            RejoinContract.Features.Camera.name,
             remoteData.camera
         )
 //        remoteMap[RejoinContract.FeatureKey.CameraStatus.name] = RestoreEvent.CameraStatusEvent(
@@ -33,27 +31,6 @@ class RejoinManager(val config: RejoinConfig) {
 //            CameraMode(false, false)
 //        )
 
-        // parse localMap from localStoreMapping & mmkv
-        featureMapping.forEach {
-            //TODO should move to contract define
-            val clss2 = when (it.value) {
-                RestoreEvent.CameraStatusEvent::class.java -> RestoreEvent.CameraStatusEvent::class.java
-                RestoreEvent.StreamingModeEvent::class.java -> RestoreEvent.StreamingModeEvent::class.java
-                else -> {
-                    null
-                } // TODO throw Exception if not define in featureMapping
-            }
-            val gson = Gson()
-            val json = "{\"key\":\"123\"}"
-            val streamModeEvent = gson.fromJson(json, clss2)
-            println(streamModeEvent.key)
-            localMap.put(it.key.name, streamModeEvent)
-        }
-
-    }
-
-    fun setRemoteConfig() {
-        remoteMap["StreamMode"] = RestoreEvent.CameraStatusEvent("StreamMode", CameraMode(false, false))
     }
 
     // 可考慮更輕量的 function invoke 來 callback
@@ -71,7 +48,7 @@ class RejoinManager(val config: RejoinConfig) {
     }
 
     @MainThread
-    inline fun <reified T : RestoreEvent> initFeature(key: RejoinContract.FeatureKey, restoreAble: RestoreAble<T>) {
+    inline fun <reified T : RestoreEvent> initFeature(key: RejoinContract.Features, restoreAble: RestoreAble<T>) {
         val cls = key.relatedClass<T>()
         val gson = Gson()
         println("cls2 -> ${cls}")

@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.kent.android.slim.sample.R
+import com.kent.android.slim.sample.framework.okhttp.GitHubApiKt.getTrustAllBuilder
 import com.kent.android.slim.sample.rejoin.*
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_eventbus.*
@@ -85,7 +86,7 @@ class RetrofitActivity : AppCompatActivity() {
         val manager = RejoinManager(RejoinConfig(""))
 
         btn_restore.setOnClickListener {
-            manager.initFeature(RejoinContract.FeatureKey.CameraStatus, object : RestoreAble<RestoreEvent.CameraStatusEvent> {
+            manager.initFeature(RejoinContract.Features.CameraStatus, object : RestoreAble<RestoreEvent.CameraStatusEvent> {
                 override fun restoreEvent(lastModel: RestoreEvent.CameraStatusEvent?) {
                     println("lala restoreEvent lastModel = ${lastModel}")
                 }
@@ -118,10 +119,13 @@ class RetrofitActivity : AppCompatActivity() {
 
         val backupHelper = BackupHelper(BackupRepositoryImpl())
         val event = RestoreEvent.CameraStatusEvent(
-            RejoinContract.FeatureKey.CameraStatus.name,
+            RejoinContract.Features.CameraStatus.key,
             CameraMode(true, true)
         )
         backupHelper.updateInfo(event)
+
+        println("Features.CameraStatus.key = ${RejoinContract.Features.CameraStatus.key}")
+        println("Features.CameraStatus.name = ${RejoinContract.Features.CameraStatus.name}")
 
 
     }

@@ -1,16 +1,11 @@
 package com.kent.android.slim.sample.rejoin
 
-import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import com.kent.android.slim.sample.retorfit.RetrofitActivity
-import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Kent Sung on 2023/1/18.
  */
 object RejoinContract {
-    enum class FeatureKey(name: String, val clazz: Class<*>) {
-        StreamMode("StreamMode", RestoreEvent.StreamingModeEvent::class.java),
+    enum class Features(val key: String, val clazz: Class<*>) {
         CameraStatus("CameraStatus", RestoreEvent.CameraStatusEvent::class.java),
         Camera("camera", RestoreEvent.CameraEvent::class.java);
 
@@ -18,30 +13,28 @@ object RejoinContract {
             return clazz as Class<T>
         }
 
+        fun getFeatureKey(): String {
+            return name
+        }
+
     }
 
-    val featureMapping = mapOf<FeatureKey, Class<*>>(
-        FeatureKey.StreamMode to RestoreEvent.StreamingModeEvent::class.java,
-        FeatureKey.CameraStatus to RestoreEvent.CameraStatusEvent::class.java
-    )
 }
 
 sealed class RestoreEvent(val key: String, val data: Any) {
-    class CameraStatusEvent(key: String, val model: CameraMode) : RestoreEvent(key, model)
-    class StreamingModeEvent(key: String, val model: StreamingMode) : RestoreEvent(key, model)
+    class CameraStatusEvent(key: String, val model: CameraMode) : RestoreEvent(key, model){
+        override val backendKey: String
+            get() = "camera_status"
+    }
     class CameraEvent(key: String, val camera: Int) : RestoreEvent(key, camera) {
-//        override val key = RejoinContract.FeatureKey.Camera.name
+        override val backendKey: String
+            get() = "camera"
     }
 
-//    abstract key
-}
+    abstract val backendKey: String // BE Key
 
-sealed class BackupModel : Parcelable {
-    @Parcelize
-    class CameraMode(
-        @SerializedName("camera")
-        val name: Int
-    ) : BackupModel()
+
+//    abstract key
 }
 
 data class CameraMode(
