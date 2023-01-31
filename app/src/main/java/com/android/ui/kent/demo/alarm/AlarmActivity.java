@@ -116,13 +116,13 @@ public class AlarmActivity extends BaseActivity{
             Intent intent = new Intent(this, AlarmReceiver.class);
             intent.putExtra("title", "發出廣播");
 
-            PendingIntent pi = PendingIntent.getBroadcast(
-                    this, 100,
-                    intent, PendingIntent.FLAG_ONE_SHOT);
+//            PendingIntent pi = PendingIntent.getBroadcast(
+//                    this, 100,
+//                    intent, PendingIntent.FLAG_ONE_SHOT);
 
-            AlarmManager am = (AlarmManager)
-                    getSystemService(Context.ALARM_SERVICE);
-            am.set(AlarmManager.RTC_WAKEUP, item.getAlarmDateTime(), pi);
+//            AlarmManager am = (AlarmManager)
+//                    getSystemService(Context.ALARM_SERVICE);
+//            am.set(AlarmManager.RTC_WAKEUP, item.getAlarmDateTime(), pi);
         }
     }
 
