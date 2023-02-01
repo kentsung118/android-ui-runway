@@ -11,19 +11,18 @@ data class RejoinConfig(
     val lastStateData: String
 )
 
-class RejoinManager(val config: RejoinConfig) {
+class LiveInfoRestoreManager(val config: RejoinConfig) {
     // Disconnect 走 Remote
     // 正常開播走 local
     val remoteMap = mutableMapOf<String, RestoreEvent>() // from BE  用 Map 去解析 json
-    val localMap = mutableMapOf<String, RestoreEvent>() // from mmkv
 
-    // big model
+    // big model from remote
     val remoteData = LastStreamingData(1, 1, "img_url")
 
     init {
+        //TODO 拆分 hanler 去實作 parse feature
         // parse remoteMap from RejoinConfig
-        remoteMap[RejoinContract.Features.Camera.name] = RestoreEvent.CameraEvent(
-            RejoinContract.Features.Camera.name,
+        remoteMap[LiveInfoRestoreContract.Feature.Camera.backendKey] = RestoreEvent.CameraEvent(
             remoteData.camera
         )
 //        remoteMap[RejoinContract.FeatureKey.CameraStatus.name] = RestoreEvent.CameraStatusEvent(
@@ -40,36 +39,32 @@ class RejoinManager(val config: RejoinConfig) {
         println("cls=$cls")
 
         if (restoreState) {
-            restoreAble.restoreEvent(RestoreEvent.CameraStatusEvent(key, CameraMode(false, false)) as T)
+//            restoreAble.restoreEvent(RestoreEvent.CameraStatusEvent(key, CameraMode(false, false)) as T)
         } else {
-            val lastEvent = RestoreEvent.CameraStatusEvent(key, CameraMode(false, false))
-            restoreAble.normalEvent(lastEvent as T)
+//            val lastEvent = RestoreEvent.CameraStatusEvent(key, CameraMode(false, false))
+//            restoreAble.normalEvent(lastEvent as T)
         }
     }
 
     @MainThread
-    inline fun <reified T : RestoreEvent> initFeature(key: RejoinContract.Features, restoreAble: RestoreAble<T>) {
-        val cls = key.relatedClass<T>()
+    inline fun <reified T : RestoreEvent> initFeature(feature: LiveInfoRestoreContract.Feature, restoreAble: RestoreAble<T>) {
+
+        val cls = feature.relatedClass<T>()
         val gson = Gson()
         println("cls2 -> ${cls}")
-        val json = BackupStorage.get(key.name)
+        val json = BackupStorage.get(feature.name)
         if (json == null) {
             println("==> execute restoreAble.normalEvent,  but local config not found")
             restoreAble.normalEvent(null)
 
         } else {
-//        val json = "{\"key\":\"123\",\"model\":{\"isFront\":true,\"isOpen\":true}}"
             val event = gson.fromJson(json, cls)
-            println("result -> ${event.key}")
             println("==> execute restoreAble.normalEvent,  use local data")
             restoreAble.normalEvent(event)
         }
 
-
-//        remoteMap.getOrElse(key.name){}
-
-        if (remoteMap.containsKey(key.name)) {
-            remoteMap[key.name]?.let {
+        if (remoteMap.containsKey(feature.name)) {
+            remoteMap[feature.backendKey]?.let {
                 println("==> execute restoreAble.restoreEvent,  use remote data")
                 restoreAble.restoreEvent(it as T)
             }
@@ -84,9 +79,9 @@ class RejoinManager(val config: RejoinConfig) {
     }
 
     inline fun <reified T : RestoreEvent> initFeature(key: String, cls: T, restoreAble: RestoreAble<T>) {
-        val lastEvent = RestoreEvent.CameraStatusEvent(key, CameraMode(false, false))
-        val clas2 = cls::class.java
-        restoreAble.normalEvent(lastEvent as T)
+//        val lastEvent = RestoreEvent.CameraStatusEvent(key, CameraMode(false, false))
+//        val clas2 = cls::class.java
+//        restoreAble.normalEvent(lastEvent as T)
     }
 
 

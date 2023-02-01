@@ -11,7 +11,7 @@ object BackupStorage {
     fun save(event:RestoreEvent) {
         val json = Gson().toJson(event)
         println("lala, BackupStorage save json=$json")
-        storeMap[event.key] = json
+        storeMap[event.releatedFeatrue.name] = json
     }
 
     fun get(key: String): String? {

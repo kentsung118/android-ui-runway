@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.kent.android.slim.sample.R
-import com.kent.android.slim.sample.framework.okhttp.GitHubApiKt.getTrustAllBuilder
 import com.kent.android.slim.sample.rejoin.*
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_eventbus.*
@@ -61,37 +60,24 @@ class RetrofitActivity : AppCompatActivity() {
                     Log.d("lala", "onFailure t=$t")
                 }
             })
-
-            val event = RestoreEvent.CameraEvent("camera", 1)
-            val backupMap = HashMap<String, Any>()
-            backupMap.put(event.key, event.data)
-            host!!.backup(backupMap).enqueue(object : Callback<User> {
-                override fun onResponse(call: Call<User>, response: Response<User>) {
-                    Log.d("lala", "onResponse")
-                }
-
-                override fun onFailure(call: Call<User>, t: Throwable) {
-                    Log.d("lala", "onFailure t=$t")
-                }
-            })
         }
 
         btn_backup.setOnClickListener {
-            val toSaveEvent = RestoreEvent.CameraEvent("carema", 1)
-            val backupHelper = BackupHelper(BackupRepositoryImpl())
-            backupHelper.streamID = 111
-            backupHelper.updateInfo(toSaveEvent)
+            val toSaveEvent = RestoreEvent.CameraEvent(1)
+            val liveInfoBackupHelper = LiveInfoBackupHelper(LiveInfoBackupRepositoryImpl())
+            liveInfoBackupHelper.streamID = 111
+            liveInfoBackupHelper.updateInfo(toSaveEvent)
         }
 
-        val manager = RejoinManager(RejoinConfig(""))
+        val manager = LiveInfoRestoreManager(RejoinConfig(""))
 
         btn_restore.setOnClickListener {
-            manager.initFeature(RejoinContract.Features.CameraStatus, object : RestoreAble<RestoreEvent.CameraStatusEvent> {
-                override fun restoreEvent(lastModel: RestoreEvent.CameraStatusEvent?) {
+            manager.initFeature(LiveInfoRestoreContract.Feature.Camera, object : RestoreAble<RestoreEvent.CameraEvent> {
+                override fun restoreEvent(lastModel: RestoreEvent.CameraEvent?) {
                     println("lala restoreEvent lastModel = ${lastModel}")
                 }
 
-                override fun normalEvent(lastModel: RestoreEvent.CameraStatusEvent?) {
+                override fun normalEvent(lastModel: RestoreEvent.CameraEvent?) {
                     println("lala normalEvent lastModel = ${lastModel}")
                 }
             })
@@ -117,15 +103,14 @@ class RetrofitActivity : AppCompatActivity() {
 
         println("flag3")
 
-        val backupHelper = BackupHelper(BackupRepositoryImpl())
+        val liveInfoBackupHelper = LiveInfoBackupHelper(LiveInfoBackupRepositoryImpl())
         val event = RestoreEvent.CameraStatusEvent(
-            RejoinContract.Features.CameraStatus.key,
             CameraMode(true, true)
         )
-        backupHelper.updateInfo(event)
+        liveInfoBackupHelper.updateInfo(event)
 
-        println("Features.CameraStatus.key = ${RejoinContract.Features.CameraStatus.key}")
-        println("Features.CameraStatus.name = ${RejoinContract.Features.CameraStatus.name}")
+//        println("Features.CameraStatus.key = ${RejoinContract.Features.CameraStatus.key}")
+//        println("Features.CameraStatus.name = ${RejoinContract.Features.CameraStatus.name}")
 
 
     }
@@ -139,6 +124,18 @@ class RetrofitActivity : AppCompatActivity() {
 
         @POST("/backup")
         fun backup(
+            @Body map: Map<String, @JvmSuppressWildcards Any>
+        ): Call<User>
+
+        @POST("/{streamID}/setting")
+        fun setting(
+            @Path("streamID") streamID: String,
+            @Body map: Map<String, @JvmSuppressWildcards Any>
+        ): Call<User>
+
+        @POST("/{streamID}/mode")
+        fun mode(
+            @Path("streamID") streamID: String,
             @Body map: Map<String, @JvmSuppressWildcards Any>
         ): Call<User>
     }
