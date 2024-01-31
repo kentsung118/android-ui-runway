@@ -35,6 +35,14 @@ class ShareActivity : AppCompatActivity() {
         initIGStory()
         initIGFeed()
         initFBStory()
+        initURLScheme()
+    }
+
+    private fun initURLScheme(){
+        btn_url_scheme.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("media17://v2/live/15014570"))
+            startActivity(intent)
+        }
     }
 
     private fun initFBStory() {

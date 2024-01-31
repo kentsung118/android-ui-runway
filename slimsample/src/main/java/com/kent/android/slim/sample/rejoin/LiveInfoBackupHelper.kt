@@ -16,7 +16,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 
 interface LiveInfoBackup {
-    fun updateInfo(model: RestoreEvent, isLocalOnly: Boolean = false)
+    fun backup(model: RestoreEvent)
+    fun backupLocalOnly(model: RestoreEvent)
 }
 
 class LiveInfoBackupHelper(
@@ -25,14 +26,18 @@ class LiveInfoBackupHelper(
     // 取決於 streamID 好不好取？
     var streamID = -1
 
-    override fun updateInfo(model: RestoreEvent, isLocalOnly: Boolean) {
+    override fun backup(model: RestoreEvent) {
         backupRepository.saveToLocal(model)
-        if (isLocalOnly) return
         when (model.releatedFeatrue) {
-            LiveInfoRestoreContract.Feature.Camera -> backupRepository.sendSetting(streamID, model)
             LiveInfoRestoreContract.Feature.StreamMode -> backupRepository.sendChangeStreamMode(streamID, model)
-            else -> {}
+            else -> {
+                backupRepository.sendSetting(streamID, model)
+            }
         }
+    }
+
+    override fun backupLocalOnly(model: RestoreEvent) {
+        backupRepository.saveToLocal(model)
     }
 }
 

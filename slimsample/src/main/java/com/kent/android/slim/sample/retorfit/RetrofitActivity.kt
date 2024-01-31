@@ -66,19 +66,19 @@ class RetrofitActivity : AppCompatActivity() {
             val toSaveEvent = RestoreEvent.CameraEvent(1)
             val liveInfoBackupHelper = LiveInfoBackupHelper(LiveInfoBackupRepositoryImpl())
             liveInfoBackupHelper.streamID = 111
-            liveInfoBackupHelper.updateInfo(toSaveEvent)
+            liveInfoBackupHelper.backup(toSaveEvent)
         }
 
-        val manager = LiveInfoRestoreManager(RejoinConfig(""))
+        val manager = LiveInfoRestoreAbleManager(RejoinConfig(""))
 
         btn_restore.setOnClickListener {
-            manager.initFeature(LiveInfoRestoreContract.Feature.Camera, object : RestoreAble<RestoreEvent.CameraEvent> {
-                override fun restoreEvent(lastModel: RestoreEvent.CameraEvent?) {
-                    println("lala restoreEvent lastModel = ${lastModel}")
+            manager.initFeature2(LiveInfoRestoreContract.Feature.Camera, object : RestoreAble<RestoreEvent.CameraEvent> {
+                override fun initAction(lastModel: RestoreEvent.CameraEvent?) {
+                    println("lala initAction lastModel = ${lastModel}")
                 }
 
-                override fun normalEvent(lastModel: RestoreEvent.CameraEvent?) {
-                    println("lala normalEvent lastModel = ${lastModel}")
+                override fun restoreAction(lastModel: RestoreEvent.CameraEvent?) {
+                    println("lala restoreAction lastModel = ${lastModel}")
                 }
             })
         }
@@ -86,14 +86,14 @@ class RetrofitActivity : AppCompatActivity() {
 
 
         manager.initAction("aaa", RestoreEvent.CameraStatusEvent::class.java, object : RestoreAble<RestoreEvent.CameraStatusEvent> {
-            override fun restoreEvent(lastModel: RestoreEvent.CameraStatusEvent?) {
-                normalEvent(lastModel)
+            override fun restoreAction(lastModel: RestoreEvent.CameraStatusEvent?) {
+                initAction(lastModel)
                 println("flag2")
 
                 // to restore feature
             }
 
-            override fun normalEvent(lastModel: RestoreEvent.CameraStatusEvent?) {
+            override fun initAction(lastModel: RestoreEvent.CameraStatusEvent?) {
                 // init
             }
         })
@@ -107,7 +107,7 @@ class RetrofitActivity : AppCompatActivity() {
         val event = RestoreEvent.CameraStatusEvent(
             CameraMode(true, true)
         )
-        liveInfoBackupHelper.updateInfo(event)
+        liveInfoBackupHelper.backup(event)
 
 //        println("Features.CameraStatus.key = ${RejoinContract.Features.CameraStatus.key}")
 //        println("Features.CameraStatus.name = ${RejoinContract.Features.CameraStatus.name}")

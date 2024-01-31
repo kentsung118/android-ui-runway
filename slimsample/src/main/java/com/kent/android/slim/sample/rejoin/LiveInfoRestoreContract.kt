@@ -1,5 +1,7 @@
 package com.kent.android.slim.sample.rejoin
 
+import com.google.gson.Gson
+
 
 /**
  * Created by Kent Sung on 2023/1/18.
@@ -8,11 +10,9 @@ object LiveInfoRestoreContract {
     enum class Feature(val backendKey: String, val clazz: Class<*>) {
         CameraStatus("camera_status", RestoreEvent.CameraStatusEvent::class.java),
         Camera("camera", RestoreEvent.CameraEvent::class.java),
-        StreamMode("mode", RestoreEvent.StreamModeEvent::class.java);
+        StreamMode("mode", RestoreEvent.StreamModeEvent::class.java),
+        FeatureA("featureA", RestoreEvent.FeatureAEvent::class.java),
 
-        inline fun <reified T : RestoreEvent> relatedClass(): Class<T> {
-            return clazz as Class<T>
-        }
     }
 }
 
@@ -30,6 +30,13 @@ sealed class RestoreEvent(val data: Any) {
     data class StreamModeEvent(val mode: Int) : RestoreEvent(mode) {
         override val releatedFeatrue: LiveInfoRestoreContract.Feature
             get() = LiveInfoRestoreContract.Feature.StreamMode
+    }
+
+    data class FeatureAEvent(
+        val data1: FeatureAData
+    ) : RestoreEvent(data1) {
+        override val releatedFeatrue: LiveInfoRestoreContract.Feature
+            get() = LiveInfoRestoreContract.Feature.FeatureA
     }
 
     abstract val releatedFeatrue: LiveInfoRestoreContract.Feature // BE Key
@@ -51,4 +58,9 @@ data class LastStreamingData(
     val stateCode: Int,
     val camera: Int,
     val backgroundURL: String
+)
+
+data class FeatureAData(
+    val mode: Int,
+    val name: String,
 )

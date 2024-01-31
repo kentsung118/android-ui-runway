@@ -11,7 +11,7 @@ data class RejoinConfig(
     val lastStateData: String
 )
 
-class LiveInfoRestoreManager(val config: RejoinConfig) {
+class LiveInfoRestoreAbleManager(val config: RejoinConfig) {
     // Disconnect 走 Remote
     // 正常開播走 local
     val remoteMap = mutableMapOf<String, RestoreEvent>() // from BE  用 Map 去解析 json
@@ -22,7 +22,7 @@ class LiveInfoRestoreManager(val config: RejoinConfig) {
     init {
         //TODO 拆分 hanler 去實作 parse feature
         // parse remoteMap from RejoinConfig
-        remoteMap[LiveInfoRestoreContract.Feature.Camera.backendKey] = RestoreEvent.CameraEvent(
+        remoteMap[LiveInfoRestoreContract.Feature.Camera.name] = RestoreEvent.CameraEvent(
             remoteData.camera
         )
 //        remoteMap[RejoinContract.FeatureKey.CameraStatus.name] = RestoreEvent.CameraStatusEvent(
@@ -46,36 +46,66 @@ class LiveInfoRestoreManager(val config: RejoinConfig) {
         }
     }
 
-    @MainThread
-    inline fun <reified T : RestoreEvent> initFeature(feature: LiveInfoRestoreContract.Feature, restoreAble: RestoreAble<T>) {
-
-        val cls = feature.relatedClass<T>()
+    fun <T: RestoreEvent> initFeature2(feature: LiveInfoRestoreContract.Feature, restoreAble: RestoreAble<T>){
+        val cls = feature.clazz as Class<T>
         val gson = Gson()
         println("cls2 -> ${cls}")
         val json = BackupStorage.get(feature.name)
         if (json == null) {
             println("==> execute restoreAble.normalEvent,  but local config not found")
-            restoreAble.normalEvent(null)
+            restoreAble.initAction(null)
 
         } else {
             val event = gson.fromJson(json, cls)
             println("==> execute restoreAble.normalEvent,  use local data")
-            restoreAble.normalEvent(event)
+            restoreAble.initAction(event)
         }
 
         if (remoteMap.containsKey(feature.name)) {
-            remoteMap[feature.backendKey]?.let {
+            remoteMap[feature.name]?.let {
                 println("==> execute restoreAble.restoreEvent,  use remote data")
-                restoreAble.restoreEvent(it as T)
+                restoreAble.restoreAction(it as T)
             }
         } else {
             // use local if it exists
             json?.let {
                 val event = gson.fromJson(json, cls)
                 println("==> execute restoreAble.restoreEvent,  use local data")
-                restoreAble.restoreEvent(event)
+                restoreAble.restoreAction(event)
             }
         }
+    }
+
+    @MainThread
+    inline fun <reified T : RestoreEvent> initFeature(feature: LiveInfoRestoreContract.Feature, restoreAble: RestoreAble<T>) {
+
+//        val cls = feature.relatedClass<T>()
+//        val gson = Gson()
+//        println("cls2 -> ${cls}")
+//        val json = BackupStorage.get(feature.name)
+//        if (json == null) {
+//            println("==> execute restoreAble.normalEvent,  but local config not found")
+//            restoreAble.initAction(null)
+//
+//        } else {
+//            val event = gson.fromJson(json, cls)
+//            println("==> execute restoreAble.normalEvent,  use local data")
+//            restoreAble.initAction(event)
+//        }
+//
+//        if (remoteMap.containsKey(feature.name)) {
+//            remoteMap[feature.backendKey]?.let {
+//                println("==> execute restoreAble.restoreEvent,  use remote data")
+//                restoreAble.restoreAction(it as T)
+//            }
+//        } else {
+//            // use local if it exists
+//            json?.let {
+//                val event = gson.fromJson(json, cls)
+//                println("==> execute restoreAble.restoreEvent,  use local data")
+//                restoreAble.restoreAction(event)
+//            }
+//        }
     }
 
     inline fun <reified T : RestoreEvent> initFeature(key: String, cls: T, restoreAble: RestoreAble<T>) {
@@ -93,16 +123,16 @@ class RestoreConfigHelper() {
 
 
 interface RestoreAble<T : RestoreEvent> {
-    fun restoreEvent(lastModel: T?)
-    fun normalEvent(lastModel: T?)
+    fun initAction(lastModel: T?)
+    fun restoreAction(lastModel: T?)
 }
 
 class FestureA : RestoreAble<RestoreEvent.CameraStatusEvent> {
-    override fun restoreEvent(lastModel: RestoreEvent.CameraStatusEvent?) {
+    override fun restoreAction(lastModel: RestoreEvent.CameraStatusEvent?) {
         TODO("Not yet implemented")
     }
 
-    override fun normalEvent(lastModel: RestoreEvent.CameraStatusEvent?) {
+    override fun initAction(lastModel: RestoreEvent.CameraStatusEvent?) {
         TODO("Not yet implemented")
     }
 }

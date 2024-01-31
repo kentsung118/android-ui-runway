@@ -13,10 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.ui.kent.demo.blank.AnimationActivityKt
 import com.android.ui.kent.demo.framwork.okhttp.OkHttpClientActivity
+import com.kent.android.slim.sample.androidfsdk.CountdownTimerActivity
 import com.kent.android.slim.sample.letv.desktopmanager.DesktopManagerActivity
 import com.kent.android.slim.sample.retorfit.RetrofitActivity
 import com.kent.android.slim.sample.service.TickSingleton
 import com.kent.android.slim.sample.share.ShareActivity
+import com.kent.android.slim.sample.websocket.WebsocketActivity
 import com.kent.android.slim.sample.workmanager.WorkActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.coroutineScope
@@ -35,7 +37,9 @@ class MainActivity : AppCompatActivity() {
         "OkHttpClientActivity",
         "Third party Share",
         "Animation Drawable",
-        "RetrofitActivity"
+        "RetrofitActivity",
+        "CountdownTimerActivity",
+        "WebsocketActivity"
     )
     private val mClasses = arrayOf<Class<*>>(
         StartAppActivity::class.java,
@@ -47,7 +51,9 @@ class MainActivity : AppCompatActivity() {
         OkHttpClientActivity::class.java,
         ShareActivity::class.java,
         AnimationActivityKt::class.java,
-        RetrofitActivity::class.java
+        RetrofitActivity::class.java,
+        CountdownTimerActivity::class.java,
+        WebsocketActivity::class.java
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
