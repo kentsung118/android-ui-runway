@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.android.ui.kent.demo.blank.AnimationActivityKt
 import com.android.ui.kent.demo.framwork.okhttp.OkHttpClientActivity
 import com.kent.android.slim.sample.androidfsdk.CountdownTimerActivity
+import com.kent.android.slim.sample.audio.AudioActivity
 import com.kent.android.slim.sample.letv.desktopmanager.DesktopManagerActivity
 import com.kent.android.slim.sample.retorfit.RetrofitActivity
 import com.kent.android.slim.sample.service.TickSingleton
@@ -29,6 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     private val mTitle = arrayOf(
         "StartApp",
+        "WebsocketActivity",
+        "AudioActivity",
         "Transition Drawable",
         "Constraint Layout",
         "DesktopManager",
@@ -38,11 +41,12 @@ class MainActivity : AppCompatActivity() {
         "Third party Share",
         "Animation Drawable",
         "RetrofitActivity",
-        "CountdownTimerActivity",
-        "WebsocketActivity"
+        "CountdownTimerActivity"
     )
     private val mClasses = arrayOf<Class<*>>(
         StartAppActivity::class.java,
+        WebsocketActivity::class.java,
+        AudioActivity::class.java,
         TransitionDrawableActivity::class.java,
         ConstransLayoutDemoActivity::class.java,
         DesktopManagerActivity::class.java,
@@ -52,8 +56,7 @@ class MainActivity : AppCompatActivity() {
         ShareActivity::class.java,
         AnimationActivityKt::class.java,
         RetrofitActivity::class.java,
-        CountdownTimerActivity::class.java,
-        WebsocketActivity::class.java
+        CountdownTimerActivity::class.java
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
