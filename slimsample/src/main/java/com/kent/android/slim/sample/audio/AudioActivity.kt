@@ -4,18 +4,22 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.media.AudioFormat
+import android.media.AudioManager
 import android.media.AudioRecord
+import android.media.AudioTrack
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.kent.android.slim.sample.R
+import kotlinx.android.synthetic.main.activity_audio.btn_palyWav
 import kotlinx.android.synthetic.main.activity_audio.btn_pcmToWav
 import kotlinx.android.synthetic.main.activity_audio.btn_start
 import kotlinx.android.synthetic.main.activity_audio.btn_stop
+import java.io.BufferedInputStream
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
@@ -29,9 +33,8 @@ class AudioActivity : AppCompatActivity() {
     val TAG = "lala"
     var audioRecord: AudioRecord? = null // 声明 AudioRecord 对象
 
-    var recordBufSize = 0 // 声明recoordBufffer的大小字段
-    val minBufferSize = 512 // 声明recoordBufffer的大小字段
-
+//    var recordBufSize = 0 // 声明recoordBufffer的大小字段
+//    val minBufferSize = 512 // 声明recoordBufffer的大小字段
 
     // 采样率，现在能够保证在所有设备上使用的采样率是44100Hz, 但是其他的采样率（22050, 16000, 11025）在一些设备上也可以使用。
     val SAMPLE_RATE_INHZ = 44100
@@ -53,7 +56,7 @@ class AudioActivity : AppCompatActivity() {
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_audio)
+        setContentView(com.kent.android.slim.sample.R.layout.activity_audio)
         init()
     }
 
@@ -74,6 +77,10 @@ class AudioActivity : AppCompatActivity() {
             pcmPath?.let {
                 pcmToWav(it)
             }
+        }
+        initPlayer()
+        btn_palyWav.setOnClickListener {
+            playAudio()
         }
     }
 
@@ -178,4 +185,81 @@ class AudioActivity : AppCompatActivity() {
         ptwUtil.pcmToWav(pcmPath, wavFilePath, true)
         Log.d(TAG, "pcmToWav done")
     }
+
+    private var audioTrack: AudioTrack? = null
+    private var playbackThread: Thread? = null
+
+    fun initPlayer() {
+        // 设置音频参数
+        val sampleRate = 44100
+        val channelConfig = AudioFormat.CHANNEL_IN_STEREO
+        val audioFormat = AudioFormat.ENCODING_PCM_16BIT
+
+        // 计算缓冲区大小
+        val bufferSize = AudioTrack.getMinBufferSize(sampleRate, channelConfig, audioFormat)
+
+        // 初始化 AudioTrack
+        audioTrack = AudioTrack(
+            AudioManager.STREAM_MUSIC,
+            sampleRate,
+            channelConfig,
+            audioFormat,
+            bufferSize,
+            AudioTrack.MODE_STREAM
+        )
+    }
+
+    private fun playAudio() {
+        // 获取 WAV 数据的字节数组
+        val audioData = getAudioByteArray() // 从你的 ByteArrayInputStream 中获取数据
+
+        // 开启新线程播放音频
+        playbackThread = Thread {
+            try {
+                // 开始播放
+                audioTrack!!.play()
+
+                // 写入数据到缓冲区
+                audioTrack!!.write(audioData, 0, audioData.size)
+
+                // 停止播放
+                audioTrack!!.stop()
+                audioTrack!!.release()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+        playbackThread!!.start()
+    }
+
+    private fun getAudioByteArray(): ByteArray {
+        val filePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_1707122027749.wav"
+        val file = File(filePath)
+        val inputStream = FileInputStream(file)
+        val byteArrayInputStream = BufferedInputStream(inputStream)
+        // 从你的 ByteArrayInputStream 中获取数据并转为字节数组
+        // 这里假设你的 ByteArrayInputStream 叫做 byteArrayInputStream
+        val bufferSize: Int = byteArrayInputStream.available()
+        val buffer = ByteArray(bufferSize)
+        try {
+            byteArrayInputStream.read(buffer, 0, bufferSize)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return buffer
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // 停止播放并释放资源
+        if (audioTrack != null) {
+            audioTrack!!.stop()
+            audioTrack!!.release()
+        }
+        if (playbackThread != null) {
+            playbackThread!!.interrupt()
+        }
+    }
+
+
 }
