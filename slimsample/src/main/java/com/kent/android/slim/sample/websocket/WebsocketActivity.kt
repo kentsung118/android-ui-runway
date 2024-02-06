@@ -8,6 +8,7 @@ import android.media.AudioTrack
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kent.android.slim.sample.R
 import kotlinx.android.synthetic.main.activity_websocket.btn_client_start
@@ -49,7 +50,7 @@ class WebsocketActivity : AppCompatActivity() {
         setContentView(R.layout.activity_websocket)
 
         startSocketServer()
-        initPlayer()
+
         initAction()
     }
 
@@ -60,10 +61,12 @@ class WebsocketActivity : AppCompatActivity() {
 
         btn_server_stop.setOnClickListener {
             myWebsocketServer?.stop()
+            Toast.makeText(this, "server stop", Toast.LENGTH_SHORT).show()
         }
 
         btn_client_start.setOnClickListener {
-            crateAiVLiverRWebSocket()
+            initPlayer()
+            crateAiVLiverRWebSocket(this)
         }
     }
 
@@ -76,8 +79,6 @@ class WebsocketActivity : AppCompatActivity() {
         val myHost = InetSocketAddress("127.0.0.1", 8091)
         val socketServer = MyWebSocketServer(myHost, this);
         myWebsocketServer = socketServer
-
-
     }
 
     override fun onDestroy() {
@@ -93,13 +94,23 @@ class WebsocketActivity : AppCompatActivity() {
         }
     }
 
-    class MyWebSocketServer(host: InetSocketAddress, val activity:Activity) : WebSocketServer(host) {
+    class MyWebSocketServer(host: InetSocketAddress, val activity: Activity) : WebSocketServer(host) {
         override fun onOpen(conn: WebSocket?, handshake: ClientHandshake?) {
             Log.d(tag, "server onOpen")
+            activity.runOnUiThread {
+                Toast.makeText(activity, "server onOpen", Toast.LENGTH_SHORT).show()
+            }
+
             conn?.send("welcome to use websocket setvice")
             Log.d(tag, "server send audio")
-            val filePath = activity.getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_1707197940015.wav"
+            val filePath = activity.getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_kent.wav"
             val file = File(filePath)
+            if (!file.exists()) {
+                activity.runOnUiThread {
+                    Toast.makeText(activity, "file not found", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
             val byteArray = convertFileToByteArray(file)
             conn?.send(byteArray)
         }
@@ -107,6 +118,9 @@ class WebsocketActivity : AppCompatActivity() {
 
         override fun onClose(conn: WebSocket?, code: Int, reason: String?, remote: Boolean) {
             Log.d(tag, "server onClose code=$code, reason=$reason")
+            activity.runOnUiThread {
+                Toast.makeText(activity, "server onClose", Toast.LENGTH_SHORT).show()
+            }
 
         }
 
@@ -122,10 +136,17 @@ class WebsocketActivity : AppCompatActivity() {
 
         override fun onError(conn: WebSocket?, ex: Exception?) {
             Log.d(tag, "server onError ex=$ex")
+            activity.runOnUiThread {
+                Toast.makeText(activity, "erver onError ex=$ex", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         override fun onStart() {
             Log.d(tag, "server onStart")
+            activity.runOnUiThread {
+                Toast.makeText(activity, "erver onStart", Toast.LENGTH_SHORT).show()
+            }
         }
 
         fun convertFileToByteArray(file: File?): ByteArray? {
@@ -154,8 +175,7 @@ class WebsocketActivity : AppCompatActivity() {
     private val webSocketUrl = "http://127.0.0.1:8091"
     private var mWebSocket: okhttp3.WebSocket? = null
 
-    fun crateAiVLiverRWebSocket() {
-//        viewModelScope.launch(Dispatchers.IO) {
+    fun crateAiVLiverRWebSocket(activity: Activity) {
         val client = OkHttpClient.Builder()
             .pingInterval(3, TimeUnit.SECONDS)
             .build()
@@ -181,6 +201,9 @@ class WebsocketActivity : AppCompatActivity() {
             override fun onOpen(webSocket: okhttp3.WebSocket, response: Response) {
                 super.onOpen(webSocket, response)
                 Log.d(tag, "client onOpen  -response> $response")
+                activity.runOnUiThread {
+                    Toast.makeText(activity, "client onOpen  -response> $response", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onClosed(webSocket: okhttp3.WebSocket, code: Int, reason: String) {
@@ -198,7 +221,6 @@ class WebsocketActivity : AppCompatActivity() {
                 Log.d(tag, "client onFailure t=$t, response=$response)")
             }
         })
-//        }
     }
 
 
@@ -241,6 +263,7 @@ class WebsocketActivity : AppCompatActivity() {
                 // 停止播放
                 audioTrack!!.stop()
                 audioTrack!!.release()
+                audioTrack = null
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }

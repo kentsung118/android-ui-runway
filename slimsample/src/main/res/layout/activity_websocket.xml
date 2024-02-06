@@ -15,13 +15,13 @@
 
         <Button
             android:id="@+id/btn_server_start"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_width="80dp"
             android:text="Start sever" />
 
         <Button
             android:id="@+id/btn_server_stop"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_width="80dp"
             android:text="Stop sever" />
 
@@ -37,34 +37,18 @@
 
         <Button
             android:id="@+id/btn_client_start"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_width="80dp"
             android:text="Start client" />
 
         <Button
             android:id="@+id/btn_client_stop"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_width="80dp"
             android:text="Stop client" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/audio_layout"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/client_layout"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/btn_play_audio"
-            android:layout_height="50dp"
-            android:layout_width="80dp"
-            android:text="play audio" />
-
-
-    </LinearLayout>
 
 
 

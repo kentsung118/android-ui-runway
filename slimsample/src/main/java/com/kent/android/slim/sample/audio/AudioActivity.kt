@@ -11,6 +11,7 @@ import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_audio.btn_palyWav
@@ -32,9 +33,6 @@ class AudioActivity : AppCompatActivity() {
 
     val TAG = "lala"
     var audioRecord: AudioRecord? = null // 声明 AudioRecord 对象
-
-//    var recordBufSize = 0 // 声明recoordBufffer的大小字段
-//    val minBufferSize = 512 // 声明recoordBufffer的大小字段
 
     // 采样率，现在能够保证在所有设备上使用的采样率是44100Hz, 但是其他的采样率（22050, 16000, 11025）在一些设备上也可以使用。
     val SAMPLE_RATE_INHZ = 44100
@@ -66,11 +64,13 @@ class AudioActivity : AppCompatActivity() {
         }
         btn_start.setOnClickListener {
             pcmPath = startRecordAudio()
+            Toast.makeText(this, "開始錄音, filePath=$pcmPath", Toast.LENGTH_SHORT).show()
             Log.d(TAG, "pcmPath=$pcmPath")
         }
 
         btn_stop.setOnClickListener {
             stopRecordAudio()
+            Toast.makeText(this, "停止錄音", Toast.LENGTH_SHORT).show()
         }
 
         btn_pcmToWav.setOnClickListener {
@@ -78,8 +78,8 @@ class AudioActivity : AppCompatActivity() {
                 pcmToWav(it)
             }
         }
-        initPlayer()
         btn_palyWav.setOnClickListener {
+            initPlayer()
             playAudio()
         }
     }
@@ -87,10 +87,10 @@ class AudioActivity : AppCompatActivity() {
     /**
      * 开始录音，返回临时缓存文件（.pcm）的文件路径
      */
-    fun startRecordAudio(): String? {
+    private fun startRecordAudio(): String? {
 
 
-        val audioCacheFilePath = getExternalFilesDir(Environment.DIRECTORY_MUSIC)!!.absolutePath + "/" + "jerboa_audio_cache.pcm"
+        val audioCacheFilePath = getExternalFilesDir(Environment.DIRECTORY_MUSIC)!!.absolutePath + "/" + "kent.pcm"
         try {
             // 获取最小录音缓存大小，
             val minBufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE_INHZ, CHANNEL_CONFIG, AUDIO_FORMAT)
@@ -150,11 +150,11 @@ class AudioActivity : AppCompatActivity() {
             })
             recordingAudioThread?.start()
         } catch (e: IllegalStateException) {
+            Toast.makeText(this, "需要获取录音权限！", Toast.LENGTH_SHORT).show()
             Log.d(TAG, "需要获取录音权限！")
-//            this.checkIfNeedRequestRunningPermission()
         } catch (e: SecurityException) {
+            Toast.makeText(this, "需要获取录音权限！", Toast.LENGTH_SHORT).show()
             Log.d(TAG, "需要获取录音权限！")
-//            this.checkIfNeedRequestRunningPermission()
         }
         return audioCacheFilePath
     }
@@ -180,10 +180,12 @@ class AudioActivity : AppCompatActivity() {
 
     fun pcmToWav(pcmPath: String) {
         //wav文件的路径放在系统的音频目录下
-        var wavFilePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_" + System.currentTimeMillis() + ".wav"
+        var wavFilePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_kent.wav"
         val ptwUtil = PcmToWavUtil()
         ptwUtil.pcmToWav(pcmPath, wavFilePath, true)
         Log.d(TAG, "pcmToWav done")
+        Toast.makeText(this, "pcmToWav 成功 wavFilePath=$wavFilePath", Toast.LENGTH_SHORT).show()
+
     }
 
     private var audioTrack: AudioTrack? = null
@@ -225,6 +227,7 @@ class AudioActivity : AppCompatActivity() {
                 // 停止播放
                 audioTrack!!.stop()
                 audioTrack!!.release()
+                audioTrack = null
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
@@ -233,7 +236,7 @@ class AudioActivity : AppCompatActivity() {
     }
 
     private fun getAudioByteArray(): ByteArray {
-        val filePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_1707122027749.wav"
+        val filePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_kent.wav"
         val file = File(filePath)
         val inputStream = FileInputStream(file)
         val byteArrayInputStream = BufferedInputStream(inputStream)
