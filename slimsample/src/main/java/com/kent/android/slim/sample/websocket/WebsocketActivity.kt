@@ -1,7 +1,12 @@
 package com.kent.android.slim.sample.websocket
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.media.AudioFormat
+import android.media.AudioManager
+import android.media.AudioTrack
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.kent.android.slim.sample.R
@@ -16,30 +21,40 @@ import okio.ByteString
 import org.java_websocket.WebSocket
 import org.java_websocket.handshake.ClientHandshake
 import org.java_websocket.server.WebSocketServer
+import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.util.concurrent.TimeUnit
+
 
 /**
  * Created by Kent Sung on 2024/1/30.
  */
 class WebsocketActivity : AppCompatActivity() {
-    
-    companion object{
+
+    companion object {
         const val tag = "websocket"
     }
+
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_websocket)
 
         startSocketServer()
+        initPlayer()
         initAction()
     }
 
     private fun initAction() {
-        btn_server_start.setOnClickListener{
+        btn_server_start.setOnClickListener {
             myWebsocketServer?.start()
         }
 
@@ -53,15 +68,13 @@ class WebsocketActivity : AppCompatActivity() {
     }
 
 
-
-
     private var myWebsocketServer: WebSocketServer? = null
     private fun startSocketServer() {
         // 192.168.1.101为安卓服务端，需要连接wifi后 高级选项ip设置为静态,输入自定义地址
         // 方便客户端 找 服务端,不需要用getHostAddress等，可能连接不上
         // 9090为端口
-        val myHost = InetSocketAddress("127.0.0.1", 8090)
-        val socketServer = MyWebSocketServer(myHost);
+        val myHost = InetSocketAddress("127.0.0.1", 8091)
+        val socketServer = MyWebSocketServer(myHost, this);
         myWebsocketServer = socketServer
 
 
@@ -70,12 +83,25 @@ class WebsocketActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         myWebsocketServer?.stop()
+        // 停止播放并释放资源
+        if (audioTrack != null) {
+            audioTrack!!.stop()
+            audioTrack!!.release()
+        }
+        if (playbackThread != null) {
+            playbackThread!!.interrupt()
+        }
     }
 
-    class MyWebSocketServer(host: InetSocketAddress) : WebSocketServer(host) {
+    class MyWebSocketServer(host: InetSocketAddress, val activity:Activity) : WebSocketServer(host) {
         override fun onOpen(conn: WebSocket?, handshake: ClientHandshake?) {
             Log.d(tag, "server onOpen")
             conn?.send("welcome to use websocket setvice")
+            Log.d(tag, "server send audio")
+            val filePath = activity.getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_1707197940015.wav"
+            val file = File(filePath)
+            val byteArray = convertFileToByteArray(file)
+            conn?.send(byteArray)
         }
 
 
@@ -86,7 +112,7 @@ class WebsocketActivity : AppCompatActivity() {
 
         override fun onMessage(conn: WebSocket?, message: String?) {
             Log.d(tag, "server onMessage $message")
-            conn?.send("hi I'm server")
+//            conn?.send("hi I'm server")
 
         }
 
@@ -101,57 +127,143 @@ class WebsocketActivity : AppCompatActivity() {
         override fun onStart() {
             Log.d(tag, "server onStart")
         }
+
+        fun convertFileToByteArray(file: File?): ByteArray? {
+            return try {
+                // 读取文件内容到 InputStream
+                val inputStream: InputStream = FileInputStream(file)
+                val outputStream = ByteArrayOutputStream()
+                val buffer = ByteArray(4096)
+                var bytesRead: Int
+                while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                    // 将读取的数据写入 ByteArrayOutputStream
+                    outputStream.write(buffer, 0, bytesRead)
+                }
+                // 关闭输入流
+                inputStream.close()
+                // 将 ByteArrayOutputStream 转换为 byte 数组并返回
+                outputStream.toByteArray()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                null
+            }
+        }
     }
 
 
-    private val webSocketUrl = "http://127.0.0.1:8090"
+    private val webSocketUrl = "http://127.0.0.1:8091"
     private var mWebSocket: okhttp3.WebSocket? = null
 
     fun crateAiVLiverRWebSocket() {
 //        viewModelScope.launch(Dispatchers.IO) {
-            val client = OkHttpClient.Builder()
-                .pingInterval(3, TimeUnit.SECONDS)
-                .build()
-            val request = Request.Builder()
-                .url(webSocketUrl)
-                .build()
+        val client = OkHttpClient.Builder()
+            .pingInterval(3, TimeUnit.SECONDS)
+            .build()
+        val request = Request.Builder()
+            .url(webSocketUrl)
+            .build()
 
-            mWebSocket = client.newWebSocket(request, object : WebSocketListener() {
-                override fun onMessage(webSocket: okhttp3.WebSocket, text: String) {
-                    super.onMessage(webSocket, text)
-                    Log.d(tag, "client onMessage text -> $text")
-                    webSocket.send("hi, i'm client")
+        mWebSocket = client.newWebSocket(request, object : WebSocketListener() {
+            override fun onMessage(webSocket: okhttp3.WebSocket, text: String) {
+                super.onMessage(webSocket, text)
+                Log.d(tag, "client onMessage text -> $text")
+                webSocket.send("hi, i'm client")
 
-                }
+            }
 
-                override fun onMessage(webSocket: okhttp3.WebSocket, bytes: ByteString) {
-                    super.onMessage(webSocket, bytes)
-                    Log.d(tag, "client onMessage bytes -> $bytes")
-                    val inputStream = ByteArrayInputStream(bytes.toByteArray())
-//                    bytes.size
-                }
+            override fun onMessage(webSocket: okhttp3.WebSocket, bytes: ByteString) {
+                super.onMessage(webSocket, bytes)
+                Log.d(tag, "client onMessage bytes -> $bytes")
+                val inputStream = ByteArrayInputStream(bytes.toByteArray())
+                playAudio(BufferedInputStream(inputStream))
+            }
 
-                override fun onOpen(webSocket: okhttp3.WebSocket, response: Response) {
-                    super.onOpen(webSocket, response)
-                    Log.d(tag, "client onOpen  -response> $response")
-                }
+            override fun onOpen(webSocket: okhttp3.WebSocket, response: Response) {
+                super.onOpen(webSocket, response)
+                Log.d(tag, "client onOpen  -response> $response")
+            }
 
-                override fun onClosed(webSocket: okhttp3.WebSocket, code: Int, reason: String) {
-                    super.onClosed(webSocket, code, reason)
-                    Log.d(tag, "client onClosed code=$code, reason=$reason)")
-                }
+            override fun onClosed(webSocket: okhttp3.WebSocket, code: Int, reason: String) {
+                super.onClosed(webSocket, code, reason)
+                Log.d(tag, "client onClosed code=$code, reason=$reason)")
+            }
 
-                override fun onClosing(webSocket: okhttp3.WebSocket, code: Int, reason: String) {
-                    super.onClosing(webSocket, code, reason)
-                    Log.d(tag, "client onClosing code=$code, reason=$reason)")
-                }
+            override fun onClosing(webSocket: okhttp3.WebSocket, code: Int, reason: String) {
+                super.onClosing(webSocket, code, reason)
+                Log.d(tag, "client onClosing code=$code, reason=$reason)")
+            }
 
-                override fun onFailure(webSocket: okhttp3.WebSocket, t: Throwable, response: Response?) {
-                    super.onFailure(webSocket, t, response)
-                    Log.d(tag, "client onFailure t=$t, response=$response)")
-                }
-            })
+            override fun onFailure(webSocket: okhttp3.WebSocket, t: Throwable, response: Response?) {
+                super.onFailure(webSocket, t, response)
+                Log.d(tag, "client onFailure t=$t, response=$response)")
+            }
+        })
 //        }
     }
+
+
+    private var audioTrack: AudioTrack? = null
+    private var playbackThread: Thread? = null
+
+    fun initPlayer() {
+        // 设置音频参数
+        val sampleRate = 44100
+        val channelConfig = AudioFormat.CHANNEL_IN_STEREO
+        val audioFormat = AudioFormat.ENCODING_PCM_16BIT
+
+        // 计算缓冲区大小
+        val bufferSize = AudioTrack.getMinBufferSize(sampleRate, channelConfig, audioFormat)
+
+        // 初始化 AudioTrack
+        audioTrack = AudioTrack(
+            AudioManager.STREAM_MUSIC,
+            sampleRate,
+            channelConfig,
+            audioFormat,
+            bufferSize,
+            AudioTrack.MODE_STREAM
+        )
+    }
+
+    private fun playAudio(byteArrayInputStream: BufferedInputStream) {
+        // 获取 WAV 数据的字节数组
+        val audioData = getAudioByteArray(byteArrayInputStream) // 从你的 ByteArrayInputStream 中获取数据
+
+        // 开启新线程播放音频
+        playbackThread = Thread {
+            try {
+                // 开始播放
+                audioTrack!!.play()
+
+                // 写入数据到缓冲区
+                audioTrack!!.write(audioData, 0, audioData.size)
+
+                // 停止播放
+                audioTrack!!.stop()
+                audioTrack!!.release()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+        playbackThread!!.start()
+    }
+
+    private fun getAudioByteArray(byteArrayInputStream: BufferedInputStream): ByteArray {
+//        val filePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_1707122027749.wav"
+//        val file = File(filePath)
+//        val inputStream = FileInputStream(file)
+//        val byteArrayInputStream = BufferedInputStream(inputStream)
+        // 从你的 ByteArrayInputStream 中获取数据并转为字节数组
+        // 这里假设你的 ByteArrayInputStream 叫做 byteArrayInputStream
+        val bufferSize: Int = byteArrayInputStream.available()
+        val buffer = ByteArray(bufferSize)
+        try {
+            byteArrayInputStream.read(buffer, 0, bufferSize)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return buffer
+    }
+
 
 }
