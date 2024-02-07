@@ -7,9 +7,11 @@ import android.media.AudioManager
 import android.media.AudioTrack
 import android.os.Bundle
 import android.os.Environment
+import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.kent.android.slim.sample.R
 import kotlinx.android.synthetic.main.activity_websocket.btn_client_start
 import kotlinx.android.synthetic.main.activity_websocket.btn_server_start
@@ -27,12 +29,13 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
+import java.util.zip.GZIPInputStream
 
 
 /**
@@ -172,12 +175,14 @@ class WebsocketActivity : AppCompatActivity() {
     }
 
 
-    private val webSocketUrl = "http://127.0.0.1:8091"
+    //    private val webSocketUrl = "http://127.0.0.1:8091"
+    private val webSocketUrl = "https://demo-ws-server-prod.17app.co/ws"
     private var mWebSocket: okhttp3.WebSocket? = null
 
     fun crateAiVLiverRWebSocket(activity: Activity) {
         val client = OkHttpClient.Builder()
             .pingInterval(3, TimeUnit.SECONDS)
+            .addInterceptor(BaseInterceptor())
             .build()
         val request = Request.Builder()
             .url(webSocketUrl)
@@ -187,15 +192,46 @@ class WebsocketActivity : AppCompatActivity() {
             override fun onMessage(webSocket: okhttp3.WebSocket, text: String) {
                 super.onMessage(webSocket, text)
                 Log.d(tag, "client onMessage text -> $text")
-                webSocket.send("hi, i'm client")
+//                webSocket.send("hi, i'm client")
 
             }
 
             override fun onMessage(webSocket: okhttp3.WebSocket, bytes: ByteString) {
                 super.onMessage(webSocket, bytes)
                 Log.d(tag, "client onMessage bytes -> $bytes")
-                val inputStream = ByteArrayInputStream(bytes.toByteArray())
-                playAudio(BufferedInputStream(inputStream))
+                val decodeByteArray = decompressGzip(bytes.toByteArray())
+                val text = String(decodeByteArray, StandardCharsets.UTF_8)
+                Log.d(tag, "client onMessage decodeByteArray text -> $text")
+                val model = Gson().fromJson(text, MessageModel::class.java)
+
+//                val text = convertBinaryToText(bytes.toByteArray(), StandardCharsets.UTF_8)
+//                Log.d(tag,"Converted text: $text")
+
+//                val inputStream = ByteArrayInputStream(bytes.toByteArray())
+                if(model?.aiVLiverAction?.wav !=null){
+                    model?.aiVLiverAction?.wav.let {
+                        if (it.isEmpty()) return
+                        Log.d(tag, "playAudio")
+                        val byteSource = Base64.decode(it, Base64.DEFAULT)
+                        playAudio(byteSource)
+                    }
+                }
+
+
+            }
+
+            @Throws(IOException::class)
+            fun decompressGzip(compressedData: ByteArray): ByteArray {
+                val inputStream = ByteArrayInputStream(compressedData)
+                val outputStream = ByteArrayOutputStream()
+                GZIPInputStream(inputStream).use { gzipInputStream ->
+                    val buffer = ByteArray(1024)
+                    var bytesRead: Int
+                    while (gzipInputStream.read(buffer).also { bytesRead = it } != -1) {
+                        outputStream.write(buffer, 0, bytesRead)
+                    }
+                }
+                return outputStream.toByteArray()
             }
 
             override fun onOpen(webSocket: okhttp3.WebSocket, response: Response) {
@@ -245,6 +281,29 @@ class WebsocketActivity : AppCompatActivity() {
             bufferSize,
             AudioTrack.MODE_STREAM
         )
+    }
+
+    private fun playAudio(byteSource: ByteArray) {
+        // 获取 WAV 数据的字节数组
+
+        // 开启新线程播放音频
+        playbackThread = Thread {
+            try {
+                // 开始播放
+                audioTrack!!.play()
+
+                // 写入数据到缓冲区
+                audioTrack!!.write(byteSource, 0, byteSource.size)
+
+                // 停止播放
+//                audioTrack!!.stop()
+//                audioTrack!!.release()
+//                audioTrack = null
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+        playbackThread!!.start()
     }
 
     private fun playAudio(byteArrayInputStream: BufferedInputStream) {

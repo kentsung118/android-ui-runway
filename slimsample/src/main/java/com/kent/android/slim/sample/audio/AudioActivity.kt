@@ -10,6 +10,7 @@ import android.media.AudioTrack
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
+import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -88,7 +89,6 @@ class AudioActivity : AppCompatActivity() {
      * 开始录音，返回临时缓存文件（.pcm）的文件路径
      */
     private fun startRecordAudio(): String? {
-
 
         val audioCacheFilePath = getExternalFilesDir(Environment.DIRECTORY_MUSIC)!!.absolutePath + "/" + "kent.pcm"
         try {
@@ -214,6 +214,9 @@ class AudioActivity : AppCompatActivity() {
     private fun playAudio() {
         // 获取 WAV 数据的字节数组
         val audioData = getAudioByteArray() // 从你的 ByteArrayInputStream 中获取数据
+        val base64String = Base64.encodeToString(audioData, Base64.DEFAULT)
+        Log.d(TAG, "base64String -> ${base64String}")
+        val byteSource = Base64.decode(base64String, Base64.DEFAULT)
 
         // 开启新线程播放音频
         playbackThread = Thread {
@@ -222,7 +225,7 @@ class AudioActivity : AppCompatActivity() {
                 audioTrack!!.play()
 
                 // 写入数据到缓冲区
-                audioTrack!!.write(audioData, 0, audioData.size)
+                audioTrack!!.write(byteSource, 0, byteSource.size)
 
                 // 停止播放
                 audioTrack!!.stop()
@@ -235,6 +238,39 @@ class AudioActivity : AppCompatActivity() {
         playbackThread!!.start()
     }
 
+//    fun convertBinaryToBase64(file: File): String? {
+//        return try {
+//            // 读取二进制文件内容到字节数组
+//            val inputStream = FileInputStream(file)
+//            val buffer = ByteArray(file.length().toInt())
+//            inputStream.read(buffer)
+//            inputStream.close()
+//
+//            // 使用 Base64 编码器将字节数组转换为 Base64 字符串
+////            Base64.encodeToString()
+////            Base64.getEncoder().encodeToString(buffer)
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//            null
+//        }
+//    }
+
+//    private fun getAudioByteArray(bytes: ByteArray): ByteArray {
+////        val filePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_kent.wav"
+//        val file = File(bytes)
+//        val inputStream = FileInputStream(file)
+//        val byteArrayInputStream = BufferedInputStream(inputStream)
+//        // 从你的 ByteArrayInputStream 中获取数据并转为字节数组
+//        // 这里假设你的 ByteArrayInputStream 叫做 byteArrayInputStream
+//        val bufferSize: Int = byteArrayInputStream.available()
+//        val buffer = ByteArray(bufferSize)
+//        try {
+//            byteArrayInputStream.read(buffer, 0, bufferSize)
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//        return buffer
+//    }
     private fun getAudioByteArray(): ByteArray {
         val filePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_kent.wav"
         val file = File(filePath)
