@@ -7,6 +7,7 @@ import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioRecord
 import android.media.AudioTrack
+import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
@@ -15,6 +16,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import kotlinx.android.synthetic.main.activity_audio.btn_media_player_palyWav
 import kotlinx.android.synthetic.main.activity_audio.btn_palyWav
 import kotlinx.android.synthetic.main.activity_audio.btn_pcmToWav
 import kotlinx.android.synthetic.main.activity_audio.btn_start
@@ -80,8 +82,22 @@ class AudioActivity : AppCompatActivity() {
             }
         }
         btn_palyWav.setOnClickListener {
-            initPlayer()
+            initTrackPlayer()
             playAudio()
+        }
+        btn_media_player_palyWav.setOnClickListener {
+            val mediaPlayer = MediaPlayer()
+            val filePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/v1_welcome.wav"
+            try {
+                mediaPlayer.setDataSource(filePath)
+                mediaPlayer.prepare()
+                mediaPlayer.start()
+                // 需要 release，為了簡便使用先不呼叫
+//                mediaPlayer.release()
+            } catch (e: IOException) {
+                Toast.makeText(this, "請確認檔案是否存在 $filePath", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
         }
     }
 
@@ -191,7 +207,7 @@ class AudioActivity : AppCompatActivity() {
     private var audioTrack: AudioTrack? = null
     private var playbackThread: Thread? = null
 
-    fun initPlayer() {
+    fun initTrackPlayer() {
         // 设置音频参数
         val sampleRate = 44100
         val channelConfig = AudioFormat.CHANNEL_IN_STEREO

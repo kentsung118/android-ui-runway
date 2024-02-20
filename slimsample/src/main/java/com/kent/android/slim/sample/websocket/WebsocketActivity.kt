@@ -5,6 +5,7 @@ import android.app.Activity
 import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioTrack
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Environment
 import android.util.Base64
@@ -28,7 +29,9 @@ import java.io.BufferedInputStream
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileDescriptor
 import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.net.InetSocketAddress
@@ -140,7 +143,7 @@ class WebsocketActivity : AppCompatActivity() {
         override fun onError(conn: WebSocket?, ex: Exception?) {
             Log.d(tag, "server onError ex=$ex")
             activity.runOnUiThread {
-                Toast.makeText(activity, "erver onError ex=$ex", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "server onError ex=$ex", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -179,6 +182,7 @@ class WebsocketActivity : AppCompatActivity() {
     private val webSocketUrl = "https://demo-ws-server-prod.17app.co/ws"
     private var mWebSocket: okhttp3.WebSocket? = null
 
+
     fun crateAiVLiverRWebSocket(activity: Activity) {
         val client = OkHttpClient.Builder()
             .pingInterval(3, TimeUnit.SECONDS)
@@ -193,7 +197,6 @@ class WebsocketActivity : AppCompatActivity() {
                 super.onMessage(webSocket, text)
                 Log.d(tag, "client onMessage text -> $text")
 //                webSocket.send("hi, i'm client")
-
             }
 
             override fun onMessage(webSocket: okhttp3.WebSocket, bytes: ByteString) {
@@ -203,21 +206,15 @@ class WebsocketActivity : AppCompatActivity() {
                 val text = String(decodeByteArray, StandardCharsets.UTF_8)
                 Log.d(tag, "client onMessage decodeByteArray text -> $text")
                 val model = Gson().fromJson(text, MessageModel::class.java)
+                model.aiVLiverAction.wav?.let {
+                    if (it.isEmpty()) return@let
+                    val byteSource = Base64.decode(it, Base64.DEFAULT)
+                    // Android Tracker 方案
+//                  playAudioByAndroidTrack(byteSource)
+                    // Media player 方案
+                    playAudioByMediaPlayer(byteSource)
 
-//                val text = convertBinaryToText(bytes.toByteArray(), StandardCharsets.UTF_8)
-//                Log.d(tag,"Converted text: $text")
-
-//                val inputStream = ByteArrayInputStream(bytes.toByteArray())
-                if(model?.aiVLiverAction?.wav !=null){
-                    model?.aiVLiverAction?.wav.let {
-                        if (it.isEmpty()) return
-                        Log.d(tag, "playAudio")
-                        val byteSource = Base64.decode(it, Base64.DEFAULT)
-                        playAudio(byteSource)
-                    }
                 }
-
-
             }
 
             @Throws(IOException::class)
@@ -257,6 +254,8 @@ class WebsocketActivity : AppCompatActivity() {
                 Log.d(tag, "client onFailure t=$t, response=$response)")
             }
         })
+
+//        mediaPlayer.setlistener
     }
 
 
@@ -265,12 +264,18 @@ class WebsocketActivity : AppCompatActivity() {
 
     fun initPlayer() {
         // 设置音频参数
-        val sampleRate = 44100
-        val channelConfig = AudioFormat.CHANNEL_IN_STEREO
+//        val sampleRate = 44100
+//        val channelConfig = AudioFormat.CHANNEL_IN_STEREO
+//        val audioFormat = AudioFormat.ENCODING_PCM_16BIT
+
+        val sampleRate = 16000
+        val channelConfig = AudioFormat.CHANNEL_OUT_MONO
         val audioFormat = AudioFormat.ENCODING_PCM_16BIT
 
         // 计算缓冲区大小
         val bufferSize = AudioTrack.getMinBufferSize(sampleRate, channelConfig, audioFormat)
+//        val bufferSize = 14144
+        Log.d("lala", "bufferSize=" + bufferSize)
 
         // 初始化 AudioTrack
         audioTrack = AudioTrack(
@@ -283,7 +288,7 @@ class WebsocketActivity : AppCompatActivity() {
         )
     }
 
-    private fun playAudio(byteSource: ByteArray) {
+    private fun playAudioByAndroidTrack(byteSource: ByteArray) {
         // 获取 WAV 数据的字节数组
 
         // 开启新线程播放音频
@@ -306,7 +311,27 @@ class WebsocketActivity : AppCompatActivity() {
         playbackThread!!.start()
     }
 
-    private fun playAudio(byteArrayInputStream: BufferedInputStream) {
+    private fun playAudioByMediaPlayer(byteSource: ByteArray) {
+        val inputStream = BufferedInputStream(ByteArrayInputStream(byteSource))
+        val fileDescriptor: FileDescriptor = getFileDescriptorFromInputStream(inputStream)
+        try {
+            val mediaPlayer = MediaPlayer()
+            mediaPlayer.setDataSource(fileDescriptor)
+            mediaPlayer.prepare()
+            mediaPlayer.start()
+//            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnCompletionListener {
+                Log.d("lala", "mediaPlayer OnCompletion ")
+                it.stop()
+                it.release()
+            }
+        } catch (e: Exception) {
+            Log.d("lala", "playAudioByMediaPlayer error e=$e")
+            e.printStackTrace()
+        }
+    }
+
+    private fun playAudioByAndroidTrack(byteArrayInputStream: BufferedInputStream) {
         // 获取 WAV 数据的字节数组
         val audioData = getAudioByteArray(byteArrayInputStream) // 从你的 ByteArrayInputStream 中获取数据
 
@@ -347,5 +372,15 @@ class WebsocketActivity : AppCompatActivity() {
         return buffer
     }
 
+    @Throws(IOException::class)
+    private fun getFileDescriptorFromInputStream(inputStream: InputStream): FileDescriptor {
+        val buffer = ByteArray(inputStream.available())
+        inputStream.read(buffer)
+        val tempFile = File.createTempFile("temp", null)
+        val fos = FileOutputStream(tempFile)
+        fos.write(buffer)
+        fos.close()
+        return FileInputStream(tempFile).fd
+    }
 
 }

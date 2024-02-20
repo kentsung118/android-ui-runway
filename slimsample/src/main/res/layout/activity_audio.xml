@@ -40,5 +40,14 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
+    <Button
+        android:id="@+id/btn_media_player_palyWav"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:text="Media player - Play Wav"
+        app:layout_constraintTop_toBottomOf="@+id/btn_palyWav"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
