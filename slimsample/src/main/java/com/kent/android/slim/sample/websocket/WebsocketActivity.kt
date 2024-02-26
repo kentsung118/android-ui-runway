@@ -318,6 +318,10 @@ class WebsocketActivity : AppCompatActivity() {
             val mediaPlayer = MediaPlayer()
             mediaPlayer.setDataSource(fileDescriptor)
             mediaPlayer.prepare()
+            val duration = mediaPlayer.duration // 获取播放时长，单位为毫秒
+            Log.d("lala", "duration=$duration")
+
+
             mediaPlayer.start()
 //            mediaPlayer.prepareAsync()
             mediaPlayer.setOnCompletionListener {
@@ -376,7 +380,11 @@ class WebsocketActivity : AppCompatActivity() {
     private fun getFileDescriptorFromInputStream(inputStream: InputStream): FileDescriptor {
         val buffer = ByteArray(inputStream.available())
         inputStream.read(buffer)
-        val tempFile = File.createTempFile("temp", null)
+
+        val filePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/wav_kent.mp3"
+        val tempFile = File(filePath)
+        //考慮要不要每次 remove file?  好像會直接赴寫也沒差
+//        val tempFile = File.createTempFile("temp", null)
         val fos = FileOutputStream(tempFile)
         fos.write(buffer)
         fos.close()
