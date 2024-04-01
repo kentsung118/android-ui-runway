@@ -38,6 +38,7 @@
         <activity android:name=".androidfsdk.CountdownTimerActivity" />
         <activity android:name=".websocket.WebsocketActivity"/>
         <activity android:name=".audio.AudioActivity"/>
+        <activity android:name="com.android.ui.kent.demo.edittext.EditTextActivity"/>
 
     </application>
 

@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.android.ui.kent.demo.blank.AnimationActivityKt
+import com.android.ui.kent.demo.edittext.EditTextActivity
 import com.android.ui.kent.demo.framwork.okhttp.OkHttpClientActivity
 import com.kent.android.slim.sample.androidfsdk.CountdownTimerActivity
 import com.kent.android.slim.sample.audio.AudioActivity
@@ -22,7 +23,6 @@ import com.kent.android.slim.sample.share.ShareActivity
 import com.kent.android.slim.sample.websocket.WebsocketActivity
 import com.kent.android.slim.sample.workmanager.WorkActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private val mTitle = arrayOf(
         "StartApp",
+        "EditTextActivity",
         "WebsocketActivity",
         "AudioActivity",
         "Transition Drawable",
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     )
     private val mClasses = arrayOf<Class<*>>(
         StartAppActivity::class.java,
+        EditTextActivity::class.java,
         WebsocketActivity::class.java,
         AudioActivity::class.java,
         TransitionDrawableActivity::class.java,
