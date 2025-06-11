@@ -1,22 +1,27 @@
 package com.kent.android.slim.sample
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.google.gson.Gson
+import com.kent.android.slim.sample.databinding.ActivityMainBinding
+import com.kent.android.slim.sample.databinding.ActivityRoomBinding
 import com.kent.android.slim.sample.room.AppDatabase
 import com.kent.android.slim.sample.room.gift.GiftUsage
 import com.kent.android.slim.sample.room.gift.GiftUsageDao
 import com.kent.android.slim.sample.room.user.User
 import com.kent.android.slim.sample.room.user.UserDao
 import com.kent.android.slim.sample.util.CoroutineExecutor
-import kotlinx.android.synthetic.main.activity_room.*
 import java.lang.StringBuilder
 
 /**
  * Created by Kent Sung on 2021/10/14.
  */
-class RoomActivity : AppCompatActivity() {
+class RoomActivity : BaseBindingActivity<ActivityRoomBinding>() {
+
+    override val bindingInflater: (LayoutInflater) -> ActivityRoomBinding
+        get() = ActivityRoomBinding::inflate
 
     lateinit var userDao: UserDao
     lateinit var giftDao: GiftUsageDao
@@ -34,7 +39,8 @@ class RoomActivity : AppCompatActivity() {
         userDao = db.userDao();
         giftDao = db.giftUsageDao()
 
-        btn_add.setOnClickListener {
+
+        binding.btnAdd.setOnClickListener {
             CoroutineExecutor.launchIO {
                 val user = User(i++, "kent", "song")
                 userDao.insertAll(user)
@@ -43,7 +49,7 @@ class RoomActivity : AppCompatActivity() {
 
         }
 
-        btn_gift_add.setOnClickListener {
+        binding.btnGiftAdd.setOnClickListener {
             CoroutineExecutor.launchIO {
                 i++
                 val giftUseage = GiftUsage("gift_id_1", "2020-11-08"+i)
@@ -52,7 +58,7 @@ class RoomActivity : AppCompatActivity() {
             }
         }
 
-        btn_gift_delete.setOnClickListener{
+        binding.btnGiftDelete.setOnClickListener{
             CoroutineExecutor.launchIO {
 //                giftDao.deleteById("gift_id_1")
                 giftDao.deleteAll()
@@ -76,7 +82,7 @@ class RoomActivity : AppCompatActivity() {
                 sb.append(System.lineSeparator())
             }
 
-            text_result.text = sb.toString()
+            binding.textResult.text = sb.toString()
         }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -11,22 +12,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.viewbinding.ViewBinding
 import com.android.ui.kent.demo.blank.AnimationActivityKt
 import com.android.ui.kent.demo.edittext.EditTextActivity
 import com.android.ui.kent.demo.framwork.okhttp.OkHttpClientActivity
 import com.kent.android.slim.sample.androidfsdk.CountdownTimerActivity
 import com.kent.android.slim.sample.audio.AudioActivity
+import com.kent.android.slim.sample.databinding.ActivityMainBinding
 import com.kent.android.slim.sample.letv.desktopmanager.DesktopManagerActivity
 import com.kent.android.slim.sample.retorfit.RetrofitActivity
 import com.kent.android.slim.sample.service.TickSingleton
 import com.kent.android.slim.sample.share.ShareActivity
 import com.kent.android.slim.sample.websocket.WebsocketActivity
 import com.kent.android.slim.sample.workmanager.WorkActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseBindingActivity<ActivityMainBinding>() {
+
+    override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
+        get() = ActivityMainBinding::inflate
 
     private val mTitle = arrayOf(
         "StartApp",
@@ -65,7 +70,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        list.setAdapter(ArrayAdapter(this, R.layout.item_list, R.id.tv_items, mTitle))
+
+        binding.list.setAdapter(ArrayAdapter(this, R.layout.item_list, R.id.tv_items, mTitle))
         initListener()
 
         Log.d("lala", "BRAND=${Build.BRAND}")
@@ -76,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("lala", "MANUFACTURER=${Build.DISPLAY}")
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 delay(5000)
                 launch {
                     TickSingleton.tickHandler?.tickTimerFlow?.collect {
@@ -90,16 +96,15 @@ class MainActivity : AppCompatActivity() {
 //                    }
 //                }
 
-               Log.d("lala", "MainActivity flag1")
+                Log.d("lala", "MainActivity flag1")
             }
         }
-
 
 
     }
 
     private fun initListener() {
-        list.onItemClickListener = AdapterView.OnItemClickListener { adapterView: AdapterView<*>?, view: View?, i: Int, l: Long ->
+        binding.list.onItemClickListener = AdapterView.OnItemClickListener { adapterView: AdapterView<*>?, view: View?, i: Int, l: Long ->
             startActivity(
                 Intent(this@MainActivity, mClasses[i])
             )

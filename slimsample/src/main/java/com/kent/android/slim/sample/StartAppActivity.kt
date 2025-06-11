@@ -7,21 +7,26 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_startapp.*
+import com.kent.android.slim.sample.databinding.ActivityRoomBinding
+import com.kent.android.slim.sample.databinding.ActivityStartappBinding
 import java.util.*
 
 /**
  * Created by songzhukai on 2020/9/21.
  */
 
-class StartAppActivity : AppCompatActivity() {
+class StartAppActivity : BaseBindingActivity<ActivityStartappBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityStartappBinding
+        get() = ActivityStartappBinding::inflate
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startapp)
 
-        uri_btn.setOnClickListener {
+        binding.uriBtn.setOnClickListener {
             try {
                 val intent = Intent("android.intent.action.VIEW")
                 val uriData = "kent://ui-runway/home"
@@ -33,7 +38,7 @@ class StartAppActivity : AppCompatActivity() {
             }
         }
 
-        action_btn.setOnClickListener {
+        binding.actionBtn.setOnClickListener {
             try {
                 val intent = Intent()
                 //                    intent.setPackage("com.cibn.tv");
