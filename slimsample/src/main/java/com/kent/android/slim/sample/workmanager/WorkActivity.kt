@@ -3,6 +3,7 @@ package com.kent.android.slim.sample.workmanager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
@@ -10,16 +11,20 @@ import androidx.lifecycle.Observer
 import androidx.work.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.util.concurrent.ListenableFuture
+import com.kent.android.slim.sample.BaseBindingActivity
 import com.kent.android.slim.sample.R
+import com.kent.android.slim.sample.databinding.ActivityWorkmanagerBinding
 import com.kent.android.slim.sample.workmanager.Constants.TAG
-import kotlinx.android.synthetic.main.activity_workmanager.*
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 
 /**
  * Created by songzhukai on 4/30/21.
  */
-class WorkActivity : AppCompatActivity() {
+class WorkActivity : BaseBindingActivity<ActivityWorkmanagerBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityWorkmanagerBinding
+        get() = ActivityWorkmanagerBinding::inflate
+
     val work_tag = "kent_period_work"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +41,13 @@ class WorkActivity : AppCompatActivity() {
         Log.d(TAG, "singleRequest mId=${singleRequest.id}")
 
         Log.d(TAG, "onCreate")
-        one_time_btn.setOnClickListener(View.OnClickListener {
+
+        binding.oneTimeBtn.setOnClickListener(View.OnClickListener {
             Log.d(TAG, "click")
             submit(singleRequest)
         })
 
-        delay_btn.setOnClickListener {
+        binding.delayBtn.setOnClickListener {
             Log.d(TAG, "click")
             val request = OneTimeWorkRequest.Builder(MyWork::class.java)
                     .setInitialDelay(30, TimeUnit.SECONDS)
@@ -51,7 +57,7 @@ class WorkActivity : AppCompatActivity() {
         }
 
 
-        period_btn.setOnClickListener(View.OnClickListener {
+        binding.periodBtn.setOnClickListener(View.OnClickListener {
             Log.d(TAG, "click")
             val request =
                     PeriodicWorkRequest.Builder(MyWork::class.java, 15, TimeUnit.MINUTES)
@@ -61,7 +67,8 @@ class WorkActivity : AppCompatActivity() {
             workManager.enqueueUniquePeriodicWork("週期事件", ExistingPeriodicWorkPolicy.KEEP, request)
         })
 
-        query_btn.setOnClickListener(View.OnClickListener {
+
+        binding.queryBtn.setOnClickListener(View.OnClickListener {
             Log.d(TAG, "click")
             val workInfosByTag: ListenableFuture<List<WorkInfo>> = WorkManager.getInstance(applicationContext)
                     .getWorkInfosByTag(work_tag)
@@ -70,7 +77,7 @@ class WorkActivity : AppCompatActivity() {
             Log.d(TAG, "worker =${workInfosByTag.get()}")
         })
 
-        clear_btn.setOnClickListener(View.OnClickListener {
+        binding.clearBtn.setOnClickListener(View.OnClickListener {
             Log.d(TAG, "click")
 //            workManager.cancelWorkById(syncWorker.id)
 //            workManager.cancelUniqueWork("sync")

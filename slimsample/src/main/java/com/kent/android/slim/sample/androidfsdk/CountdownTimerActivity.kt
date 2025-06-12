@@ -3,16 +3,22 @@ package com.kent.android.slim.sample.androidfsdk
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import com.kent.android.slim.sample.BaseBindingActivity
 import com.kent.android.slim.sample.R
-import kotlinx.android.synthetic.main.activity_countdown_timer.*
+import com.kent.android.slim.sample.databinding.ActivityCountdownTimerBinding
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
  * Created by Kent Sung on 2023/2/6.
  */
-class CountdownTimerActivity : AppCompatActivity() {
+class CountdownTimerActivity : BaseBindingActivity<ActivityCountdownTimerBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityCountdownTimerBinding
+        get() = ActivityCountdownTimerBinding::inflate
+
+
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,12 +28,12 @@ class CountdownTimerActivity : AppCompatActivity() {
         var maxTimeSeconds = 20L
         val timer = object : CountDownTimer(maxTimeSeconds * 1000L, 1000L) {
             override fun onTick(p0: Long) {
-                time_text.text = convertMsToMinAndSecIn2DigitsFormat(maxTimeSeconds * 1000)
+                binding.timeText.text = convertMsToMinAndSecIn2DigitsFormat(maxTimeSeconds * 1000)
                 maxTimeSeconds -= 1
             }
 
             override fun onFinish() {
-                time_text.text = "down"
+                binding.timeText.text = "down"
             }
 
         }

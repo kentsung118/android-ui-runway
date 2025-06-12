@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kent.android.slim.sample.R
 import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
-import kotlinx.android.synthetic.main.item_desktop_screen_item.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,12 +24,12 @@ class ScreenAdapter(var data: ArrayList<ScreenInfo>, val context: Context) : Rec
         private val data: ScreenInfo? = null
 
         fun bindData(screen: ScreenInfo) {
-            container.title.text = screen.packageName.split(".")[3]
-            if (screen.locked) {
-                container.ic_lock.visibility = View.VISIBLE
-            } else {
-                container.ic_lock.visibility = View.GONE
-            }
+//            container.title.text = screen.packageName.split(".")[3]
+//            if (screen.locked) {
+//                container.ic_lock.visibility = View.VISIBLE
+//            } else {
+//                container.ic_lock.visibility = View.GONE
+//            }
         }
 
     }

@@ -7,17 +7,22 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.LayoutInflater
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.kent.android.slim.sample.BaseBindingActivity
 import com.kent.android.slim.sample.R
-import kotlinx.android.synthetic.main.activity_share.*
+import com.kent.android.slim.sample.databinding.ActivityShareBinding
 
 
 /**
  * Created by Kent Sung on 2022/8/4.
  */
-class ShareActivity : AppCompatActivity() {
+class ShareActivity : BaseBindingActivity<ActivityShareBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityShareBinding
+        get() = ActivityShareBinding::inflate
+
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,14 +44,14 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private fun initURLScheme(){
-        btn_url_scheme.setOnClickListener {
+        binding.btnUrlScheme.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("media17://v2/live/15014570"))
             startActivity(intent)
         }
     }
 
     private fun initFBStory() {
-        btn_fb_story.setOnClickListener {
+        binding.btnFbStory.setOnClickListener {
             // Define photo or video asset URI
             val backgroundAssetUri = Uri.parse("your-image-asset-uri-goes-here")
             val appId = "160057864349016" // This is your application's FB ID
@@ -64,7 +69,7 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private fun initIGFeed() {
-        btn_ig_feed.setOnClickListener {
+        binding.btnIgFeed.setOnClickListener {
             // Create the new Intent using the 'Send' action.
             val share = Intent(Intent.ACTION_SEND)
             // Set the MIME type
@@ -80,7 +85,7 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private fun initIGStory() {
-        btn_ig_story_bg.setOnClickListener {
+        binding.btnIgStoryBg.setOnClickListener {
             // Define image asset URI
     //            val backgroundAssetUri: Uri = Uri.parse(uriString)
             val sourceApplication = "com.my.app"
@@ -95,7 +100,7 @@ class ShareActivity : AppCompatActivity() {
             }
         }
 
-        btn_ig_story_sticker.setOnClickListener {
+        binding.btnIgStorySticker.setOnClickListener {
             // Define image asset URI
             val stickerAssetUri = Uri.parse("your-image-asset-uri-goes-here")
             val sourceApplication = "com.my.app"
@@ -119,7 +124,7 @@ class ShareActivity : AppCompatActivity() {
             }
         }
 
-        btn_ig_story_bg_sticker.setOnClickListener {
+        binding.btnIgStoryBgSticker.setOnClickListener {
             // Define background and sticker asset URIs
             val backgroundAssetUri = Uri.parse("your-background-image-asset-uri-goes-here")
             val stickerAssetUri = Uri.parse("your-sticker-image-asset-uri-goes-here")
@@ -144,13 +149,13 @@ class ShareActivity : AppCompatActivity() {
     }
 
     private fun initReaderBtn() {
-        btn_reader_pic1.setOnClickListener {
+        binding.btnReaderPic1.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, null);
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
             pickedActivityResultLauncher1.launch(intent)
         }
 
-        btn_reader_pic2.setOnClickListener {
+        binding.btnReaderPic2.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, null);
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
             pickedActivityResultLauncher2.launch(intent)
@@ -163,8 +168,8 @@ class ShareActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val uri = result.data?.data
             this.uri1 = uri
-            text_uri.text = uri.toString()
-            img_1.setImageURI(uri)
+            binding.textUri.text = uri.toString()
+            binding.img1.setImageURI(uri)
         }
     }
 
@@ -174,7 +179,7 @@ class ShareActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val uri = result.data?.data
             this.uri2 = uri
-            img_2.setImageURI(uri)
+            binding.img2.setImageURI(uri)
         }
     }
 

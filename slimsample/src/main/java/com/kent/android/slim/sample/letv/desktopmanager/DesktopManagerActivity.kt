@@ -6,18 +6,20 @@ import android.os.Looper
 import android.os.Message
 import android.util.Log
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kent.android.slim.sample.BaseBindingActivity
 import com.kent.android.slim.sample.R
+import com.kent.android.slim.sample.databinding.ActivityDesktopManagerBinding
 import com.kent.android.slim.sample.letv.desktopmanager.SortHandler.Companion.Cross
 import com.kent.android.slim.sample.letv.desktopmanager.SortHandler.Companion.NotFound
 import com.kent.android.slim.sample.letv.desktopmanager.anim.RecyclerAnimator
 import com.kent.android.slim.sample.letv.desktopmanager.bean.ScreenInfo
 import com.kent.android.slim.sample.letv.desktopmanager.interfaces.Badge
-import kotlinx.android.synthetic.main.activity_desktop_manager.*
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
@@ -25,7 +27,9 @@ import kotlin.collections.ArrayList
 /**
  * Created by songzhukai on 2020/12/28.
  */
-class DesktopManagerActivity : AppCompatActivity() {
+class DesktopManagerActivity : BaseBindingActivity<ActivityDesktopManagerBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityDesktopManagerBinding
+        get() = ActivityDesktopManagerBinding::inflate
 
     val tag = DesktopManagerActivity::class.simpleName
 
@@ -61,8 +65,8 @@ class DesktopManagerActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         //设定首页
-        inUseRv.postDelayed(Runnable {
-            val view = inUseRv.getChildAt(0)
+        binding.inUseRv.postDelayed(Runnable {
+            val view = binding.inUseRv.getChildAt(0)
             view?.let {
                 badgeMap[BadgeKey.HOME]?.setTargetViewGroup(view as ViewGroup)
             }
@@ -74,7 +78,7 @@ class DesktopManagerActivity : AppCompatActivity() {
 
     private fun startGuide() {
         val resources = arrayListOf<Int>(R.drawable.desktop_manager_guide_1, R.drawable.desktop_manager_guide_2)
-        mGuide = Guide(guideView, LinkedList<Int>(resources))
+        mGuide = Guide( binding.guideView, LinkedList<Int>(resources))
         mGuide.start()
     }
 
@@ -94,10 +98,10 @@ class DesktopManagerActivity : AppCompatActivity() {
         inUseAdapter.setKeyListener(inUse.InUseKeyListener())
         inUseAdapter.setFocusChangeListener(inUse.InUseOnFocusChangeListener())
         inUseAdapter.setLongClickListener(inUse.LongClickListener())
-        inUseRv.layoutManager = GridLayoutManager(this, spanNum)
-        inUseRv.adapter = inUseAdapter
-        inUseRv.itemAnimator = amInUse
-        mInUseRv = inUseRv
+        binding.inUseRv.layoutManager = GridLayoutManager(this, spanNum)
+        binding.inUseRv.adapter = inUseAdapter
+        binding.inUseRv.itemAnimator = amInUse
+        mInUseRv = binding.inUseRv
         mInUseAdapter = inUseAdapter
 
         //init ToAddRv
@@ -105,10 +109,10 @@ class DesktopManagerActivity : AppCompatActivity() {
         val toAddAdapter = ScreenAdapter(ArrayList(), this)
         toAddAdapter.setKeyListener(toAdd.ToAddKeyListener())
         toAddAdapter.setFocusChangeListener(toAdd.ToAddOnFocusChangeListener())
-        toAddRv.layoutManager = GridLayoutManager(this, spanNum)
-        toAddRv.adapter = toAddAdapter
-        toAddRv.itemAnimator = amToAdd
-        mToAddRv = toAddRv
+        binding.toAddRv.layoutManager = GridLayoutManager(this, spanNum)
+        binding.toAddRv.adapter = toAddAdapter
+        binding.toAddRv.itemAnimator = amToAdd
+        mToAddRv = binding.toAddRv
         mToAddAdapter = toAddAdapter
 
         mInUseHandler = SortHandler(spanNum, inUse.MoveItemListener())

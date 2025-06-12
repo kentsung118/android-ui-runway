@@ -7,20 +7,24 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_startapp.*
-import kotlinx.android.synthetic.main.activity_transition_drawable.*
+import com.kent.android.slim.sample.databinding.ActivityMainBinding
+import com.kent.android.slim.sample.databinding.ActivityTransitionDrawableBinding
 
 /**
  * Created by songzhukai on 2020/9/27.
  */
-class TransitionDrawableActivity  : AppCompatActivity() {
+class TransitionDrawableActivity  : BaseBindingActivity<ActivityTransitionDrawableBinding>() {
+
+    override val bindingInflater: (LayoutInflater) -> ActivityTransitionDrawableBinding
+        get() = ActivityTransitionDrawableBinding::inflate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transition_drawable)
 
-        btn_start.setOnClickListener {
+        binding.btnStart.setOnClickListener {
             transitionBitmap()
         }
 
@@ -29,7 +33,7 @@ class TransitionDrawableActivity  : AppCompatActivity() {
 
     private fun transitionBitmap() {
 
-        val view = root_view
+        val view = binding.rootView
 
 //        val drawable1: Drawable = BitmapDrawable(view.context.resources, bitmaps[0])
 //        val drawable2: Drawable = BitmapDrawable(view.context.resources, bitmaps[1])

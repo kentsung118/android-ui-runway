@@ -10,13 +10,13 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Base64
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
+import com.kent.android.slim.sample.BaseBindingActivity
 import com.kent.android.slim.sample.R
-import kotlinx.android.synthetic.main.activity_websocket.btn_client_start
-import kotlinx.android.synthetic.main.activity_websocket.btn_server_start
-import kotlinx.android.synthetic.main.activity_websocket.btn_server_stop
+import com.kent.android.slim.sample.databinding.ActivityWebsocketBinding
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -44,7 +44,9 @@ import java.util.zip.GZIPInputStream
 /**
  * Created by Kent Sung on 2024/1/30.
  */
-class WebsocketActivity : AppCompatActivity() {
+class WebsocketActivity : BaseBindingActivity<ActivityWebsocketBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityWebsocketBinding
+        get() = ActivityWebsocketBinding::inflate
 
     companion object {
         const val tag = "websocket"
@@ -61,16 +63,16 @@ class WebsocketActivity : AppCompatActivity() {
     }
 
     private fun initAction() {
-        btn_server_start.setOnClickListener {
+        binding.btnServerStart.setOnClickListener {
             myWebsocketServer?.start()
         }
 
-        btn_server_stop.setOnClickListener {
+        binding.btnServerStop.setOnClickListener {
             myWebsocketServer?.stop()
             Toast.makeText(this, "server stop", Toast.LENGTH_SHORT).show()
         }
 
-        btn_client_start.setOnClickListener {
+        binding.btnClientStart.setOnClickListener {
             initPlayer()
             crateAiVLiverRWebSocket(this)
         }

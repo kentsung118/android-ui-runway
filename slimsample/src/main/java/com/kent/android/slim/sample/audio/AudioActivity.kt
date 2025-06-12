@@ -13,14 +13,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Base64
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import kotlinx.android.synthetic.main.activity_audio.btn_media_player_palyWav
-import kotlinx.android.synthetic.main.activity_audio.btn_palyWav
-import kotlinx.android.synthetic.main.activity_audio.btn_pcmToWav
-import kotlinx.android.synthetic.main.activity_audio.btn_start
-import kotlinx.android.synthetic.main.activity_audio.btn_stop
+import com.kent.android.slim.sample.BaseBindingActivity
+import com.kent.android.slim.sample.databinding.ActivityAudioBinding
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -32,7 +29,9 @@ import java.io.IOException
 /**
  * Created by Kent Sung on 2024/2/5.
  */
-class AudioActivity : AppCompatActivity() {
+class AudioActivity : BaseBindingActivity<ActivityAudioBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityAudioBinding
+        get() = ActivityAudioBinding::inflate
 
     val TAG = "lala"
     var audioRecord: AudioRecord? = null // 声明 AudioRecord 对象
@@ -65,27 +64,30 @@ class AudioActivity : AppCompatActivity() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             return
         }
-        btn_start.setOnClickListener {
+
+        binding.btnStart.setOnClickListener {
             pcmPath = startRecordAudio()
             Toast.makeText(this, "開始錄音, filePath=$pcmPath", Toast.LENGTH_SHORT).show()
             Log.d(TAG, "pcmPath=$pcmPath")
         }
 
-        btn_stop.setOnClickListener {
+        binding.btnStop.setOnClickListener {
             stopRecordAudio()
             Toast.makeText(this, "停止錄音", Toast.LENGTH_SHORT).show()
         }
 
-        btn_pcmToWav.setOnClickListener {
+        binding.btnPcmToWav.setOnClickListener {
             pcmPath?.let {
                 pcmToWav(it)
             }
         }
-        btn_palyWav.setOnClickListener {
+
+        binding.btnPalyWav.setOnClickListener {
             initTrackPlayer()
             playAudio()
         }
-        btn_media_player_palyWav.setOnClickListener {
+
+        binding.btnMediaPlayerPalyWav.setOnClickListener {
             val mediaPlayer = MediaPlayer()
             val filePath = getExternalFilesDir(Environment.DIRECTORY_PODCASTS).toString() + "/v1_welcome.wav"
             try {

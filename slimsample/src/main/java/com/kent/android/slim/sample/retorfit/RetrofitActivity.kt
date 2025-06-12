@@ -5,13 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
+import com.kent.android.slim.sample.BaseBindingActivity
 import com.kent.android.slim.sample.R
+import com.kent.android.slim.sample.databinding.ActivityEventbusBinding
 import com.kent.android.slim.sample.rejoin.*
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.activity_eventbus.*
-import kotlinx.android.synthetic.main.activity_eventbus.view.*
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,7 +29,10 @@ import javax.net.ssl.X509TrustManager
 
 /**
  */
-class RetrofitActivity : AppCompatActivity() {
+class RetrofitActivity : BaseBindingActivity<ActivityEventbusBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityEventbusBinding
+        get() = ActivityEventbusBinding::inflate
+
     private val TAG = RetrofitActivity::class.java.simpleName
     private var host: Host? = null
 
@@ -47,7 +51,7 @@ class RetrofitActivity : AppCompatActivity() {
             .build()
         host = retrofit.create(Host::class.java)
 
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             val map = HashMap<String, Hero>()
             map.put("abc", Hero.RockMan("aaaaa"))
             map.put("def", Hero.AI("ggggg", 6))
@@ -62,7 +66,7 @@ class RetrofitActivity : AppCompatActivity() {
             })
         }
 
-        btn_backup.setOnClickListener {
+        binding.btnBackup.setOnClickListener {
             val toSaveEvent = RestoreEvent.CameraEvent(1)
             val liveInfoBackupHelper = LiveInfoBackupHelper(LiveInfoBackupRepositoryImpl())
             liveInfoBackupHelper.streamID = 111
@@ -71,7 +75,7 @@ class RetrofitActivity : AppCompatActivity() {
 
         val manager = LiveInfoRestoreAbleManager(RejoinConfig(""))
 
-        btn_restore.setOnClickListener {
+        binding.btnRestore.setOnClickListener {
             manager.initFeature2(LiveInfoRestoreContract.Feature.Camera, object : RestoreAble<RestoreEvent.CameraEvent> {
                 override fun initAction(lastModel: RestoreEvent.CameraEvent?) {
                     println("lala initAction lastModel = ${lastModel}")

@@ -3,17 +3,19 @@ package com.android.ui.kent.demo.blank
 import android.annotation.SuppressLint
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.animation.Animation
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import com.kent.android.slim.sample.BaseBindingActivity
 import com.kent.android.slim.sample.R
-import kotlinx.android.synthetic.main.activity_animation.*
+import com.kent.android.slim.sample.databinding.ActivityAnimationBinding
 
 
 /**
  * Created by Kent Sung on 2022/1/14.
  */
-class AnimationActivityKt : AppCompatActivity() {
+class AnimationActivityKt : BaseBindingActivity<ActivityAnimationBinding>() {
+    override val bindingInflater: (LayoutInflater) -> ActivityAnimationBinding
+        get() = ActivityAnimationBinding::inflate
+
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +26,10 @@ class AnimationActivityKt : AppCompatActivity() {
     var animationDrawable: AnimationDrawable? = null
 
     private fun init() {
-        image_gift.setImageResource(R.drawable.frameanimation);
-        animationDrawable = image_gift.drawable as AnimationDrawable
-        btn_start.setOnClickListener{
+
+        binding.imageGift.setImageResource(R.drawable.frameanimation);
+        animationDrawable = binding.imageGift.drawable as AnimationDrawable
+        binding.btnStart.setOnClickListener{
             animationDrawable!!.stop()
             animationDrawable!!.start()
         }

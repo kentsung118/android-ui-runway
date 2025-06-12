@@ -3,7 +3,6 @@ package com.kent.android.slim.sample.framework.okhttp;
 
 import android.util.Log;
 
-import com.kent.android.slim.sample.BuildConfig;
 import com.kent.android.slim.sample.Constants;
 
 import java.io.File;
@@ -86,11 +85,9 @@ public class GitHubApiKt {
         });
 
 
-        if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             httpBuilder.addInterceptor(interceptor);
-        }
         return httpBuilder.build();
     }
 
